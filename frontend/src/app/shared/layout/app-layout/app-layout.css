@@ -1,0 +1,9 @@
+.shell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+}
+
+.content {
+  padding: 16px;
+  min-width: 0;
+}

@@ -1,0 +1,36 @@
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 16px;
+  border-right: 1px solid #e7e7e7;
+  background: #ffffff;
+  min-height: calc(100vh - 57px);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.title {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #64748b;
+  margin-bottom: 4px;
+}
+
+a {
+  text-decoration: none;
+  color: #334155;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+a.active {
+  background: #f1f5f9;
+  color: #0f172a;
+}
