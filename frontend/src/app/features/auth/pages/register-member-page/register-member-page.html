@@ -1,23 +1,26 @@
-<section class="card">
-  <h1>Register as Member</h1>
-  <p>Create a member account to source verified suppliers.</p>
+<section class="auth-hero">
+  <div class="auth-panel card">
+    <h1>Register as Member</h1>
+    <p>Create a member account to source verified suppliers.</p>
 
-  <form class="form" autocomplete="on">
-    <label>
-      Organization name
-      <input type="text" placeholder="Company / Agency" />
-    </label>
+    <form class="form" autocomplete="on">
+      <label>
+        Organization name
+        <input name="organization" [(ngModel)]="organization" type="text" placeholder="Company / Agency" />
+      </label>
 
-    <label>
-      Contact email
-      <input type="email" placeholder="name@company.com" />
-    </label>
+      <label>
+        Contact email
+        <input name="email" [(ngModel)]="email" type="email" placeholder="name@company.com" />
+      </label>
 
-    <label>
-      Password
-      <input type="password" placeholder="••••••••" />
-    </label>
+      <label>
+        Password
+        <input name="password" [(ngModel)]="password" type="password" placeholder="••••••••" />
+      </label>
 
-    <button type="button">Create Member Account</button>
-  </form>
+      <div class="errors" *ngIf="error">{{ error }}</div>
+      <button type="button" [disabled]="loading || !organization || !email || !password" (click)="register()">Create Member Account</button>
+    </form>
+  </div>
 </section>

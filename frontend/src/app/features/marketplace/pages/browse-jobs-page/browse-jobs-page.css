@@ -2,7 +2,46 @@ button {
   height: 40px;
   border-radius: 10px;
   border: 1px solid var(--color-border);
-  background: #1e3a8a;
+  background: var(--color-primary);
   color: #ffffff;
   font-weight: 700;
+}
+ 
+.filters {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+  align-items: end;
+}
+label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+.meta {
+  color: var(--color-muted);
+  margin: 4px 0 8px;
+}
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.badge.verified {
+  background: #e6fffa;
+  color: #0f766e;
+  border: 1px solid #99f6e4;
+}
+.job-card .head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+@media (max-width: 900px) {
+  .filters {
+    grid-template-columns: 1fr;
+  }
 }

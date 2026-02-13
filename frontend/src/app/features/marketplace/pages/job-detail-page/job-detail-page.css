@@ -1,26 +1,23 @@
-.filters {
+.form {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
-  margin-top: 12px;
 }
-
 label {
   display: grid;
   gap: 6px;
   font-weight: 600;
-  color: var(--color-text);
 }
-
-input,
-select {
+input, textarea {
   height: 40px;
   border-radius: 10px;
   border: 1px solid var(--color-border);
   padding: 0 12px;
   background: var(--color-surface);
 }
-
+textarea {
+  height: auto;
+  padding: 10px 12px;
+}
 button {
   height: 40px;
   border-radius: 10px;
@@ -29,41 +26,51 @@ button {
   color: #ffffff;
   font-weight: 700;
 }
-
+.muted {
+  color: var(--color-muted);
+}
+.bids {
+  display: grid;
+  gap: 12px;
+  margin-top: 8px;
+}
+.bid .title {
+  font-weight: 700;
+}
+.bid .meta {
+  color: var(--color-muted);
+}
+.toast.success {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  background: #e9f9ef;
+  color: #0f5132;
+  border: 1px solid #b7e4c7;
+  font-weight: 700;
+}
 .link {
   display: inline-flex;
-  margin-top: 8px;
+  margin-top: 12px;
   font-weight: 700;
   color: var(--color-primary);
   text-decoration: none;
 }
-
-.supplier .head {
-  display: flex;
+ 
+.escrow .row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px;
   align-items: center;
-  justify-content: space-between;
+  margin-top: 6px;
 }
-.badge {
+.chip {
   display: inline-block;
+  margin-top: 4px;
   padding: 2px 8px;
   border-radius: 999px;
-  font-size: 12px;
   font-weight: 700;
-}
-.badge.verified {
-  background: #e6fffa;
   color: #0f766e;
+  background: #e6fffa;
   border: 1px solid #99f6e4;
-}
-.rating {
-  color: #f59e0b;
-}
-.rating .star.muted {
-  color: #e5e7eb;
-}
-
-@media (max-width: 900px) {
-  .filters {
-    grid-template-columns: 1fr;
-  }
 }

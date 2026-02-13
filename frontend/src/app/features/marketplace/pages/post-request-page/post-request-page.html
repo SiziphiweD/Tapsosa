@@ -5,12 +5,12 @@
   <form class="form">
     <label>
       Title
-      <input type="text" placeholder="e.g. Event Security for Corporate Function" />
+      <input name="title" [(ngModel)]="title" type="text" placeholder="e.g. Event Security for Corporate Function" />
     </label>
 
     <label>
       Category
-      <select>
+      <select name="category" [(ngModel)]="category">
         <option>Guarding Services</option>
         <option>Technology</option>
         <option>Uniforms</option>
@@ -21,19 +21,58 @@
 
     <label>
       Location
-      <input type="text" placeholder="e.g. Johannesburg, Gauteng" />
+      <input name="location" [(ngModel)]="location" type="text" placeholder="e.g. Johannesburg, Gauteng" />
     </label>
 
-    <label>
-      Budget range
-      <input type="text" placeholder="e.g. R20,000 – R40,000" />
-    </label>
+    <div class="grid">
+      <label>
+        Min budget
+        <input name="minBudget" [(ngModel)]="minBudget" type="number" placeholder="e.g. 20000" />
+      </label>
+      <label>
+        Max budget
+        <input name="maxBudget" [(ngModel)]="maxBudget" type="number" placeholder="e.g. 40000" />
+      </label>
+    </div>
 
     <label>
       Bid deadline
-      <input type="date" />
+      <input name="bidDeadline" [(ngModel)]="bidDeadline" type="date" />
     </label>
 
-    <button type="button">Publish Request</button>
+    <div class="grid">
+      <label>
+        Start date
+        <input name="startDate" [(ngModel)]="startDate" type="date" />
+      </label>
+      <label>
+        End date
+        <input name="endDate" [(ngModel)]="endDate" type="date" />
+      </label>
+      <label>
+        Duration (days)
+        <input name="durationDays" [(ngModel)]="durationDays" type="number" placeholder="e.g. 3" />
+      </label>
+    </div>
+
+    <label>
+      Attachments
+      <input type="file" (change)="onFilesSelected($event.target.files)" multiple />
+    </label>
+
+    <div class="errors">
+      <div *ngIf="title.trim().length === 0">Title is required.</div>
+      <div *ngIf="location.trim().length === 0">Location is required.</div>
+      <div *ngIf="!minBudget || !maxBudget">Budget range is required.</div>
+      <div *ngIf="minBudget && maxBudget && minBudget > maxBudget">Min budget must be less than or equal to max budget.</div>
+      <div *ngIf="!bidDeadline">Bid deadline is required.</div>
+      <div *ngIf="datesInvalid">Start date must be before end date.</div>
+    </div>
+
+    <button type="button" [disabled]="!isValid" (click)="publish()">Publish Request</button>
   </form>
+
+  <div class="toast success" *ngIf="submitted">
+    Request published successfully
+  </div>
 </section>

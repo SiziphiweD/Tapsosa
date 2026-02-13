@@ -1,5 +1,5 @@
 <aside class="sidebar">
-  <div class="section">
+  <div class="section" *ngIf="role === 'member'">
     <div class="title">Member</div>
     <a routerLink="/member/dashboard" routerLinkActive="active">Dashboard</a>
     <a routerLink="/member/suppliers" routerLinkActive="active">Find Suppliers</a>
@@ -7,7 +7,7 @@
     <a routerLink="/member/transactions" routerLinkActive="active">Transactions</a>
   </div>
 
-  <div class="section">
+  <div class="section" *ngIf="role === 'supplier'">
     <div class="title">Supplier</div>
     <a routerLink="/supplier/dashboard" routerLinkActive="active">Dashboard</a>
     <a routerLink="/supplier/profile" routerLinkActive="active">My Profile</a>
@@ -17,7 +17,7 @@
     <a routerLink="/supplier/earnings" routerLinkActive="active">Earnings</a>
   </div>
 
-  <div class="section">
+  <div class="section" *ngIf="role === 'admin'">
     <div class="title">Admin</div>
     <a routerLink="/admin/dashboard" routerLinkActive="active">Dashboard</a>
     <a routerLink="/admin/suppliers/verification" routerLinkActive="active">Supplier Verification</a>

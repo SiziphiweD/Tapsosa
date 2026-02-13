@@ -1,34 +1,37 @@
-<section class="card">
-  <h1>Register as Supplier</h1>
-  <p>Create a supplier account and submit compliance documents for verification.</p>
+<section class="auth-hero">
+  <div class="auth-panel card">
+    <h1>Register as Supplier</h1>
+    <p>Create a supplier account and submit compliance documents for verification.</p>
 
-  <form class="form" autocomplete="on">
-    <label>
-      Company name
-      <input type="text" placeholder="Supplier company" />
-    </label>
+    <form class="form" autocomplete="on">
+      <label>
+        Company name
+        <input name="company" [(ngModel)]="company" type="text" placeholder="Supplier company" />
+      </label>
 
-    <label>
-      Contact email
-      <input type="email" placeholder="name@supplier.com" />
-    </label>
+      <label>
+        Contact email
+        <input name="email" [(ngModel)]="email" type="email" placeholder="name@supplier.com" />
+      </label>
 
-    <label>
-      Primary category
-      <select>
-        <option>Guarding Services</option>
-        <option>Technology</option>
-        <option>Uniforms</option>
-        <option>Vehicles</option>
-        <option>Training</option>
-      </select>
-    </label>
+      <label>
+        Primary category
+        <select name="category" [(ngModel)]="category">
+          <option>Guarding Services</option>
+          <option>Technology</option>
+          <option>Uniforms</option>
+          <option>Vehicles</option>
+          <option>Training</option>
+        </select>
+      </label>
 
-    <label>
-      Password
-      <input type="password" placeholder="••••••••" />
-    </label>
+      <label>
+        Password
+        <input name="password" [(ngModel)]="password" type="password" placeholder="••••••••" />
+      </label>
 
-    <button type="button">Create Supplier Account</button>
-  </form>
+        <div class="errors" *ngIf="error">{{ error }}</div>
+        <button type="button" [disabled]="loading || !company || !email || !password" (click)="register()">Create Supplier Account</button>
+    </form>
+  </div>
 </section>

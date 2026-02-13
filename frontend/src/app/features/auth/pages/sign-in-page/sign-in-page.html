@@ -1,18 +1,21 @@
-<section class="card">
-  <h1>Sign In</h1>
-  <p>Access your member, supplier, or admin dashboard.</p>
+<section class="auth-hero">
+  <div class="auth-panel card">
+    <h1>Sign In</h1>
+    <p>Access your member, supplier, or admin dashboard.</p>
 
-  <form class="form" autocomplete="on">
-    <label>
-      Email
-      <input type="email" placeholder="name@company.com" />
-    </label>
+    <form class="form" autocomplete="on">
+      <label>
+        Email
+        <input name="email" [(ngModel)]="email" type="email" placeholder="name@company.com" />
+      </label>
 
-    <label>
-      Password
-      <input type="password" placeholder="••••••••" />
-    </label>
+      <label>
+        Password
+        <input name="password" [(ngModel)]="password" type="password" placeholder="••••••••" />
+      </label>
 
-    <button type="button">Sign In</button>
-  </form>
+      <div class="errors" *ngIf="error">{{ error }}</div>
+      <button type="button" [disabled]="loading || !email || !password" (click)="signIn()">Sign In</button>
+    </form>
+  </div>
 </section>

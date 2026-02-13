@@ -82,6 +82,13 @@ export const routes: Routes = [
               )
           },
           {
+            path: 'requests/:jobId/bids',
+            loadComponent: () =>
+              import('./features/members/pages/member-view-bids-page/member-view-bids-page').then(
+                (m) => m.MemberViewBidsPage
+              )
+          },
+          {
             path: 'transactions',
             loadComponent: () =>
               import('./features/members/pages/member-transactions-page/member-transactions-page').then(
@@ -127,6 +134,13 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/marketplace/pages/browse-jobs-page/browse-jobs-page').then(
                 (m) => m.BrowseJobsPage
+              )
+          },
+          {
+            path: 'jobs/:jobId',
+            loadComponent: () =>
+              import('./features/marketplace/pages/job-detail-page/job-detail-page').then(
+                (m) => m.JobDetailPage
               )
           },
           {

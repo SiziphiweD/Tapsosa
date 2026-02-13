@@ -31,3 +31,34 @@
   background: #eef2ff;
   color: #1e3a8a;
 }
+ 
+.user {
+  font-weight: 700;
+  color: #374151;
+  padding: 6px 10px;
+}
+.btn.logout {
+  height: 32px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: #ef4444;
+  color: #fff;
+  font-weight: 700;
+  padding: 4px 10px;
+}
+
+/* Role accents */
+.nav.member .brand {
+  color: var(--color-primary);
+}
+.nav.supplier .brand {
+  color: var(--color-success);
+}
+.nav.member .links a.active {
+  background: #e6f1ff;
+  color: var(--color-primary);
+}
+.nav.supplier .links a.active {
+  background: #e9f9ef;
+  color: var(--color-success-dark);
+}

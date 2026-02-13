@@ -1,21 +1,81 @@
 <div class="grid">
   <section class="card">
     <h1>Supplier Dashboard</h1>
-    <p>Manage your profile, compliance documents, and bids.</p>
+    <p>Find jobs, submit bids, and track earnings.</p>
+  </section>
+
+  <section class="metrics">
+    <div class="metric">
+      <div class="value">{{ jobs.length }}</div>
+      <div class="label">Available Jobs</div>
+    </div>
+    <div class="metric">
+      <div class="value">2</div>
+      <div class="label">Active Bids</div>
+    </div>
+    <div class="metric">
+      <div class="value">R{{ pendingPayouts.toLocaleString() }}</div>
+      <div class="label">Pending Payouts</div>
+    </div>
   </section>
 
   <section class="grid cols-3">
     <div class="card">
-      <h3>Compliance</h3>
-      <p>Upload and maintain verification documents.</p>
+      <h3>Browse Jobs</h3>
+      <p>Search and filter member requests.</p>
+      <a class="btn primary" href="/supplier/jobs">Open Jobs</a>
     </div>
     <div class="card">
-      <h3>Browse Jobs</h3>
-      <p>Find member requests and submit bids.</p>
+      <h3>Compliance</h3>
+      <p>Maintain verification documents.</p>
+      <a class="btn" href="/supplier/compliance">Update Docs</a>
     </div>
     <div class="card">
       <h3>Earnings</h3>
-      <p>Track payouts and TAPSOSA facilitation fees.</p>
+      <p>Track payouts and TAPSOSA fees.</p>
+      <a class="btn" href="/supplier/earnings">View Earnings</a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Escrow Summary</h3>
+    <div class="escrows">
+      <div class="row">
+        <div>Funded ({{ fundedCount }})</div>
+        <div>R{{ pendingPayouts.toLocaleString() }}</div>
+      </div>
+      <div class="row">
+        <div>Released ({{ releasedCount }})</div>
+        <div>R{{ releasedPayouts.toLocaleString() }}</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Latest Escrow Changes</h3>
+    <div class="activities">
+      <div class="item" *ngFor="let a of recentActivities">
+        <div class="title">{{ a.label }} • {{ a.jobTitle }}</div>
+        <div class="meta" *ngIf="a.amount !== null">R{{ a.amount!.toLocaleString() }}</div>
+        <div class="when">{{ a.when }}</div>
+      </div>
+      <div class="muted" *ngIf="recentActivities.length === 0">No recent activity</div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>New Jobs</h3>
+    <div class="jobs">
+      <article class="job">
+        <div class="title">Event Security • Gauteng</div>
+        <div class="meta">Budget R20,000 – R40,000 • 3 days left</div>
+        <a class="btn" href="/supplier/jobs">View & Bid</a>
+      </article>
+      <article class="job">
+        <div class="title">Alarm Install • Western Cape</div>
+        <div class="meta">Budget R15,000 – R30,000 • 5 days left</div>
+        <a class="btn" href="/supplier/jobs">View & Bid</a>
+      </article>
     </div>
   </section>
 </div>

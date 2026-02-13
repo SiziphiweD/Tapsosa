@@ -4,8 +4,18 @@
   --color-border: #e2e8f0;
   --color-text: #0f172a;
   --color-muted: #475569;
-  --color-primary: #1e3a8a;
+  --color-primary: #2C4A62;
+  --color-primary-dark: #223C52;
+  --color-success: #4CAF50;
+  --color-success-dark: #3B9C42;
+  --color-accent: #DAA520;
   --radius-md: 12px;
+}
+
+/* Role-based theme overrides */
+.member {
+  --color-primary: var(--color-success);
+  --color-primary-dark: var(--color-success-dark);
 }
 
 html,
@@ -40,6 +50,7 @@ p {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   padding: 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.12);
 }
 
 .grid {

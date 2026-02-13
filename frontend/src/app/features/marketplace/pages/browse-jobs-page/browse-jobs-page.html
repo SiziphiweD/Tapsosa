@@ -1,22 +1,47 @@
 <section class="card">
   <h1>Browse Jobs</h1>
-  <p>Find active member requests you can bid on.</p>
+  <p>Search and filter active member requests to bid on.</p>
+
+  <div class="filters">
+    <label>
+      Category
+      <select name="category" [(ngModel)]="filters.category">
+        <option>All</option>
+        <option>Guarding Services</option>
+        <option>Technology</option>
+        <option>Uniforms</option>
+        <option>Vehicles</option>
+        <option>Training</option>
+      </select>
+    </label>
+    <label>
+      Location
+      <input name="location" [(ngModel)]="filters.location" type="text" placeholder="e.g. Johannesburg, Gauteng" />
+    </label>
+    <label>
+      Min Budget
+      <input name="minBudget" [(ngModel)]="filters.minBudget" type="number" placeholder="e.g. 10000" />
+    </label>
+    <label>
+      Max Budget
+      <input name="maxBudget" [(ngModel)]="filters.maxBudget" type="number" placeholder="e.g. 40000" />
+    </label>
+    <label>
+      Deadline
+      <input name="deadline" [(ngModel)]="filters.deadline" type="date" />
+    </label>
+    <button type="button">Search</button>
+  </div>
 
   <div class="grid cols-3">
-    <div class="card">
-      <h3>Example Job</h3>
-      <p>Guarding • Gauteng • Budget R20,000 – R40,000</p>
-      <button type="button">View & Bid</button>
-    </div>
-    <div class="card">
-      <h3>Example Job</h3>
-      <p>Technology • Western Cape • Budget R15,000 – R30,000</p>
-      <button type="button">View & Bid</button>
-    </div>
-    <div class="card">
-      <h3>Example Job</h3>
-      <p>Training • KZN • Budget R10,000 – R18,000</p>
-      <button type="button">View & Bid</button>
+    <div class="card job-card" *ngFor="let j of filtered">
+      <div class="head">
+        <h3>{{ j.title }}</h3>
+        <span class="badge verified" *ngIf="j.verified">Verified</span>
+      </div>
+      <p>{{ j.category }} • {{ j.location }} • Budget R{{ j.minBudget.toLocaleString() }} – R{{ j.maxBudget.toLocaleString() }}</p>
+      <div class="meta">{{ daysLeft(j.bidDeadline) }} days left</div>
+      <a class="btn" [routerLink]="['/supplier/jobs', j.id]">View & Bid</a>
     </div>
   </div>
 </section>

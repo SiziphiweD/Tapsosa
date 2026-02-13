@@ -1,0 +1,50 @@
+<section class="card" *ngIf="job">
+  <h1>View Bids</h1>
+  <p>{{ job.title }} • {{ job.category }} • {{ job.location }}</p>
+  <p class="muted">Budget R{{ job.minBudget.toLocaleString() }} – R{{ job.maxBudget.toLocaleString() }}</p>
+
+  <div class="bids">
+    <div class="bid" *ngFor="let b of bids">
+      <div class="row">
+        <div>
+          <div class="title">{{ b.supplierName }}</div>
+          <div class="meta">R{{ b.price.toLocaleString() }} • {{ b.days }} days</div>
+          <div class="msg">{{ b.message }}</div>
+        </div>
+        <div class="actions">
+          <button type="button" [disabled]="selecting" (click)="selectWinner(b.id)">Select Winner</button>
+        </div>
+      </div>
+      <div class="chip" *ngIf="isWinner(b)">Winner</div>
+    </div>
+    <div class="muted" *ngIf="bids.length === 0">No bids yet</div>
+  </div>
+
+  <div class="toast success" *ngIf="success">Winner selected</div>
+
+  <section class="card" *ngIf="escrow as e">
+    <h3>Fees & Escrow</h3>
+    <div class="escrow">
+      <div class="row">
+        <div>Gross</div>
+        <div>R{{ e.gross.toLocaleString() }}</div>
+      </div>
+      <div class="row">
+        <div>Fee (7%)</div>
+        <div>R{{ e.fee.toLocaleString() }}</div>
+      </div>
+      <div class="row">
+        <div>Net Payout</div>
+        <div>R{{ e.net.toLocaleString() }}</div>
+      </div>
+      <div class="row">
+        <div>Status</div>
+        <div class="chip">{{ e.status }}</div>
+      </div>
+      <div class="actions">
+        <button type="button" [disabled]="funding" (click)="fundEscrow()">Fund Escrow</button>
+        <button type="button" [disabled]="releasing" (click)="releaseEscrow()">Release Escrow</button>
+      </div>
+    </div>
+  </section>
+</section>
