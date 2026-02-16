@@ -1,0 +1,71 @@
+<div class="grid">
+  <section class="card">
+    <h1>Platform Configuration</h1>
+    <p>General platform settings, payments, communications, and feature flags.</p>
+    <div class="toast success" *ngIf="saved">Saved</div>
+  </section>
+
+  <section class="grid cols-2">
+    <div class="card">
+      <h3>General Settings</h3>
+      <div class="form">
+        <label>Platform Name <input [(ngModel)]="general.platformName" /></label>
+        <label>Branding <input [(ngModel)]="general.branding" /></label>
+        <label>Contact Email <input [(ngModel)]="general.contactEmail" type="email" /></label>
+        <label>Contact Phone <input [(ngModel)]="general.contactPhone" /></label>
+        <label>Business Hours <input [(ngModel)]="general.businessHours" /></label>
+        <label><input type="checkbox" [(ngModel)]="general.maintenance" /> Maintenance Mode</label>
+        <button type="button" (click)="saveGeneral()">Save</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Payment Gateway</h3>
+      <div class="form">
+        <label>Gateway <input [(ngModel)]="payment.gateway" /></label>
+        <label>Public Key <input [(ngModel)]="payment.publicKey" /></label>
+        <label>Secret Key <input [(ngModel)]="payment.secretKey" type="password" /></label>
+        <label><input type="checkbox" [(ngModel)]="payment.testMode" /> Test Mode</label>
+        <label>Transaction Limit <input [(ngModel)]="payment.txLimit" type="number" /></label>
+        <button type="button" (click)="savePayment()">Save</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="grid cols-2">
+    <div class="card">
+      <h3>Email Templates</h3>
+      <div class="form">
+        <h4>Welcome</h4>
+        <label>Subject <input [(ngModel)]="email.welcome.subject" /></label>
+        <label>Body <textarea [(ngModel)]="email.welcome.body"></textarea></label>
+        <h4>Notification</h4>
+        <label>Subject <input [(ngModel)]="email.notification.subject" /></label>
+        <label>Body <textarea [(ngModel)]="email.notification.body"></textarea></label>
+        <h4>Transaction</h4>
+        <label>Subject <input [(ngModel)]="email.transaction.subject" /></label>
+        <label>Body <textarea [(ngModel)]="email.transaction.body"></textarea></label>
+        <button type="button" (click)="saveEmail()">Save</button>
+      </div>
+    </div>
+    <div class="card">
+      <h3>SMS Settings</h3>
+      <div class="form">
+        <label>Gateway <input [(ngModel)]="sms.gateway" /></label>
+        <label>API Key <input [(ngModel)]="sms.apiKey" /></label>
+        <label>Default Template <textarea [(ngModel)]="sms.templates.default"></textarea></label>
+        <label>OTP Template <textarea [(ngModel)]="sms.templates.otp"></textarea></label>
+        <button type="button" (click)="saveSms()">Save</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Feature Flags</h3>
+    <div class="form">
+      <label><input type="checkbox" [(ngModel)]="flags.enableFeatures" /> Enable/Disable Features</label>
+      <label><input type="checkbox" [(ngModel)]="flags.betaFeatures" /> Beta Features</label>
+      <label><input type="checkbox" [(ngModel)]="flags.abTesting" /> A/B Testing</label>
+      <button type="button" (click)="saveFlags()">Save</button>
+    </div>
+  </section>
+</div>

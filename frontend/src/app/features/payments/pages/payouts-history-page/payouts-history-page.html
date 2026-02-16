@@ -1,0 +1,17 @@
+<section class="card">
+  <h1>Payout History</h1>
+  <div class="table">
+    <div class="row head">
+      <div>Job</div><div>Gross</div><div>Fee</div><div>Net</div><div>Date</div><div>Txn</div>
+    </div>
+    <div class="row" *ngFor="let r of rows">
+      <div>{{ r.jobTitle }}</div>
+      <div>R{{ r.gross.toLocaleString() }}</div>
+      <div>R{{ r.fee.toLocaleString() }}</div>
+      <div>R{{ r.net.toLocaleString() }}</div>
+      <div>{{ r.date }}</div>
+      <div>{{ r.txnId }}</div>
+    </div>
+    <div class="muted" *ngIf="rows.length === 0">No payouts yet</div>
+  </div>
+</section>

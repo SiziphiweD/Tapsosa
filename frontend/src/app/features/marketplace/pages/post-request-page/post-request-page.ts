@@ -14,6 +14,8 @@ export class PostRequestPage {
   title = '';
   category = 'Guarding Services';
   location = '';
+  requirements = '';
+  requiredCertsText = '';
   minBudget: number | null = null;
   maxBudget: number | null = null;
   bidDeadline = '';
@@ -58,11 +60,18 @@ export class PostRequestPage {
 
   publish() {
     if (!this.isValid) return;
+    const requiredCertifications =
+      this.requiredCertsText
+        .split(',')
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0) || [];
     this.api
       .createJob({
         title: this.title,
         category: this.category,
         location: this.location,
+        requirements: this.requirements || undefined,
+        requiredCertifications: requiredCertifications.length ? requiredCertifications : undefined,
         minBudget: this.minBudget as number,
         maxBudget: this.maxBudget as number,
         bidDeadline: this.bidDeadline,
@@ -75,6 +84,8 @@ export class PostRequestPage {
         this.title = '';
         this.category = 'Guarding Services';
         this.location = '';
+        this.requirements = '';
+        this.requiredCertsText = '';
         this.minBudget = null;
         this.maxBudget = null;
         this.bidDeadline = '';

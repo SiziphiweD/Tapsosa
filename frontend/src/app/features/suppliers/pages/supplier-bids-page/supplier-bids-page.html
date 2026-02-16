@@ -1,0 +1,85 @@
+<section class="card">
+  <h1>My Bids</h1>
+  <p class="muted">Track submitted bids and statuses.</p>
+
+  <div class="tabs">
+    <button [class.active]="tab==='Active'" (click)="tab='Active'">Active ({{ active.length }})</button>
+    <button [class.active]="tab==='Accepted'" (click)="tab='Accepted'">Accepted ({{ accepted.length }})</button>
+    <button [class.active]="tab==='Rejected'" (click)="tab='Rejected'">Rejected ({{ rejected.length }})</button>
+    <button [class.active]="tab==='Drafts'" (click)="tab='Drafts'">Drafts (0)</button>
+  </div>
+
+  <div class="table" *ngIf="tab==='Active'">
+    <div class="head row">
+      <div>Job</div><div>Amount</div><div>Status</div><div></div>
+    </div>
+    <div class="row" *ngFor="let r of active">
+      <div class="job">{{ r.jobTitle }}</div>
+      <div>R{{ r.amount.toLocaleString() }}</div>
+      <div><span class="badge">{{ r.status }}</span></div>
+      <div><a class="link" [routerLink]="['/supplier/bids', r.id]">View</a></div>
+    </div>
+    <div class="muted" *ngIf="active.length === 0">No active bids</div>
+  </div>
+
+  <div class="table" *ngIf="tab==='Accepted'">
+    <div class="head row">
+      <div>Job</div><div>Amount</div><div>Status</div><div></div>
+    </div>
+    <div class="row" *ngFor="let r of accepted">
+      <div class="job">{{ r.jobTitle }}</div>
+      <div>R{{ r.amount.toLocaleString() }}</div>
+      <div><span class="badge accepted">Accepted</span></div>
+      <div><a class="link" [routerLink]="['/supplier/contracts']">Open Contract</a></div>
+    </div>
+    <div class="muted" *ngIf="accepted.length === 0">No accepted bids</div>
+  </div>
+
+  <div class="table" *ngIf="tab==='Rejected'">
+    <div class="head row">
+      <div>Job</div><div>Amount</div><div>Status</div><div></div>
+    </div>
+    <div class="row" *ngFor="let r of rejected">
+      <div class="job">{{ r.jobTitle }}</div>
+      <div>R{{ r.amount.toLocaleString() }}</div>
+      <div><span class="badge rejected">Rejected</span></div>
+      <div><a class="link" [routerLink]="['/supplier/bids', r.id]">View</a></div>
+    </div>
+    <div class="muted" *ngIf="rejected.length === 0">No rejected bids</div>
+  </div>
+
+  <div class="table" *ngIf="tab==='Drafts'">
+    <div class="head row">
+      <div>Job</div><div>Amount</div><div>Status</div><div></div>
+    </div>
+    <div class="row" *ngFor="let r of drafts">
+      <div class="job">{{ r.jobTitle }}</div>
+      <div>R{{ r.amount?.toLocaleString() || 0 }}</div>
+      <div><span class="badge">Draft</span></div>
+      <div><a class="link" [routerLink]="['/supplier/jobs', r.jobId]">Resume</a></div>
+    </div>
+    <div class="muted" *ngIf="drafts.length === 0">No drafts saved</div>
+  </div>
+</section>
+
+<section class="card">
+  <h3>Bid Statistics</h3>
+  <div class="stats">
+    <div class="stat">
+      <div class="value">{{ totalCount }}</div>
+      <div class="label">Total Bids</div>
+    </div>
+    <div class="stat">
+      <div class="value">{{ winRate }}%</div>
+      <div class="label">Win Rate</div>
+    </div>
+    <div class="stat">
+      <div class="value">R{{ avgAmount.toLocaleString() }}</div>
+      <div class="label">Average Amount</div>
+    </div>
+    <div class="stat">
+      <div class="value">N/A</div>
+      <div class="label">Response Time</div>
+    </div>
+  </div>
+</section>

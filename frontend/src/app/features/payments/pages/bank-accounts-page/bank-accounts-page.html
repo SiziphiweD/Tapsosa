@@ -1,0 +1,23 @@
+<section class="card">
+  <h1>Bank Accounts</h1>
+
+  <div class="form">
+    <label>Bank <input [(ngModel)]="bank" /></label>
+    <label>Account Holder <input [(ngModel)]="holder" /></label>
+    <label>Account Number <input [(ngModel)]="number" /></label>
+    <button type="button" (click)="add()" [disabled]="!bank || !holder || !number">Add Account</button>
+  </div>
+
+  <div class="list">
+    <div class="item" *ngFor="let a of accounts">
+      <div class="title">{{ a.bank }} • {{ a.number }}</div>
+      <div class="meta">{{ a.holder }}</div>
+      <div class="actions">
+        <button type="button" (click)="setDefault(a.id)" [disabled]="a.isDefault">Set Default</button>
+        <button type="button" (click)="remove(a.id)">Remove</button>
+      </div>
+      <div class="badge" *ngIf="a.isDefault">Default</div>
+    </div>
+    <div class="muted" *ngIf="accounts.length === 0">No bank accounts added</div>
+  </div>
+</section>

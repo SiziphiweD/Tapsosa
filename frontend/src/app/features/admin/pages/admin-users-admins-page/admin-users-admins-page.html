@@ -1,0 +1,33 @@
+<section class="card">
+  <h1>Admin Users</h1>
+  <div class="table">
+    <div class="row head"><div>Name</div><div>Email</div><div>Added</div></div>
+    <div class="row" *ngFor="let r of rows">
+      <div>{{ r.name }}</div>
+      <div>{{ r.email }}</div>
+      <div>{{ r.createdAt | date:'medium' }}</div>
+    </div>
+    <div class="muted" *ngIf="rows.length===0">No admin users yet</div>
+  </div>
+</section>
+
+<section class="card">
+  <h3>Add New Admin</h3>
+  <form class="form">
+    <label>
+      Name
+      <input [(ngModel)]="name" name="name" type="text" />
+    </label>
+    <label>
+      Email
+      <input [(ngModel)]="email" name="email" type="email" />
+    </label>
+    <label>
+      Password
+      <input [(ngModel)]="password" name="password" type="password" />
+    </label>
+    <button type="button" [disabled]="!canAdd" (click)="addAdmin()">Add Admin</button>
+    <div class="toast success" *ngIf="added">Admin added</div>
+  </form>
+  <p class="muted">Password is stored hashed (SHA-256) in local storage for demo purposes.</p>
+</section>

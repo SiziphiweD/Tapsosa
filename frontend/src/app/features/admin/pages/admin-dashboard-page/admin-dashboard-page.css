@@ -1,0 +1,5 @@
+ .stat .label{color:#666;font-size:.9rem}
+ .stat .value{font-size:1.6rem;font-weight:700;margin-top:.5rem}
+ ul.activity{list-style:none;padding:0;margin:0}
+ ul.activity li{display:grid;grid-template-columns:1fr 1fr auto auto;gap:.5rem;padding:.5rem 0;border-bottom:1px solid #eee}
+ ul.activity .time{color:#666}

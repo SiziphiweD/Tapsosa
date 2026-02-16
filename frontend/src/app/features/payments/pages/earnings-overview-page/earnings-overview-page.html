@@ -1,21 +1,44 @@
-<section class="card">
-  <h1>Earnings Overview</h1>
-  <p>Total earnings, TAPSOSA fees deducted, and net payout.</p>
+<section class="card earnings">
+  <div class="headbar">
+    <div class="title">
+      <svg class="badge" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" fill="none" stroke="#ffffff" stroke-width="2"/>
+        <path fill="#ffffff" d="M12 6l1.9 3.9 4.3.6-3.1 3 .7 4.2L12 15.8 8.2 17.7l.7-4.2-3.1-3 4.3-.6z"/>
+      </svg>
+      <h1>Earnings Overview</h1>
+    </div>
+    <div class="bells" aria-hidden="true">
+      <svg class="bell back" viewBox="0 0 24 24">
+        <path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+      </svg>
+      <svg class="bell front" viewBox="0 0 24 24">
+        <path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6v-5c0-3.07-1.63-5.64-4.5-6.32V4a1.5 1.5 0 0 0-3 0v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/>
+      </svg>
+    </div>
+  </div>
+  
 
-  <div class="grid cols-3">
-    <div class="card">
-      <h3>Total</h3>
-      <p>R0.00</p>
+  <div class="overview">
+    <div class="row">
+      <div class="label">Total Earnings</div>
+      <div class="value total">R{{ totalGross.toLocaleString() }}</div>
     </div>
-    <div class="card">
-      <h3>TAPSOSA Fees</h3>
-      <p>R0.00</p>
+    <div class="row">
+      <div class="label">TAPSOSA Fees Deducted</div>
+      <div class="value fee">- R{{ totalFees.toLocaleString() }}</div>
     </div>
-    <div class="card">
-      <h3>Net Payout</h3>
-      <p>R0.00</p>
+    <div class="row">
+      <div class="label">Net Payout</div>
+      <div class="value net">R{{ netPayout.toLocaleString() }}</div>
     </div>
   </div>
 
-  <button type="button">Withdraw to Bank Account</button>
+  <div class="links">
+    <a class="link" href="/supplier/earnings/payouts">Payout History</a>
+    <a class="link" href="/supplier/earnings/pending">Pending Payouts</a>
+    <a class="link" href="/supplier/earnings/withdraw">Withdraw</a>
+    <a class="link" href="/supplier/earnings/bank-accounts">Bank Accounts</a>
+  </div>
+  <button type="button" class="withdraw" (click)="withdraw()">Withdraw to Bank Account</button>
+  <div class="toast success" *ngIf="success">Withdrawal requested</div>
 </section>

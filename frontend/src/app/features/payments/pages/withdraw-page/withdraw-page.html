@@ -1,0 +1,21 @@
+<section class="card">
+  <h1>Withdraw to Bank</h1>
+  <div class="form">
+    <label>
+      Select Bank Account
+      <select [(ngModel)]="selectedId">
+        <option *ngFor="let a of accounts" [value]="a.id">{{ a.bank }} • {{ a.number }}</option>
+      </select>
+    </label>
+    <label>
+      Withdrawal Amount (ZAR)
+      <input type="number" [(ngModel)]="amount" placeholder="e.g. 5000" />
+    </label>
+    <div class="rows">
+      <div class="row"><div>Processing Fee</div><div>R{{ fee.toLocaleString() }}</div></div>
+      <div class="row"><div>Amount To Receive</div><div>R{{ total.toLocaleString() }}</div></div>
+    </div>
+    <button type="button" (click)="submit()" [disabled]="!selectedId || !amount || amount <= 0">Confirm Withdrawal</button>
+    <div class="toast success" *ngIf="submitted">Withdrawal request submitted</div>
+  </div>
+</section>

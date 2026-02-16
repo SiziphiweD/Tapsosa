@@ -1,0 +1,17 @@
+<div class="grid">
+  <section class="card">
+    <h1>Compliance</h1>
+    <p>Supplier verification overview.</p>
+  </section>
+
+  <section class="grid cols-3">
+    <div class="card stat"><div class="label">Pending</div><div class="value">{{ pending }}</div></div>
+    <div class="card stat"><div class="label">Approved</div><div class="value">{{ approved }}</div></div>
+    <div class="card stat"><div class="label">Rejected</div><div class="value">{{ rejected }}</div></div>
+  </section>
+
+  <section class="card">
+    <h3>Actions</h3>
+    <a class="btn" routerLink="/admin/suppliers/verification">Review Submissions</a>
+  </section>
+</div>

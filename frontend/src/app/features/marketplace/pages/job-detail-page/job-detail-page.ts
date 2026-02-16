@@ -14,11 +14,19 @@ export class JobDetailPage {
   job: Job | undefined;
   bids: Bid[] = [];
   winningBid: Bid | undefined;
+  saved = false;
 
   supplierName = '';
   price: number | null = null;
   days: number | null = null;
   message = '';
+  approach = '';
+  timeline = '';
+  team = '';
+  risks = '';
+  pricingBreakdown = '';
+  termsAccepted = false;
+  validityDays: number | null = null;
   submitted = false;
 
   constructor(private route: ActivatedRoute, private api: MockApiService) {
@@ -26,6 +34,7 @@ export class JobDetailPage {
     api.getJob(id).subscribe((j) => {
       this.job = j;
       this.winningBid = j?.chosenBidId ? this.bids.find((b) => b.id === j.chosenBidId) : undefined;
+      this.saved = this.isSaved(j?.id || '');
     });
     api.listBids(id).subscribe((b) => {
       this.bids = b;
@@ -40,7 +49,8 @@ export class JobDetailPage {
       !!this.days &&
       this.price! > 0 &&
       this.days! > 0 &&
-      this.message.trim().length > 0
+      this.message.trim().length > 0 &&
+      this.termsAccepted === true
     );
   }
 
@@ -60,8 +70,63 @@ export class JobDetailPage {
         this.price = null;
         this.days = null;
         this.message = '';
+        this.approach = '';
+        this.timeline = '';
+        this.team = '';
+        this.risks = '';
+        this.pricingBreakdown = '';
+        this.termsAccepted = false;
+        this.validityDays = null;
         setTimeout(() => (this.submitted = false), 3000);
       });
+  }
+
+  saveDraft() {
+    if (!this.job) return;
+    const key = 'tapsosa.draft-bids';
+    const raw = localStorage.getItem(key);
+    let arr: any[] = [];
+    if (raw) {
+      try { arr = JSON.parse(raw); } catch {}
+    }
+    const draft = {
+      id: 'draft-' + Date.now(),
+      jobId: this.job.id,
+      supplierName: this.supplierName,
+      price: this.price,
+      days: this.days,
+      message: this.message,
+      approach: this.approach,
+      timeline: this.timeline,
+      team: this.team,
+      risks: this.risks,
+      pricingBreakdown: this.pricingBreakdown,
+      termsAccepted: this.termsAccepted,
+      validityDays: this.validityDays,
+      createdAt: new Date().toISOString(),
+    };
+    arr.unshift(draft);
+    localStorage.setItem(key, JSON.stringify(arr));
+  }
+
+  toggleSave() {
+    if (!this.job) return;
+    const key = 'tapsosa.saved.jobs';
+    const raw = localStorage.getItem(key);
+    let arr: string[] = [];
+    if (raw) {
+      try { arr = JSON.parse(raw); } catch {}
+    }
+    const idx = arr.indexOf(this.job.id);
+    if (idx >= 0) {
+      arr.splice(idx, 1);
+      this.saved = false;
+    } else {
+      arr.unshift(this.job.id);
+      arr = Array.from(new Set(arr));
+      this.saved = true;
+    }
+    localStorage.setItem(key, JSON.stringify(arr));
   }
 
   daysLeft(dateStr: string | undefined) {
@@ -70,5 +135,11 @@ export class JobDetailPage {
     const d = new Date(dateStr);
     const diff = Math.ceil((d.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
     return diff < 0 ? 0 : diff;
+  }
+
+  private isSaved(id: string) {
+    const raw = localStorage.getItem('tapsosa.saved.jobs');
+    if (!raw) return false;
+    try { const arr: string[] = JSON.parse(raw); return arr.includes(id); } catch { return false; }
   }
 }

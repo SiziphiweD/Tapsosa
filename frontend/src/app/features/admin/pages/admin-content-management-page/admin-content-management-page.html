@@ -1,0 +1,87 @@
+<div class="grid">
+  <section class="card">
+    <h1>Content Management</h1>
+    <p>Edit static pages, manage blog posts, and announcements.</p>
+    <div class="toast success" *ngIf="saved">Saved</div>
+  </section>
+
+  <section class="grid cols-2">
+    <div class="card">
+      <h3>Pages</h3>
+      <div class="rows">
+        <div class="row">
+          <label>Page
+            <select [(ngModel)]="currentPageKey">
+              <option value="about">About Us</option>
+              <option value="how-it-works">How It Works</option>
+              <option value="pricing">Pricing</option>
+              <option value="terms">Terms of Service</option>
+              <option value="privacy">Privacy Policy</option>
+            </select>
+          </label>
+        </div>
+        <label>Title <input [(ngModel)]="pages[currentPageKey].title" /></label>
+        <label>Content <textarea [(ngModel)]="pages[currentPageKey].content" rows="6"></textarea></label>
+        <button type="button" (click)="savePage()">Save Page</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>Announcements</h3>
+      <div class="form">
+        <label>Title <input [(ngModel)]="newAnnouncement.title" /></label>
+        <label>Message <textarea [(ngModel)]="newAnnouncement.message" rows="3"></textarea></label>
+        <label>Schedule At <input type="datetime-local" [(ngModel)]="newAnnouncement.scheduledAt" /></label>
+        <button type="button" (click)="addAnnouncement()">Create</button>
+      </div>
+      <div class="table">
+        <div class="row head"><div>Title</div><div>When</div></div>
+        <div class="row" *ngFor="let a of announcements">
+          <div>{{ a.title }}</div>
+          <div>{{ a.scheduledAt ? (a.scheduledAt | date:'medium') : 'Now' }}</div>
+        </div>
+        <div class="muted" *ngIf="announcements.length===0">No announcements</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Blog/News</h3>
+    <div class="grid cols-2">
+      <div>
+        <div class="form">
+          <label>Title <input [(ngModel)]="newPost.title" /></label>
+          <label>Category
+            <select [(ngModel)]="newPost.category">
+              <option *ngFor="let c of categories">{{ c }}</option>
+            </select>
+          </label>
+          <label>Content <textarea [(ngModel)]="newPost.content" rows="5"></textarea></label>
+          <label><input type="checkbox" [(ngModel)]="newPost.published" /> Publish</label>
+          <button type="button" (click)="addPost()">Add Post</button>
+        </div>
+      </div>
+      <div>
+        <div class="rows">
+          <div class="row">
+            <input #cat type="text" placeholder="New category" />
+            <button type="button" (click)="addCategory(cat.value); cat.value=''">Add Category</button>
+          </div>
+        </div>
+        <div class="table">
+          <div class="row head"><div>Title</div><div>Category</div><div>Published</div><div>Actions</div></div>
+          <div class="row" *ngFor="let p of posts">
+            <div>{{ p.title }}</div>
+            <div>{{ p.category }}</div>
+            <div><span class="badge" [class.accepted]="p.published">{{ p.published ? 'Yes' : 'No' }}</span></div>
+            <div>
+              <button type="button" (click)="togglePublish(p.id)">{{ p.published ? 'Unpublish' : 'Publish' }}</button>
+              <button type="button" (click)="removePost(p.id)">Delete</button>
+            </div>
+          </div>
+          <div class="muted" *ngIf="posts.length===0">No posts</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>

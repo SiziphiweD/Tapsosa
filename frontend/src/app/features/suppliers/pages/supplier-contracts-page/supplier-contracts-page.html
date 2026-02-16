@@ -1,0 +1,13 @@
+<section class="card">
+  <h1>Active Contracts</h1>
+  <p class="muted">Awarded jobs in progress.</p>
+  <div class="list">
+    <div class="item" *ngFor="let j of ongoing">
+      <div class="title">{{ j.title }}</div>
+      <div class="meta">{{ j.location }} • {{ j.category }}</div>
+      <div class="status">{{ statusText(j) }}</div>
+      <a class="btn" [routerLink]="['/supplier/contracts', j.id]">Open</a>
+    </div>
+    <div class="muted" *ngIf="ongoing.length === 0">No active contracts</div>
+  </div>
+</section>

@@ -1,18 +1,51 @@
-<header class="nav" [class.member]="role === 'member'" [class.supplier]="role === 'supplier'">
+<header class="nav" [class.member]="role === 'member'" [class.supplier]="role === 'supplier'" [class.admin]="role === 'admin'">
   <a class="brand" routerLink="/">TAPSOSA Supplier Portal</a>
 
   <nav class="links">
-    <a routerLink="/suppliers" routerLinkActive="active">Suppliers</a>
     <ng-container *ngIf="!user; else authed">
+      <a routerLink="/about" routerLinkActive="active">About</a>
+      <a routerLink="/how-it-works" routerLinkActive="active">How It Works</a>
+      <a routerLink="/pricing" routerLinkActive="active">Pricing & Fees</a>
+      <a routerLink="/faqs" routerLinkActive="active">FAQs</a>
+      <a routerLink="/contact" routerLinkActive="active">Contact</a>
+      <a routerLink="/suppliers" routerLinkActive="active">Suppliers</a>
       <a routerLink="/auth/sign-in" routerLinkActive="active">Sign In</a>
       <a routerLink="/auth/register-member" routerLinkActive="active">Register (Member)</a>
       <a routerLink="/auth/register-supplier" routerLinkActive="active">Register (Supplier)</a>
     </ng-container>
     <ng-template #authed>
-      <span class="user">Hi, {{ user?.name }}</span>
-      <a *ngIf="user?.role === 'member'" routerLink="/member/dashboard" routerLinkActive="active">Dashboard</a>
-      <a *ngIf="user?.role === 'supplier'" routerLink="/supplier/dashboard" routerLinkActive="active">Dashboard</a>
-      <button type="button" class="btn logout" (click)="logout()">Logout</button>
+      <div class="user-controls">
+        <button class="icon-btn bell" type="button">
+          <i class="bi bi-bell"></i>
+          <span class="badge" *ngIf="notificationsCount > 0">{{ notificationsCount }}</span>
+        </button>
+
+        <div class="account" [class.open]="menuOpen">
+          <button class="pill" type="button" (click)="toggleMenu()">
+            <i class="bi" [ngClass]="roleIcon()"></i>
+            <div class="meta">
+              <div class="name">{{ user?.name }}</div>
+              <div class="role">{{ roleLabel }}</div>
+            </div>
+            <i class="bi bi-caret-down-fill caret"></i>
+          </button>
+
+          <div class="menu card" *ngIf="menuOpen">
+            <div class="header">
+              <div class="avatar"><i class="bi" [ngClass]="roleIcon()"></i></div>
+              <div>
+                <div class="name">{{ user?.name }}</div>
+                <div class="email">{{ user?.email }}</div>
+              </div>
+            </div>
+            <a class="item" [routerLink]="profileLink()" (click)="closeMenu()"><i class="bi bi-person"></i><span>My Profile</span></a>
+            <a class="item" [routerLink]="settingsLink()" (click)="closeMenu()"><i class="bi bi-gear"></i><span>Settings</span></a>
+            <a class="item" [routerLink]="helpLink()" (click)="closeMenu()"><i class="bi bi-question-circle"></i><span>Help Center</span></a>
+            <div class="divider"></div>
+            <button class="item signout" type="button" (click)="signOut()"><i class="bi bi-box-arrow-right"></i><span>Sign Out</span></button>
+          </div>
+        </div>
+      </div>
     </ng-template>
   </nav>
 </header>

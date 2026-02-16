@@ -1,0 +1,38 @@
+<div class="grid">
+  <section class="card">
+    <h1>Bid Details</h1>
+    <p class="muted">Status: {{ status }}</p>
+  </section>
+
+  <section class="grid cols-2">
+    <div class="card">
+      <h3>Job Information</h3>
+      <div *ngIf="job; else nojob">
+        <div class="row"><div>Title</div><div>{{ job!.title }}</div></div>
+        <div class="row"><div>Category</div><div>{{ job!.category }}</div></div>
+        <div class="row"><div>Location</div><div>{{ job!.location }}</div></div>
+        <div class="row"><div>Budget</div><div>R{{ job!.minBudget.toLocaleString() }} – R{{ job!.maxBudget.toLocaleString() }}</div></div>
+        <a class="link" [routerLink]="['/supplier/jobs', job!.id]">Open Job</a>
+      </div>
+      <ng-template #nojob><div class="muted">Job not found</div></ng-template>
+    </div>
+    <div class="card">
+      <h3>Your Bid</h3>
+      <div *ngIf="bid; else nobid">
+        <div class="row"><div>Amount</div><div>R{{ bid!.price.toLocaleString() }}</div></div>
+        <div class="row"><div>Days</div><div>{{ bid!.days }}</div></div>
+        <div class="row"><div>Proposal</div><div>{{ bid!.message }}</div></div>
+      </div>
+      <ng-template #nobid><div class="muted">Bid not found</div></ng-template>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Actions</h3>
+    <div class="actions">
+      <button type="button" disabled>Edit Bid</button>
+      <button type="button" disabled>Withdraw Bid</button>
+      <a class="btn" [routerLink]="['/member/messages']">Message Member</a>
+    </div>
+  </section>
+</div>

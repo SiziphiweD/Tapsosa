@@ -1,0 +1,5 @@
+.table { display: grid; gap: 8px; margin-top: 10px; }
+.row { display: grid; grid-template-columns: 1fr 180px 200px; gap: 10px; align-items: center; border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 10px; background: var(--color-surface); }
+.row.head { font-weight: 800; background: #f7f9fb; }
+.row.total { font-weight: 800; }
+.muted { color: var(--color-muted); } 

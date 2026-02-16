@@ -7,3 +7,9 @@
   padding: 16px;
   min-width: 0;
 }
+
+/* Offset navbar to the right of the fixed sidebar on app pages */
+app-navbar {
+  display: block;
+  margin-left: 280px;
+}

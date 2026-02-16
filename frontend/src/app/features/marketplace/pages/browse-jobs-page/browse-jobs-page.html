@@ -30,7 +30,24 @@
       Deadline
       <input name="deadline" [(ngModel)]="filters.deadline" type="date" />
     </label>
-    <button type="button">Search</button>
+    <label>
+      Search
+      <input name="search" [(ngModel)]="filters.search" type="text" placeholder="Search title, category, location" />
+    </label>
+    <label>
+      Sort
+      <select name="sortBy" [(ngModel)]="filters.sortBy">
+        <option>Urgency</option>
+        <option>Budget (High→Low)</option>
+        <option>Budget (Low→High)</option>
+        <option>Title (A–Z)</option>
+      </select>
+    </label>
+    <div class="links">
+      <a class="link" routerLink="/supplier/jobs/recommended">Recommended</a>
+      <a class="link" routerLink="/supplier/jobs/saved">Saved</a>
+      <a class="link" routerLink="/supplier/jobs/alerts">Job Alerts</a>
+    </div>
   </div>
 
   <div class="grid cols-3">

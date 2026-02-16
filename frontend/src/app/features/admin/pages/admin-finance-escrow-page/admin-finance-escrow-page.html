@@ -1,0 +1,42 @@
+<div class="grid">
+  <section class="card">
+    <h1>Escrow</h1>
+    <p>Pending, funded, and released escrows.</p>
+  </section>
+
+  <section class="grid cols-3">
+    <div class="card">
+      <h3>Pending</h3>
+      <div class="table">
+        <div class="row head"><div>Job</div><div>Gross</div></div>
+        <div class="row" *ngFor="let j of pending">
+          <div>{{ j.title }}</div>
+          <div>R{{ j.escrow?.gross | number }}</div>
+        </div>
+        <div class="muted" *ngIf="pending.length===0">None</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Funded</h3>
+      <div class="table">
+        <div class="row head"><div>Job</div><div>Gross</div></div>
+        <div class="row" *ngFor="let j of funded">
+          <div>{{ j.title }}</div>
+          <div>R{{ j.escrow?.gross | number }}</div>
+        </div>
+        <div class="muted" *ngIf="funded.length===0">None</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Released</h3>
+      <div class="table">
+        <div class="row head"><div>Job</div><div>Net</div></div>
+        <div class="row" *ngFor="let j of released">
+          <div>{{ j.title }}</div>
+          <div>R{{ j.escrow?.net | number }}</div>
+        </div>
+        <div class="muted" *ngIf="released.length===0">None</div>
+      </div>
+    </div>
+  </section>
+</div>

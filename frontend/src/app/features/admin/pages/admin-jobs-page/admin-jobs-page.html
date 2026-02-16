@@ -1,0 +1,31 @@
+<section class="card">
+  <h1>All Jobs</h1>
+  <div class="filters">
+    <input type="text" [(ngModel)]="query" placeholder="Search by title or category" />
+    <select [(ngModel)]="status">
+      <option>All</option>
+      <option>Unawarded</option>
+      <option>Pending</option>
+      <option>Funded</option>
+      <option>Released</option>
+    </select>
+    <div class="muted">{{ filtered.length }} results</div>
+  </div>
+  <div class="table">
+    <div class="row head">
+      <div>Title</div><div>Category</div><div>Budget Range</div><div>Status</div>
+    </div>
+    <div class="row" *ngFor="let j of filtered">
+      <div>{{ j.title }}</div>
+      <div>{{ j.category }}</div>
+      <div>R{{ j.minBudget.toLocaleString() }} - R{{ j.maxBudget.toLocaleString() }}</div>
+      <div>
+        <span class="badge" *ngIf="!j.chosenBidId">Unawarded</span>
+        <span class="badge" *ngIf="j.escrow?.status==='pending'">Pending</span>
+        <span class="badge accepted" *ngIf="j.escrow?.status==='funded'">Funded</span>
+        <span class="badge" *ngIf="j.escrow?.status==='released'">Released</span>
+      </div>
+    </div>
+    <div class="muted" *ngIf="filtered.length===0">No jobs</div>
+  </div>
+</section>

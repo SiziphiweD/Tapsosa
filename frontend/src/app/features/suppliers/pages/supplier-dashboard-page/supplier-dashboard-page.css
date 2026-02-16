@@ -19,6 +19,9 @@
   color: var(--color-muted);
   font-weight: 600;
 }
+.metric.big .value {
+  font-size: 40px;
+}
 .jobs {
   display: grid;
   gap: 12px;

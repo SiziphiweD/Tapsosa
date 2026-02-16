@@ -1,0 +1,12 @@
+<section class="card">
+  <h1>Recommended Jobs</h1>
+  <p class="muted">Based on budget and recency.</p>
+  <div class="grid cols-3">
+    <div class="card job" *ngFor="let j of jobs">
+      <h3>{{ j.title }}</h3>
+      <p class="muted">{{ j.category }} • {{ j.location }}</p>
+      <div class="meta">Budget R{{ j.minBudget.toLocaleString() }} – R{{ j.maxBudget.toLocaleString() }}</div>
+      <a class="btn" [routerLink]="['/supplier/jobs', j.id]">View & Bid</a>
+    </div>
+  </div>
+</section>

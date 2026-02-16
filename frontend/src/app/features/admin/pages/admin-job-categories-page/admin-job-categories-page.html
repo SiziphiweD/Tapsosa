@@ -1,0 +1,14 @@
+<section class="card">
+  <h1>Job Categories</h1>
+  <div class="actions">
+    <input type="text" [(ngModel)]="input" placeholder="New category name" />
+    <button type="button" (click)="add()" [disabled]="!input.trim()">Add</button>
+  </div>
+  <div class="list">
+    <div class="item" *ngFor="let c of categories; let i = index">
+      <span>{{ c }}</span>
+      <button type="button" (click)="remove(i)">Remove</button>
+    </div>
+    <div class="muted" *ngIf="categories.length===0">No categories</div>
+  </div>
+</section>

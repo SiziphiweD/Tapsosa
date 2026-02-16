@@ -1,0 +1,12 @@
+<section class="card">
+  <h1>Notifications</h1>
+  <p class="muted"><a routerLink="/member/notifications/unread">Unread</a> • <a routerLink="/member/notifications/settings">Settings</a></p>
+  <button type="button" (click)="markAllRead()">Mark all read</button>
+  <div class="list">
+    <div class="item" *ngFor="let n of items" [class.unread]="!n.read">
+      <div class="title">{{ n.title }} <span *ngIf="!n.read" class="badge">new</span></div>
+      <div class="when">{{ n.when }}</div>
+    </div>
+    <div class="muted" *ngIf="items.length === 0">No notifications</div>
+  </div>
+</section>

@@ -1,0 +1,28 @@
+<div class="grid">
+  <section class="card">
+    <h1>Revenue</h1>
+    <p>Total value processed and TAPSOSA fee (7%).</p>
+  </section>
+
+  <section class="grid cols-4">
+    <div class="card stat"><div class="label">Total Gross</div><div class="value">R{{ totalGross.toLocaleString() }}</div></div>
+    <div class="card stat"><div class="label">TAPSOSA Revenue</div><div class="value">R{{ totalFee.toLocaleString() }}</div></div>
+    <div class="card stat"><div class="label">Supplier Net</div><div class="value">R{{ totalNet.toLocaleString() }}</div></div>
+    <div class="card stat"><div class="label">Funded Gross</div><div class="value">R{{ fundedGross.toLocaleString() }}</div></div>
+  </section>
+
+  <section class="card">
+    <h3>Escrow Summary</h3>
+    <div class="table">
+      <div class="row head"><div>Job</div><div>Status</div><div>Gross</div><div>Fee</div><div>Net</div></div>
+      <div class="row" *ngFor="let r of rows">
+        <div>{{ r.title }}</div>
+        <div>{{ r.status }}</div>
+        <div>R{{ r.gross.toLocaleString() }}</div>
+        <div>R{{ r.fee.toLocaleString() }}</div>
+        <div>R{{ r.net.toLocaleString() }}</div>
+      </div>
+      <div class="muted" *ngIf="rows.length===0">No escrow data</div>
+    </div>
+  </section>
+</div>

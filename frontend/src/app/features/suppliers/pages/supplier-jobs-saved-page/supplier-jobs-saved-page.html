@@ -1,0 +1,12 @@
+<section class="card">
+  <h1>Saved Jobs</h1>
+  <div class="grid cols-3">
+    <div class="card job" *ngFor="let j of jobs">
+      <h3>{{ j.title }}</h3>
+      <p class="muted">{{ j.category }} • {{ j.location }}</p>
+      <div class="meta">Budget R{{ j.minBudget.toLocaleString() }} – R{{ j.maxBudget.toLocaleString() }}</div>
+      <a class="btn" [routerLink]="['/supplier/jobs', j.id]">View</a>
+    </div>
+    <div class="muted" *ngIf="jobs.length === 0">No saved jobs</div>
+  </div>
+</section>

@@ -1,0 +1,30 @@
+<div class="grid">
+  <section class="card">
+    <h1>Disputes</h1>
+    <p>Open: {{ openCount }}</p>
+  </section>
+
+  <section class="card">
+    <h3>Log Dispute</h3>
+    <div class="form">
+      <label>Job ID <input [(ngModel)]="jobId" /></label>
+      <label>Reason <input [(ngModel)]="reason" /></label>
+      <button type="button" (click)="add()">Add</button>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>All Disputes</h3>
+    <div class="table">
+      <div class="row head"><div>Job</div><div>Reason</div><div>Filed</div><div>Status</div><div></div></div>
+      <div class="row" *ngFor="let r of rows">
+        <div>{{ r.jobId }}</div>
+        <div>{{ r.reason }}</div>
+        <div>{{ r.createdAt | date:'medium' }}</div>
+        <div><span class="badge" [class.accepted]="!r.resolved">{{ r.resolved ? 'Resolved' : 'Open' }}</span></div>
+        <div><button type="button" (click)="toggle(r.id)">{{ r.resolved ? 'Reopen' : 'Resolve' }}</button></div>
+      </div>
+      <div class="muted" *ngIf="rows.length===0">No disputes</div>
+    </div>
+  </section>
+</div>

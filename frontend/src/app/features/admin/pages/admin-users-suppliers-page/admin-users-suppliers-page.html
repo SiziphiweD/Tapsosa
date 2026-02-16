@@ -1,0 +1,22 @@
+<section class="card">
+  <h1>Suppliers</h1>
+  <div class="actions">
+    <input type="text" [(ngModel)]="query" placeholder="Search by name, email or company" />
+    <div class="muted">{{ filtered.length }} results</div>
+  </div>
+  <div class="table">
+    <div class="row head">
+      <div>Name</div><div>Company</div><div>Email</div><div>Joined</div><div></div>
+    </div>
+    <div class="row" *ngFor="let r of filtered">
+      <div>{{ r.name }}</div>
+      <div>{{ r.company || '—' }}</div>
+      <div>{{ r.email }}</div>
+      <div>{{ r.createdAt | date: 'mediumDate' }}</div>
+      <div>
+        <button type="button" (click)="suspend(r.id)">{{ r.suspended ? 'Reinstate' : 'Suspend' }}</button>
+      </div>
+    </div>
+    <div class="muted" *ngIf="filtered.length===0">No suppliers found</div>
+  </div>
+</section>

@@ -10,7 +10,7 @@
       <div class="label">Available Jobs</div>
     </div>
     <div class="metric">
-      <div class="value">2</div>
+      <div class="value">{{ activeBidsCount }}</div>
       <div class="label">Active Bids</div>
     </div>
     <div class="metric">
@@ -37,6 +37,32 @@
     </div>
   </section>
 
+  <section class="grid cols-2">
+    <div class="card">
+      <h3>Performance Score</h3>
+      <div class="metric big">
+        <div class="value">{{ performanceScore }}%</div>
+        <div class="label">Win rate estimate</div>
+      </div>
+      <div class="row">
+        <div>Won Contracts</div>
+        <div>{{ wonContractsCount }}</div>
+      </div>
+      <div class="row">
+        <div>Total Bids</div>
+        <div>{{ activeBidsCount }}</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Quick Actions</h3>
+      <div class="actions">
+        <a class="btn" href="/supplier/jobs">Browse Jobs</a>
+        <a class="btn" href="/supplier/bids">View My Bids</a>
+        <a class="btn" href="/supplier/contracts">Active Contracts</a>
+      </div>
+    </div>
+  </section>
+
   <section class="card">
     <h3>Escrow Summary</h3>
     <div class="escrows">
@@ -52,7 +78,7 @@
   </section>
 
   <section class="card">
-    <h3>Latest Escrow Changes</h3>
+    <h3>Notifications</h3>
     <div class="activities">
       <div class="item" *ngFor="let a of recentActivities">
         <div class="title">{{ a.label }} • {{ a.jobTitle }}</div>
@@ -64,17 +90,12 @@
   </section>
 
   <section class="card">
-    <h3>New Jobs</h3>
+    <h3>Available Jobs</h3>
     <div class="jobs">
-      <article class="job">
-        <div class="title">Event Security • Gauteng</div>
-        <div class="meta">Budget R20,000 – R40,000 • 3 days left</div>
-        <a class="btn" href="/supplier/jobs">View & Bid</a>
-      </article>
-      <article class="job">
-        <div class="title">Alarm Install • Western Cape</div>
-        <div class="meta">Budget R15,000 – R30,000 • 5 days left</div>
-        <a class="btn" href="/supplier/jobs">View & Bid</a>
+      <article class="job" *ngFor="let j of jobs | slice:0:5">
+        <div class="title">{{ j.title }} • {{ j.location }}</div>
+        <div class="meta">Budget R{{ j.minBudget.toLocaleString() }} – R{{ j.maxBudget.toLocaleString() }} • {{ j.bidDeadline }}</div>
+        <a class="btn" [routerLink]="['/supplier/jobs', j.id]">View & Bid</a>
       </article>
     </div>
   </section>

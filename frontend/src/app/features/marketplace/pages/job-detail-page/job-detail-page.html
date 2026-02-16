@@ -1,9 +1,26 @@
 <section class="card" *ngIf="job">
   <h1>{{ job.title }}</h1>
   <p>{{ job.category }} • {{ job.location }} • Budget R{{ job.minBudget.toLocaleString() }} – R{{ job.maxBudget.toLocaleString() }}</p>
-  <p class="muted">Deadline: {{ job.bidDeadline }} • {{ daysLeft(job.bidDeadline) }} days left</p>
+  <p class="muted">Deadline: {{ job.bidDeadline }} • {{ daysLeft(job.bidDeadline) }} days left • Bids: {{ bids.length }}</p>
+  <div class="actions">
+    <button type="button" (click)="toggleSave()">{{ saved ? 'Unsave Job' : 'Save Job' }}</button>
+    <button type="button" disabled>Ask Question</button>
+  </div>
 
   <div class="grid cols-2">
+    <div class="card">
+      <h3>Job Information</h3>
+      <div class="rows">
+        <div class="row"><div>Category</div><div>{{ job.category }}</div></div>
+        <div class="row"><div>Location</div><div>{{ job.location }}</div></div>
+        <div class="row"><div>Start Date</div><div>{{ job.startDate || 'TBD' }}</div></div>
+        <div class="row"><div>Duration</div><div>{{ job.durationDays || 'N/A' }}</div></div>
+        <div class="row"><div>Requirements</div><div>{{ job.requirements || 'N/A' }}</div></div>
+        <div class="row"><div>Certifications</div><div>{{ job.requiredCertifications?.join(', ') || 'None specified' }}</div></div>
+        <div class="row"><div>Attachments</div><div>None</div></div>
+      </div>
+    </div>
+
     <div class="card">
       <h3>Submit Bid</h3>
       <form class="form">
@@ -23,7 +40,38 @@
           Message
           <textarea name="message" [(ngModel)]="message" rows="3" placeholder="Brief proposal"></textarea>
         </label>
-        <button type="button" [disabled]="!isValid" (click)="submitBid()">Submit Bid</button>
+        <label>
+          Approach & Methodology
+          <textarea [(ngModel)]="approach" name="approach" rows="3" placeholder="Outline your approach"></textarea>
+        </label>
+        <label>
+          Timeline & Milestones
+          <textarea [(ngModel)]="timeline" name="timeline" rows="3" placeholder="Key dates and milestones"></textarea>
+        </label>
+        <label>
+          Team/Resources to Deploy
+          <textarea [(ngModel)]="team" name="team" rows="3" placeholder="People and resources"></textarea>
+        </label>
+        <label>
+          Risk Management
+          <textarea [(ngModel)]="risks" name="risks" rows="3" placeholder="Risks and mitigations"></textarea>
+        </label>
+        <label>
+          Pricing Breakdown (Optional)
+          <textarea [(ngModel)]="pricingBreakdown" name="pricingBreakdown" rows="3" placeholder="Line items, if any"></textarea>
+        </label>
+        <label>
+          Validity Period (days)
+          <input [(ngModel)]="validityDays" name="validityDays" type="number" placeholder="e.g. 14" />
+        </label>
+        <label>
+          <input type="checkbox" [(ngModel)]="termsAccepted" name="termsAccepted" />
+          I agree to the terms and conditions
+        </label>
+        <div class="actions">
+          <button type="button" (click)="saveDraft()">Save as Draft</button>
+          <button type="button" [disabled]="!isValid" (click)="submitBid()">Submit Bid</button>
+        </div>
       </form>
       <div class="toast success" *ngIf="submitted">Bid submitted</div>
     </div>
@@ -41,7 +89,7 @@
     </div>
   </div>
 
-  <section class="card" *ngIf="job?.escrow as e">
+  <section class="card" *ngIf="job.escrow as e">
     <h3>Escrow</h3>
     <p class="muted">Winning bid selected. Supplier net payout is shown below.</p>
     <div class="escrow">

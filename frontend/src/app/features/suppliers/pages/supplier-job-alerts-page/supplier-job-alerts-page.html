@@ -1,0 +1,29 @@
+<section class="card">
+  <h1>Job Alerts</h1>
+  <p class="muted">Get notified when new jobs match your preferences.</p>
+
+  <div class="grid cols-2">
+    <div class="card">
+      <h3>Channels</h3>
+      <label>
+        <input type="checkbox" [(ngModel)]="model.channels.email" />
+        Email
+      </label>
+      <label>
+        <input type="checkbox" [(ngModel)]="model.channels.sms" />
+        SMS
+      </label>
+    </div>
+    <div class="card">
+      <h3>Categories</h3>
+      <label><input type="checkbox" [(ngModel)]="model.categories['Guarding Services']" /> Guarding Services</label>
+      <label><input type="checkbox" [(ngModel)]="model.categories['Technology']" /> Technology</label>
+      <label><input type="checkbox" [(ngModel)]="model.categories['Uniforms']" /> Uniforms</label>
+      <label><input type="checkbox" [(ngModel)]="model.categories['Vehicles']" /> Vehicles</label>
+      <label><input type="checkbox" [(ngModel)]="model.categories['Training']" /> Training</label>
+    </div>
+  </div>
+
+  <button type="button" (click)="save()">Save Preferences</button>
+  <div class="toast success" *ngIf="saved">Saved</div>
+</section>

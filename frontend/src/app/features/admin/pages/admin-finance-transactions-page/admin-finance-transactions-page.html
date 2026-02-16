@@ -1,0 +1,27 @@
+<section class="card">
+  <h1>Transactions</h1>
+  <div class="filters">
+    <label>
+      Type
+      <select [(ngModel)]="type">
+        <option value="all">All</option>
+        <option value="bid_submitted">Bid Submitted</option>
+        <option value="winner_selected">Winner Selected</option>
+        <option value="escrow_funded">Escrow Funded</option>
+        <option value="escrow_released">Escrow Released</option>
+      </select>
+    </label>
+    <div class="muted">{{ filtered.length }} results</div>
+  </div>
+  <div class="table">
+    <div class="row head"><div>Event</div><div>Job</div><div>Amount</div><div>When</div></div>
+    <div class="row" *ngFor="let r of filtered">
+      <div>{{ r.type }}</div>
+      <div>{{ r.jobId }}</div>
+      <div *ngIf="r.amount !== undefined">R{{ r.amount!.toLocaleString() }}</div>
+      <div *ngIf="r.amount === undefined">—</div>
+      <div>{{ r.timestamp | date:'short' }}</div>
+    </div>
+    <div class="muted" *ngIf="filtered.length===0">No activity</div>
+  </div>
+</section>

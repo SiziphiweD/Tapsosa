@@ -12,6 +12,8 @@
       Category
       <select name="category" [(ngModel)]="category">
         <option>Guarding Services</option>
+        <option>Event Security</option>
+        <option>Patrol</option>
         <option>Technology</option>
         <option>Uniforms</option>
         <option>Vehicles</option>
@@ -22,6 +24,17 @@
     <label>
       Location
       <input name="location" [(ngModel)]="location" type="text" placeholder="e.g. Johannesburg, Gauteng" />
+    </label>
+
+    <label>
+      Requirements & Specifications
+      <textarea name="requirements" [(ngModel)]="requirements" rows="4" placeholder="Detail scope, hours, site layout, comms, etc."></textarea>
+    </label>
+
+    <label>
+      Required Certifications
+      <input name="requiredCerts" [(ngModel)]="requiredCertsText" type="text" placeholder="e.g. PSIRA, Firearm, First Aid" />
+      <small class="muted">Comma-separated list</small>
     </label>
 
     <div class="grid">

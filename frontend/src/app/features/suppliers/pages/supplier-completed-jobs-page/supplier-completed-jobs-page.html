@@ -1,0 +1,11 @@
+<section class="card">
+  <h1>Completed Jobs</h1>
+  <div class="list">
+    <div class="item" *ngFor="let j of completed">
+      <div class="title">{{ j.title }}</div>
+      <div class="meta">{{ j.location }} • {{ j.category }}</div>
+      <div class="meta">Final Payment: R{{ j.escrow!.net.toLocaleString() }}</div>
+    </div>
+    <div class="muted" *ngIf="completed.length === 0">No completed jobs</div>
+  </div>
+</section>

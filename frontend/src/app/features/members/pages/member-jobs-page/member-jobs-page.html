@@ -1,0 +1,23 @@
+<section class="card">
+  <h1>My Jobs</h1>
+  <div class="jobs">
+    <div class="job" *ngFor="let j of jobs">
+      <div class="row">
+        <div class="title">{{ j.title }}</div>
+        <div class="meta">{{ j.category }} • {{ j.location }}</div>
+      </div>
+      <div class="row">
+        <div>Budget</div>
+        <div>R{{ j.minBudget.toLocaleString() }} – R{{ j.maxBudget.toLocaleString() }}</div>
+      </div>
+      <div class="row" *ngIf="j.escrow as e">
+        <div>Escrow</div>
+        <div class="chip">{{ e.status }}</div>
+      </div>
+      <div class="actions">
+        <a class="btn" [routerLink]="['/member/requests', j.id, 'bids']">View Bids</a>
+      </div>
+    </div>
+    <div class="muted" *ngIf="jobs.length === 0">No jobs yet</div>
+  </div>
+</section>

@@ -12,6 +12,7 @@ import { AuthService, User } from '../../services/auth.service';
 export class Sidebar {
   role: 'member' | 'supplier' | 'admin' | null = null;
   user: User | null = null;
+  year = new Date().getFullYear();
 
   constructor(private router: Router, private auth: AuthService) {
     this.setRole(router.url);
@@ -22,9 +23,7 @@ export class Sidebar {
     });
     auth.currentUser$.subscribe((u) => {
       this.user = u;
-      if (u?.role) {
-        this.role = u.role;
-      }
+      // Keep role derived from current route to ensure consistent theming
     });
   }
 
@@ -38,5 +37,16 @@ export class Sidebar {
     } else {
       this.role = null;
     }
+  }
+
+  roleIcon() {
+    if (this.role === 'admin') return 'bi-shield-lock';
+    if (this.role === 'supplier') return 'bi-briefcase';
+    return 'bi-person-circle';
+  }
+
+  signOut() {
+    this.auth.logout();
+    this.router.navigateByUrl('/');
   }
 }

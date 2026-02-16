@@ -1,0 +1,18 @@
+<section class="card">
+  <h1>Pending Payouts</h1>
+  <div class="muted">Funds currently held in escrow until job completion.</div>
+  <div class="table">
+    <div class="row head"><div>Job</div><div>Net Payout</div><div>Estimated Release</div></div>
+    <div class="row" *ngFor="let j of jobs">
+      <div>{{ j.title }}</div>
+      <div>R{{ j.escrow!.net.toLocaleString() }}</div>
+      <div>TBD</div>
+    </div>
+    <div class="row total" *ngIf="jobs.length > 0">
+      <div>Total</div>
+      <div>R{{ total.toLocaleString() }}</div>
+      <div></div>
+    </div>
+    <div class="muted" *ngIf="jobs.length === 0">No pending payouts</div>
+  </div>
+</section>

@@ -1,0 +1,85 @@
+<div class="grid">
+  <section class="card">
+    <h1>Analytics & Reports</h1>
+    <p>Platform metrics, business insights, and custom reports.</p>
+  </section>
+
+  <section class="grid cols-4">
+    <div class="card stat"><div class="label">Users</div><div class="value">{{ usersTotal }}</div></div>
+    <div class="card stat"><div class="label">Suppliers</div><div class="value">{{ suppliersTotal }}</div></div>
+    <div class="card stat"><div class="label">Members</div><div class="value">{{ membersTotal }}</div></div>
+    <div class="card stat"><div class="label">Jobs</div><div class="value">{{ jobsTotal }}</div></div>
+  </section>
+
+  <section class="grid cols-2">
+    <div class="card">
+      <h3>Transaction Volume</h3>
+      <div class="rows">
+        <div class="row"><div>Gross</div><div>R{{ txVolume.toLocaleString() }}</div></div>
+        <div class="row"><div>TAPSOSA Fee</div><div>R{{ feeTotal.toLocaleString() }}</div></div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Recent Activity</h3>
+      <ul class="activity">
+        <li *ngFor="let a of recent">
+          <span>{{ a.type }}</span>
+          <span>Job {{ a.jobId }}</span>
+          <span *ngIf="a.amount !== undefined">R{{ a.amount!.toLocaleString() }}</span>
+          <span class="time">{{ a.timestamp | date:'short' }}</span>
+        </li>
+        <li class="muted" *ngIf="recent.length===0">No activity</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="grid cols-2">
+    <div class="card">
+      <h3>Category Performance</h3>
+      <div class="table">
+        <div class="row head"><div>Category</div><div>Jobs</div></div>
+        <div class="row" *ngFor="let key of (jobsByCategory | keyvalue)">
+          <div>{{ key.key }}</div>
+          <div>{{ key.value }}</div>
+        </div>
+        <div class="muted" *ngIf="(jobsByCategory | keyvalue).length===0">No data</div>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Geographic Distribution</h3>
+      <div class="table">
+        <div class="row head"><div>Location</div><div>Jobs</div></div>
+        <div class="row" *ngFor="let key of (jobsByLocation | keyvalue)">
+          <div>{{ key.key }}</div>
+          <div>{{ key.value }}</div>
+        </div>
+        <div class="muted" *ngIf="(jobsByLocation | keyvalue).length===0">No data</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h3>Custom Reports</h3>
+    <div class="form">
+      <label>Name <input [(ngModel)]="reportName" /></label>
+      <label>Dataset
+        <select [(ngModel)]="dataset">
+          <option value="transactions">Transactions</option>
+          <option value="jobs">Jobs</option>
+          <option value="users">Users</option>
+        </select>
+      </label>
+      <button type="button" (click)="saveReport()" [disabled]="!reportName.trim()">Save Report</button>
+    </div>
+    <div class="table">
+      <div class="row head"><div>Name</div><div>Dataset</div><div>Created</div><div></div></div>
+      <div class="row" *ngFor="let r of savedReports">
+        <div>{{ r.name }}</div>
+        <div>{{ r.dataset }}</div>
+        <div>{{ r.createdAt | date:'short' }}</div>
+        <div><button type="button" (click)="deleteReport(r.id)">Delete</button></div>
+      </div>
+      <div class="muted" *ngIf="savedReports.length===0">No saved reports</div>
+    </div>
+  </section>
+</div>

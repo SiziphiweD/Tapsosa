@@ -7,6 +7,8 @@ export interface Job {
   title: string;
   category: string;
   location: string;
+  requirements?: string;
+  requiredCertifications?: string[];
   minBudget: number;
   maxBudget: number;
   bidDeadline: string;
@@ -42,6 +44,10 @@ export class MockApiService {
 
   listBids(jobId: string): Observable<Bid[]> {
     return of(this.bids$.value.filter((b) => b.jobId === jobId)).pipe(delay(200));
+  }
+ 
+  listAllBids(): Observable<Bid[]> {
+    return this.bids$.asObservable();
   }
 
   createBid(data: Omit<Bid, 'id' | 'createdAt'>): Observable<Bid> {

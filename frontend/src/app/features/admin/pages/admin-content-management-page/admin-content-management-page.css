@@ -1,0 +1,3 @@
+ .form label{display:block;margin-bottom:.5rem}
+ .form input, .form textarea, select{width:100%}
+ .rows .row{display:flex;gap:.5rem;align-items:center;margin-bottom:.5rem}

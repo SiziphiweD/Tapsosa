@@ -1,0 +1,4 @@
+.list { display: grid; gap: 10px; margin-top: 10px; }
+.item { border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 12px; background: var(--color-surface); }
+.title { font-weight: 800; }
+.meta { color: var(--color-muted); } 

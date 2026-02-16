@@ -11,6 +11,7 @@ import { MockApiService, Job, Activity } from '../../../../shared/services/mock-
 export class MemberDashboardPage {
 
   jobs: Job[] = [];
+  bidsCount = 0;
   pendingCount = 0;
   fundedCount = 0;
   releasedCount = 0;
@@ -31,6 +32,7 @@ export class MemberDashboardPage {
       this.releasedNet = escrows.filter((e) => e.status === 'released').reduce((s, e) => s + e.net, 0);
     });
     api.listActivities().subscribe((acts: Activity[]) => {
+      this.bidsCount = acts.filter((a) => a.type === 'bid_submitted').length;
       this.recentActivities = acts
         .slice(0, 5)
         .map((a) => {
