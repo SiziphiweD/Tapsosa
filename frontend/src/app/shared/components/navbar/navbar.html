@@ -1,5 +1,5 @@
 <header class="nav" [class.member]="role === 'member'" [class.supplier]="role === 'supplier'" [class.admin]="role === 'admin'">
-  <a class="brand" routerLink="/">TAPSOSA Supplier Portal</a>
+  <a class="brand" routerLink="/">UKHUSELO SUPPLIER PORTAL</a>
 
   <nav class="links">
     <ng-container *ngIf="!user; else authed">
@@ -9,9 +9,7 @@
       <a routerLink="/faqs" routerLinkActive="active">FAQs</a>
       <a routerLink="/contact" routerLinkActive="active">Contact</a>
       <a routerLink="/suppliers" routerLinkActive="active">Suppliers</a>
-      <a routerLink="/auth/sign-in" routerLinkActive="active">Sign In</a>
-      <a routerLink="/auth/register-member" routerLinkActive="active">Register (Member)</a>
-      <a routerLink="/auth/register-supplier" routerLinkActive="active">Register (Supplier)</a>
+      <a class="nav-signin" routerLink="/auth/sign-in" routerLinkActive="active">Sign In</a>
     </ng-container>
     <ng-template #authed>
       <div class="user-controls">

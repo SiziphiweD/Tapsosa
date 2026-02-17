@@ -1,22 +1,23 @@
 <section class="card">
   <h1>Compliance Documents</h1>
-  <p>Upload documents for verification (PSiRA, tax clearance, insurance, certifications).</p>
+  <p class="muted">Upload documents for verification (PSiRA, tax clearance, insurance, certifications).</p>
 
-  <div class="grid cols-3">
-    <div class="card">
-      <h3>PSiRA</h3>
-      <p>Status: Pending</p>
-      <button type="button">Upload</button>
-    </div>
-    <div class="card">
-      <h3>Tax Clearance</h3>
-      <p>Status: Pending</p>
-      <button type="button">Upload</button>
-    </div>
-    <div class="card">
-      <h3>Insurance</h3>
-      <p>Status: Pending</p>
-      <button type="button">Upload</button>
+  <div *ngIf="user; else noUser" class="grid cols-3 compliance-grid">
+    <div class="card compliance-card" *ngFor="let d of docs">
+      <h3>{{ d.name }}</h3>
+      <p class="muted">Status: {{ d.status }}</p>
+      <p class="muted" *ngIf="d.fileName">
+        {{ d.fileName }} • {{ d.uploadedAt | date: 'mediumDate' }}
+      </p>
+
+      <label class="upload-btn">
+        <input type="file" (change)="onFileSelected(d.key, $event)" />
+        <span>{{ d.status === 'Pending' ? 'Upload' : 'Replace' }}</span>
+      </label>
     </div>
   </div>
+
+  <ng-template #noUser>
+    <p class="muted">Sign in as a supplier to manage compliance documents.</p>
+  </ng-template>
 </section>

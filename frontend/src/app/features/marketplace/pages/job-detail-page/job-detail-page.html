@@ -23,10 +23,17 @@
 
     <div class="card">
       <h3>Submit Bid</h3>
-      <form class="form">
+      <p class="muted" *ngIf="bidStatusMessage">{{ bidStatusMessage }}</p>
+      <form class="form" *ngIf="canBid">
         <label>
           Supplier name
-          <input name="supplierName" [(ngModel)]="supplierName" type="text" placeholder="Your company" />
+          <input
+            name="supplierName"
+            [(ngModel)]="supplierName"
+            type="text"
+            placeholder="Your company"
+            [readonly]="user && user.role === 'supplier'"
+          />
         </label>
         <label>
           Price (ZAR)

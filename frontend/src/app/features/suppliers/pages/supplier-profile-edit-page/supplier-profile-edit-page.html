@@ -1,4 +1,44 @@
 <section class="card">
   <h1>Edit Supplier Profile</h1>
-  <p>Update company details, service offerings, and operating regions.</p>
+  <p class="muted">Update company details, service offerings, and operating regions.</p>
+
+  <div *ngIf="user as u; else noUser" class="profile-layout">
+    <div class="profile-summary">
+      <div class="avatar">
+        <span>{{ initial }}</span>
+      </div>
+      <div class="summary-meta">
+        <h2>{{ model.company || u.company || u.name }}</h2>
+        <p class="muted">{{ model.email }}</p>
+        <p class="muted">Supplier since {{ u.createdAt | date: 'mediumDate' }}</p>
+      </div>
+    </div>
+
+    <form class="profile-form" autocomplete="on">
+      <div class="grid cols-2">
+        <label>
+          Display name
+          <input name="name" type="text" [(ngModel)]="model.name" />
+        </label>
+        <label>
+          Company name
+          <input name="company" type="text" [(ngModel)]="model.company" />
+        </label>
+      </div>
+
+      <label>
+        Contact email
+        <input name="email" type="email" [(ngModel)]="model.email" />
+      </label>
+
+      <div class="actions">
+        <button type="button" (click)="save()" [disabled]="!model.name || !model.email">Save Profile</button>
+        <span class="toast success" *ngIf="saved">Saved</span>
+      </div>
+    </form>
+  </div>
+
+  <ng-template #noUser>
+    <p class="muted">You must be signed in as a supplier to view or edit your profile.</p>
+  </ng-template>
 </section>

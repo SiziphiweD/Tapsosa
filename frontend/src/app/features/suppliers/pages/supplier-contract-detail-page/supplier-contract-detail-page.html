@@ -21,7 +21,7 @@
       <div *ngIf="job?.escrow; else noescrow">
         <div class="row"><div>Job Title</div><div>{{ job!.title }}</div></div>
         <div class="row"><div>Member Payment</div><div>{{ job!.escrow!.status === 'funded' || job!.escrow!.status === 'released' ? 'Paid' : 'Pending' }}</div></div>
-        <div class="row"><div>TAPSOSA Fee (7%)</div><div>R{{ job!.escrow!.fee.toLocaleString() }}</div></div>
+        <div class="row"><div>Platform Fee (7%)</div><div>R{{ job!.escrow!.fee.toLocaleString() }}</div></div>
         <div class="row"><div>Your Payout</div><div>R{{ job!.escrow!.net.toLocaleString() }}</div></div>
         <div class="row"><div>Escrow Status</div><div>{{ paymentStatus() }}</div></div>
         <div class="row"><div>Expected Payment Date</div><div>TBD</div></div>

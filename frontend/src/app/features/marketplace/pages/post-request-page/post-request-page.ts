@@ -12,7 +12,7 @@ import { MockApiService } from '../../../../shared/services/mock-api.service';
 export class PostRequestPage {
 
   title = '';
-  category = 'Guarding Services';
+  category = 'Uniforms & PPE';
   location = '';
   requirements = '';
   requiredCertsText = '';
@@ -82,7 +82,7 @@ export class PostRequestPage {
       .subscribe(() => {
         this.submitted = true;
         this.title = '';
-        this.category = 'Guarding Services';
+        this.category = 'Uniforms & PPE';
         this.location = '';
         this.requirements = '';
         this.requiredCertsText = '';

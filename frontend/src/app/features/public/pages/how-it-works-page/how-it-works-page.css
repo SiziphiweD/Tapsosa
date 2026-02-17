@@ -1,1 +1,115 @@
-.public-page { padding: 16px; }
+.public-page {
+  padding: 24px 28px 28px;
+  display: grid;
+  gap: 24px;
+}
+
+.public-page h1 {
+  font-size: 28px;
+  font-weight: 800;
+}
+
+.public-page > p {
+  max-width: 760px;
+  color: var(--color-muted);
+}
+
+.workflow-grid {
+  margin-top: 12px;
+  align-items: stretch;
+  gap: 18px;
+}
+
+.workflow-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  padding: 20px 18px;
+  display: grid;
+  gap: 10px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.08);
+}
+
+.workflow-card h2 {
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.workflow-card p {
+  color: var(--color-muted);
+}
+
+.workflow-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(44, 74, 98, 0.08);
+  color: var(--color-primary);
+  font-size: 20px;
+}
+
+.role-cta {
+  border-top: 1px solid var(--color-border);
+  padding-top: 16px;
+}
+
+.role-cta-grid {
+  margin-top: 12px;
+  gap: 18px;
+}
+
+.role-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: 18px;
+  padding: 18px 16px;
+  display: grid;
+  gap: 10px;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.06);
+}
+
+.role-card h3 {
+  font-size: 16px;
+  font-weight: 800;
+}
+
+.role-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(76, 175, 80, 0.08);
+  color: var(--color-primary);
+  font-size: 18px;
+}
+
+.role-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 999px;
+  border: 1px solid var(--color-primary-dark);
+  background: linear-gradient(180deg, var(--color-primary), var(--color-primary-dark));
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+  margin-top: 6px;
+}
+
+.role-btn .bi {
+  margin-right: 6px;
+}
+
+@media (max-width: 900px) {
+  .workflow-grid,
+  .role-cta-grid {
+    grid-template-columns: 1fr;
+  }
+}

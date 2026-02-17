@@ -1,1 +1,61 @@
-.public-page { padding: 16px; }
+.public-page {
+  padding: 16px;
+  display: grid;
+  gap: 16px;
+}
+
+.contact-grid {
+  margin-top: 8px;
+}
+
+.contact-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: grid;
+  gap: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.contact-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(44, 74, 98, 0.08);
+  color: var(--color-primary);
+  font-size: 20px;
+}
+
+.contact-cta {
+  border-top: 1px solid var(--color-border);
+  padding-top: 12px;
+}
+
+.contact-cta-row {
+  margin-top: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.contact-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 16px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-primary-dark);
+  background: linear-gradient(180deg, var(--color-primary), var(--color-primary-dark));
+  color: #ffffff;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.contact-btn .bi {
+  margin-right: 6px;
+}

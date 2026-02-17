@@ -24,8 +24,8 @@ export class AuthService {
       const admin: User = {
         id: 'admin',
         role: 'admin',
-        email: 'admin@tapsosa.local',
-        name: 'TAPSOSA Admin',
+        email: 'admin@ukhuselo.local',
+        name: 'UKHUSELO SUPPLIER PORTAL Admin',
         passwordHash: '240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9',
         createdAt: new Date().toISOString(),
       };
@@ -86,6 +86,17 @@ export class AuthService {
   logout() {
     this.currentUser$.next(null);
     localStorage.removeItem('tapsosa.currentUser');
+  }
+
+  updateCurrentUser(patch: Partial<User>) {
+    const current = this.currentUser$.value;
+    if (!current) return;
+    const updated: User = { ...current, ...patch };
+    const users = this.users$.value.map((u) => (u.id === updated.id ? updated : u));
+    this.users$.next(users);
+    this.saveUsers(users);
+    this.currentUser$.next(updated);
+    this.saveCurrentUser(updated);
   }
 
   private async ensureEmailUnique(email: string) {

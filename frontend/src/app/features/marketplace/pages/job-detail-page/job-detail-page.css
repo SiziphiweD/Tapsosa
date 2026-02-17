@@ -1,3 +1,83 @@
+section.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+section.card > p {
+  margin: 0;
+}
+
+section.card > p.muted {
+  font-size: 13px;
+}
+
+.grid.cols-2 {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(0, 1.2fr);
+  gap: 16px;
+  align-items: flex-start;
+  margin-top: 18px;
+}
+
+.rows {
+  display: grid;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.rows .row {
+  display: grid;
+  grid-template-columns: 160px minmax(0, 1fr);
+  gap: 10px;
+  align-items: baseline;
+  font-size: 14px;
+}
+
+.rows .row > div:first-child {
+  font-weight: 600;
+  color: var(--color-muted);
+}
+
+.rows .row > div:last-child {
+  color: var(--color-text);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.actions button {
+  min-width: 120px;
+}
+
+.actions button:first-child {
+  background: #ffffff;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
+}
+
+.actions button[disabled] {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+  color: #6b7280;
+}
+
+@media (max-width: 900px) {
+  .grid.cols-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
 .form {
   display: grid;
   gap: 12px;

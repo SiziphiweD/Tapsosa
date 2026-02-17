@@ -36,7 +36,7 @@ export class SupplierBidsPage {
             jobId: b.jobId,
             jobTitle: job?.title ?? b.jobId,
             amount: b.price,
-            submitted: new Date().toLocaleString(),
+            submitted: new Date(b.createdAt).toLocaleString(),
             status,
           };
         });

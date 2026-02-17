@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MockApiService, Job, Bid } from '../../../../shared/services/mock-api.service';
+import { AuthService, User } from '../../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-job-detail-page',
@@ -15,6 +16,8 @@ export class JobDetailPage {
   bids: Bid[] = [];
   winningBid: Bid | undefined;
   saved = false;
+
+  user: User | null = null;
 
   supplierName = '';
   price: number | null = null;
@@ -29,7 +32,7 @@ export class JobDetailPage {
   validityDays: number | null = null;
   submitted = false;
 
-  constructor(private route: ActivatedRoute, private api: MockApiService) {
+  constructor(private route: ActivatedRoute, private api: MockApiService, private auth: AuthService) {
     const id = route.snapshot.paramMap.get('jobId')!;
     api.getJob(id).subscribe((j) => {
       this.job = j;
@@ -39,6 +42,13 @@ export class JobDetailPage {
     api.listBids(id).subscribe((b) => {
       this.bids = b;
       this.winningBid = this.job?.chosenBidId ? b.find((x) => x.id === this.job!.chosenBidId) : undefined;
+    });
+
+    this.auth.currentUser$.subscribe((u) => {
+      this.user = u;
+      if (u && u.role === 'supplier' && this.supplierName.trim() === '') {
+        this.supplierName = u.company || u.name;
+      }
     });
   }
 
@@ -54,8 +64,21 @@ export class JobDetailPage {
     );
   }
 
+  get canBid() {
+    return this.bidStatusMessage === null;
+  }
+
+  get bidStatusMessage(): string | null {
+    if (!this.job) return 'Job not found';
+    if (!this.user) return 'Sign in as a supplier to submit a bid.';
+    if (this.user.role !== 'supplier') return 'You must be signed in as a supplier to submit bids.';
+    if (this.job.escrow) return 'This job has already been awarded and is in escrow.';
+    if (this.daysLeft(this.job.bidDeadline) <= 0) return 'Bidding deadline has passed.';
+    return null;
+  }
+
   submitBid() {
-    if (!this.job || !this.isValid) return;
+    if (!this.job || !this.isValid || !this.canBid) return;
     this.api
       .createBid({
         jobId: this.job.id,

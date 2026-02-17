@@ -17,9 +17,9 @@ type Flags = { enableFeatures: boolean; betaFeatures: boolean; abTesting: boolea
   styleUrl: './admin-platform-configuration-page.css',
 })
 export class AdminPlatformConfigurationPage {
-  general: General = { platformName: 'TAPSOSA', branding: 'Supplier Portal', contactEmail: '', contactPhone: '', businessHours: 'Mon-Fri 9:00-17:00', maintenance: false };
+  general: General = { platformName: 'UKHUSELO SUPPLIER PORTAL', branding: 'Supplier Portal', contactEmail: '', contactPhone: '', businessHours: 'Mon-Fri 9:00-17:00', maintenance: false };
   payment: Payment = { gateway: 'DemoGateway', publicKey: '', secretKey: '', testMode: true, txLimit: 50000 };
-  email: EmailTemplates = { welcome: { subject: 'Welcome', body: 'Welcome to TAPSOSA' }, notification: { subject: 'Notification', body: 'You have a new update' }, transaction: { subject: 'Transaction', body: 'Your transaction details' } };
+  email: EmailTemplates = { welcome: { subject: 'Welcome', body: 'Welcome to UKHUSELO SUPPLIER PORTAL' }, notification: { subject: 'Notification', body: 'You have a new update' }, transaction: { subject: 'Transaction', body: 'Your transaction details' } };
   sms: Sms = { gateway: 'DemoSMS', apiKey: '', templates: { default: 'Hello', otp: 'Your code is {{code}}' } };
   flags: Flags = { enableFeatures: true, betaFeatures: false, abTesting: false };
   saved = false;

@@ -16,6 +16,13 @@
 
       <div class="errors" *ngIf="error">{{ error }}</div>
       <button type="button" [disabled]="loading || !email || !password" (click)="signIn()">Sign In</button>
+
+      <div class="register-cta">
+        <span>Don't have an account?</span>
+        <a routerLink="/auth/register-member">Register as Member</a>
+        <span>or</span>
+        <a routerLink="/auth/register-supplier">Register as Supplier</a>
+      </div>
     </form>
   </div>
 </section>

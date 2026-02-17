@@ -7,11 +7,13 @@
       Category
       <select name="category" [(ngModel)]="filters.category">
         <option>All</option>
-        <option>Guarding Services</option>
-        <option>Technology</option>
-        <option>Uniforms</option>
-        <option>Vehicles</option>
-        <option>Training</option>
+        <option>Uniforms &amp; PPE</option>
+        <option>SIM Cards &amp; Connectivity</option>
+        <option>Access Control Systems</option>
+        <option>Patrol Monitoring Systems</option>
+        <option>Two-Way Radios</option>
+        <option>Financial Assistance &amp; Asset Finance</option>
+        <option>Insurance Solutions</option>
       </select>
     </label>
     <label>
@@ -50,6 +52,10 @@
     </div>
   </div>
 
+  <div class="filters-actions">
+    <button type="button" (click)="resetFilters()">Clear filters</button>
+  </div>
+
   <div class="grid cols-3">
     <div class="card job-card" *ngFor="let j of filtered">
       <div class="head">
@@ -58,7 +64,13 @@
       </div>
       <p>{{ j.category }} • {{ j.location }} • Budget R{{ j.minBudget.toLocaleString() }} – R{{ j.maxBudget.toLocaleString() }}</p>
       <div class="meta">{{ daysLeft(j.bidDeadline) }} days left</div>
-      <a class="btn" [routerLink]="['/supplier/jobs', j.id]">View & Bid</a>
+      <div class="actions">
+        <button type="button" class="btn secondary" [class.saved]="isSaved(j)" (click)="toggleSave(j)">
+          <ng-container *ngIf="isSaved(j); else saveLabel">Saved</ng-container>
+          <ng-template #saveLabel>Save</ng-template>
+        </button>
+        <a class="btn primary" [routerLink]="['/supplier/jobs', j.id]">View &amp; Bid</a>
+      </div>
     </div>
   </div>
 </section>

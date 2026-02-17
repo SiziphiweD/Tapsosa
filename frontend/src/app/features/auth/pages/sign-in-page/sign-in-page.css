@@ -51,3 +51,23 @@ button {
   width: 100%;
   max-width: 420px;
 }
+
+.register-cta {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--color-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.register-cta a {
+  color: var(--color-primary);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.register-cta a:hover {
+  text-decoration: underline;
+}

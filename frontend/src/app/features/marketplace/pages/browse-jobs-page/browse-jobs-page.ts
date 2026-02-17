@@ -23,8 +23,10 @@ export class BrowseJobsPage {
   };
 
   jobs: Job[] = [];
+  savedIds = new Set<string>();
 
   constructor(private api: MockApiService) {
+    this.savedIds = this.loadSaved();
     api.listJobs().subscribe((list: Job[]) => {
       this.jobs = list;
     });
@@ -65,5 +67,46 @@ export class BrowseJobsPage {
   }
   daysLeft(dateStr: string) {
     return this.daysUntil(dateStr);
+  }
+
+  resetFilters() {
+    this.filters = {
+      category: 'All',
+      location: '',
+      minBudget: null,
+      maxBudget: null,
+      deadline: '',
+      search: '',
+      sortBy: 'Urgency',
+    };
+  }
+
+  isSaved(job: Job) {
+    return this.savedIds.has(job.id);
+  }
+
+  toggleSave(job: Job) {
+    const key = 'tapsosa.saved.jobs';
+    const raw = localStorage.getItem(key);
+    let arr: string[] = [];
+    if (raw) {
+      try { arr = JSON.parse(raw); } catch {}
+    }
+    const idx = arr.indexOf(job.id);
+    if (idx >= 0) {
+      arr.splice(idx, 1);
+      this.savedIds.delete(job.id);
+    } else {
+      arr.unshift(job.id);
+      arr = Array.from(new Set(arr));
+      this.savedIds = new Set(arr);
+    }
+    localStorage.setItem(key, JSON.stringify(arr));
+  }
+
+  private loadSaved(): Set<string> {
+    const raw = localStorage.getItem('tapsosa.saved.jobs');
+    if (!raw) return new Set();
+    try { return new Set(JSON.parse(raw)); } catch { return new Set(); }
   }
 }

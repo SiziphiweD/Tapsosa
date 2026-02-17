@@ -43,7 +43,14 @@ export class BankAccountsPage {
     if (raw) {
       try { return JSON.parse(raw); } catch {}
     }
-    return [];
+    return [
+      { id: 'absa', bank: 'Absa Bank', holder: 'Primary Trading Account', number: '1234567890', isDefault: true },
+      { id: 'fnb', bank: 'First National Bank (FNB)', holder: 'Primary Trading Account', number: '62012345678' },
+      { id: 'standard', bank: 'Standard Bank', holder: 'Primary Trading Account', number: '000123456789' },
+      { id: 'nedbank', bank: 'Nedbank', holder: 'Primary Trading Account', number: '19876543210' },
+      { id: 'capitec', bank: 'Capitec Bank', holder: 'Primary Trading Account', number: '47001234567' },
+      { id: 'investec', bank: 'Investec Bank', holder: 'Primary Trading Account', number: '77700012345' },
+    ];
   }
   private saveAccounts() {
     localStorage.setItem('tapsosa.bank-accounts', JSON.stringify(this.accounts));

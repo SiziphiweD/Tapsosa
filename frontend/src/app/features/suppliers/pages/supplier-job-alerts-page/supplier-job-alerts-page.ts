@@ -17,11 +17,13 @@ export class SupplierJobAlertsPage {
   model: Alerts = {
     channels: { email: true, sms: false },
     categories: {
-      'Guarding Services': true,
-      Technology: true,
-      Uniforms: false,
-      Vehicles: false,
-      Training: true,
+      'Uniforms & PPE': true,
+      'SIM Cards & Connectivity': true,
+      'Access Control Systems': true,
+      'Patrol Monitoring Systems': true,
+      'Two-Way Radios': true,
+      'Financial Assistance & Asset Finance': false,
+      'Insurance Solutions': false,
     },
   };
   saved = false;

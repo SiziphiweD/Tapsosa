@@ -1,21 +1,50 @@
-<div class="grid">
+<div class="grid" *ngIf="supplier; else notFound">
   <section class="card">
-    <h1>Supplier Profile</h1>
-    <p>Company details, service offerings, ratings, and compliance status.</p>
+    <div class="supplier-header">
+      <div>
+        <h1>{{ supplier.name }}</h1>
+        <p class="muted">{{ supplier.category }} • {{ supplier.region }}</p>
+      </div>
+      <div class="supplier-meta">
+        <span class="badge verified" *ngIf="supplier.verified">Verified</span>
+        <div class="rating">
+          <span
+            class="star"
+            *ngFor="let star of stars"
+            [class.muted]="star > supplier.rating"
+          >
+            ★
+          </span>
+        </div>
+      </div>
+    </div>
+    <p>{{ supplier.summary }}</p>
   </section>
 
   <section class="grid cols-3">
     <div class="card">
       <h3>Services</h3>
-      <p>Categories and capabilities offered by this supplier.</p>
+      <ul>
+        <li *ngFor="let svc of supplier.services">{{ svc }}</li>
+      </ul>
     </div>
     <div class="card">
       <h3>Compliance</h3>
-      <p>PSiRA, tax clearance, insurance, certifications, and expiry dates.</p>
+      <p>{{ supplier.complianceSummary }}</p>
     </div>
     <div class="card">
-      <h3>Ratings</h3>
-      <p>Member reviews and performance indicators.</p>
+      <h3>Performance</h3>
+      <p>{{ supplier.performanceSummary }}</p>
+      <p class="muted">Ratings and contract history are illustrative for demo purposes.</p>
+      <a class="link" routerLink="/suppliers">Back to Supplier Directory</a>
     </div>
   </section>
 </div>
+
+<ng-template #notFound>
+  <section class="card">
+    <h1>Supplier not found</h1>
+    <p>This supplier could not be found in the public directory.</p>
+    <a class="link" routerLink="/suppliers">Back to Supplier Directory</a>
+  </section>
+</ng-template>

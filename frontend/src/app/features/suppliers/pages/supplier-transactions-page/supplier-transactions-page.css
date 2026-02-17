@@ -1,0 +1,94 @@
+section.card {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.metric {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 14px 16px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.08);
+}
+
+.metric .value {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-primary);
+}
+
+.metric .label {
+  color: var(--color-muted);
+  font-weight: 600;
+}
+
+.table {
+  display: grid;
+  gap: 8px;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 120px 120px 1.4fr;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+}
+
+.row.head {
+  font-weight: 700;
+  background: #f7f9fb;
+}
+
+.row:not(.head):hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.job {
+  font-weight: 700;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #eef1f4;
+}
+
+.badge.accepted {
+  background: #e7f6ec;
+  color: #1b7a3e;
+}
+
+@media (max-width: 900px) {
+  .metrics {
+    grid-template-columns: 1fr;
+  }
+
+  .row {
+    grid-template-columns: 1.5fr 1fr 1fr;
+    grid-template-rows: auto auto;
+    grid-template-areas:
+      'job job job'
+      'status gross net';
+  }
+
+  .row > :nth-child(1) { grid-area: job; }
+  .row > :nth-child(2) { grid-area: status; }
+  .row > :nth-child(3) { grid-area: gross; }
+  .row > :nth-child(4) { grid-area: net; }
+}

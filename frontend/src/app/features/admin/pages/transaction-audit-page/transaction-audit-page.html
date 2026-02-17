@@ -1,4 +1,37 @@
 <section class="card">
   <h1>Transaction Audit</h1>
-  <p>View transaction records, status changes, and audit trail events.</p>
+  <p class="muted">Job-level view of escrow status, values, and audit events.</p>
+
+  <div class="metrics">
+    <div class="metric">
+      <div class="value">{{ totalTransactions }}</div>
+      <div class="label">Escrowed Jobs</div>
+    </div>
+    <div class="metric">
+      <div class="value">R{{ totalGross.toLocaleString() }}</div>
+      <div class="label">Total Gross</div>
+    </div>
+    <div class="metric">
+      <div class="value">R{{ totalNet.toLocaleString() }}</div>
+      <div class="label">Total Net</div>
+    </div>
+  </div>
+
+  <div class="table">
+    <div class="row head">
+      <div>Job</div><div>Escrow Status</div><div>Gross</div><div>Net</div><div>Events</div><div>Last Event</div>
+    </div>
+    <div class="row" *ngFor="let r of rows">
+      <div class="job">{{ r.jobTitle }}</div>
+      <div>{{ r.status }}</div>
+      <div>R{{ r.gross.toLocaleString() }}</div>
+      <div>R{{ r.net.toLocaleString() }}</div>
+      <div>{{ r.eventsCount }}</div>
+      <div>
+        <div *ngIf="r.lastEvent">{{ r.lastEvent }}</div>
+        <div class="muted" *ngIf="r.lastWhen">{{ r.lastWhen }}</div>
+      </div>
+    </div>
+    <div class="muted" *ngIf="rows.length === 0">No escrow-backed transactions yet</div>
+  </div>
 </section>
