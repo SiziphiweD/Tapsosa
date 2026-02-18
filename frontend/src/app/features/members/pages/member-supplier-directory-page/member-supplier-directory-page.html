@@ -1,4 +1,55 @@
-<section class="card">
-  <h1>Find Suppliers</h1>
-  <p>View verified suppliers, ratings, service offerings, and compliance documents.</p>
-</section>
+<div class="grid">
+  <section class="card">
+    <h1>Find Suppliers</h1>
+    <p>View verified suppliers, ratings, service offerings, and compliance documents.</p>
+
+    <div class="filters">
+      <label>
+        Category
+        <select name="category" [(ngModel)]="draftCategory">
+          <option value="All">All</option>
+          <option value="Uniforms &amp; PPE">Uniforms &amp; PPE</option>
+          <option value="SIM Cards &amp; Connectivity">SIM Cards &amp; Connectivity</option>
+          <option value="Access Control Systems">Access Control Systems</option>
+          <option value="Patrol Monitoring Systems">Patrol Monitoring Systems</option>
+          <option value="Two-Way Radios">Two-Way Radios</option>
+          <option value="Financial Assistance &amp; Asset Finance">Financial Assistance &amp; Asset Finance</option>
+          <option value="Insurance Solutions">Insurance Solutions</option>
+        </select>
+      </label>
+
+      <label>
+        Location or Name
+        <input
+          name="location"
+          type="text"
+          [(ngModel)]="draftLocation"
+          placeholder="e.g. Johannesburg, Gauteng or supplier name"
+        />
+      </label>
+
+      <button type="button" (click)="applyFilters()">Search</button>
+    </div>
+  </section>
+
+  <section class="grid cols-3">
+    <article class="card supplier" *ngFor="let s of filteredSuppliers">
+      <div class="head">
+        <h3>{{ s.name }}</h3>
+        <span class="badge verified" *ngIf="s.verified">Verified</span>
+      </div>
+      <div class="rating">
+        <span
+          class="star"
+          *ngFor="let star of stars"
+          [class.muted]="star > s.rating"
+        >
+          ★
+        </span>
+      </div>
+      <p>{{ s.category }} • {{ s.region }}</p>
+      <a class="link" [routerLink]="['/suppliers', s.id]">View Profile</a>
+    </article>
+    <p class="muted" *ngIf="filteredSuppliers.length === 0" style="padding: 16px;">No suppliers match your filters yet.</p>
+  </section>
+</div>

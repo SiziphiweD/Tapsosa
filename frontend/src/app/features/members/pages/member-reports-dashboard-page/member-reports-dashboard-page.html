@@ -3,15 +3,20 @@
   <div class="grid cols-3">
     <div class="card">
       <h3>Jobs Posted vs Completed</h3>
-      <p>Placeholder metrics</p>
+      <p>Total Jobs: <strong>{{ totalJobs }}</strong></p>
+      <p>Completed Jobs: <strong>{{ completedJobs }}</strong></p>
+      <p>Completion Rate: <strong>{{ completionRate }}%</strong></p>
     </div>
     <div class="card">
       <h3>Average Time to Fill Jobs</h3>
-      <p>Placeholder metrics</p>
+      <p *ngIf="averageFillDays !== null">Approx. <strong>{{ averageFillDays }}</strong> days from first bid to award.</p>
+      <p *ngIf="averageFillDays === null" class="muted">Not enough awarded jobs to calculate yet.</p>
     </div>
     <div class="card">
       <h3>Supplier Performance</h3>
-      <p>Placeholder metrics</p>
+      <p>Suppliers used: <strong>{{ suppliersUsed }}</strong></p>
+      <p *ngIf="topSupplier">Top supplier by spend: <strong>{{ topSupplier }}</strong></p>
+      <p *ngIf="!topSupplier" class="muted">No spend recorded yet.</p>
     </div>
   </div>
 </section>

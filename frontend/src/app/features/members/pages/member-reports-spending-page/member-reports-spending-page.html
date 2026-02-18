@@ -1,17 +1,43 @@
 <section class="card">
   <h1>Spending Reports</h1>
+  <p class="muted" *ngIf="totalNet > 0">Total net spend through escrow: R{{ totalNet.toLocaleString() }}</p>
+  <p class="muted" *ngIf="totalNet === 0">No completed, paid jobs recorded yet.</p>
   <div class="grid cols-3">
     <div class="card">
       <h3>By Category</h3>
-      <p>Placeholder chart</p>
+      <div *ngIf="byCategory.length > 0; else noCategory">
+        <div *ngFor="let row of byCategory">
+          <div><strong>{{ row.label }}</strong></div>
+          <div class="muted">R{{ row.total.toLocaleString() }}</div>
+        </div>
+      </div>
+      <ng-template #noCategory>
+        <p class="muted">No spend by category yet.</p>
+      </ng-template>
     </div>
     <div class="card">
       <h3>By Supplier</h3>
-      <p>Placeholder chart</p>
+      <div *ngIf="bySupplier.length > 0; else noSupplier">
+        <div *ngFor="let row of bySupplier">
+          <div><strong>{{ row.label }}</strong></div>
+          <div class="muted">R{{ row.total.toLocaleString() }}</div>
+        </div>
+      </div>
+      <ng-template #noSupplier>
+        <p class="muted">No supplier spend recorded yet.</p>
+      </ng-template>
     </div>
     <div class="card">
       <h3>By Time Period</h3>
-      <p>Placeholder chart</p>
+      <div *ngIf="byPeriod.length > 0; else noPeriod">
+        <div *ngFor="let row of byPeriod">
+          <div><strong>{{ row.label }}</strong></div>
+          <div class="muted">R{{ row.total.toLocaleString() }}</div>
+        </div>
+      </div>
+      <ng-template #noPeriod>
+        <p class="muted">No paid-out periods yet.</p>
+      </ng-template>
     </div>
   </div>
 </section>

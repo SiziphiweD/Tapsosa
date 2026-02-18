@@ -6,7 +6,7 @@
 
   <section class="metrics">
     <div class="metric">
-      <div class="value">{{ jobs.length }}</div>
+      <div class="value">{{ activeJobs }}</div>
       <div class="label">Active Jobs</div>
     </div>
     <div class="metric">
@@ -23,24 +23,24 @@
     <div class="card">
       <h3>Post New Job</h3>
       <p>Create a listing for verified suppliers to bid on.</p>
-      <a class="btn primary" href="/member/requests/new">Publish Job</a>
+      <a class="btn primary" routerLink="/member/requests/new">Publish Job</a>
     </div>
     <div class="card">
       <h3>View Bids</h3>
       <p>Compare supplier proposals and select a winner.</p>
-      <a class="btn" href="/member/suppliers">View Details</a>
+      <a class="btn" routerLink="/member/requests">View Details</a>
     </div>
     <div class="card">
       <h3>Payments & Escrow</h3>
       <p>Manage secure payouts via TAPSOSA escrow.</p>
-      <a class="btn" href="/member/transactions">Open Escrow</a>
+      <a class="btn" routerLink="/member/transactions">Open Escrow</a>
     </div>
   </section>
 
   <section class="card">
     <h3>Job History</h3>
     <p>Completed engagements and audit trail.</p>
-    <a class="link" href="/member/transactions">View Completed Jobs</a>
+    <a class="link" routerLink="/member/transactions">View Completed Jobs</a>
   </section>
 
   <section class="card">
@@ -71,5 +71,6 @@
       </div>
       <div class="muted" *ngIf="recentActivities.length === 0">No recent activity</div>
     </div>
+    <a class="link" routerLink="/member/notifications">View all notifications</a>
   </section>
 </div>

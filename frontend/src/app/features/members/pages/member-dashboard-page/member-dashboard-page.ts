@@ -1,16 +1,18 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MockApiService, Job, Activity } from '../../../../shared/services/mock-api.service';
+import { RouterLink } from '@angular/router';
+import { MockApiService, Job, Activity, Bid } from '../../../../shared/services/mock-api.service';
 
 @Component({
   selector: 'app-member-dashboard-page',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './member-dashboard-page.html',
   styleUrl: './member-dashboard-page.css',
 })
 export class MemberDashboardPage {
 
   jobs: Job[] = [];
+  bids: Bid[] = [];
   bidsCount = 0;
   pendingCount = 0;
   fundedCount = 0;
@@ -18,6 +20,7 @@ export class MemberDashboardPage {
   pendingGross = 0;
   fundedGross = 0;
   releasedNet = 0;
+  activeJobs = 0;
   recentActivities: Array<{ label: string; amount: number | null; jobTitle: string; when: string }> = [];
 
   constructor(private api: MockApiService) {
@@ -30,9 +33,14 @@ export class MemberDashboardPage {
       this.pendingGross = escrows.filter((e) => e.status === 'pending').reduce((s, e) => s + e.gross, 0);
       this.fundedGross = escrows.filter((e) => e.status === 'funded').reduce((s, e) => s + e.gross, 0);
       this.releasedNet = escrows.filter((e) => e.status === 'released').reduce((s, e) => s + e.net, 0);
+      this.activeJobs = this.jobs.filter((j) => !j.escrow || j.escrow.status !== 'released').length;
+      this.refreshBidsCount();
+    });
+    api.listAllBids().subscribe((bids: Bid[]) => {
+      this.bids = bids;
+      this.refreshBidsCount();
     });
     api.listActivities().subscribe((acts: Activity[]) => {
-      this.bidsCount = acts.filter((a) => a.type === 'bid_submitted').length;
       this.recentActivities = acts
         .slice(0, 5)
         .map((a) => {
@@ -53,5 +61,18 @@ export class MemberDashboardPage {
           };
         });
     });
+  }
+
+  private refreshBidsCount() {
+    if (this.jobs.length === 0 || this.bids.length === 0) {
+      this.bidsCount = 0;
+      return;
+    }
+    const pendingJobIds = new Set(
+      this.jobs
+        .filter((j) => !j.escrow || j.escrow.status !== 'released')
+        .map((j) => j.id)
+    );
+    this.bidsCount = this.bids.filter((b) => pendingJobIds.has(b.jobId)).length;
   }
 }

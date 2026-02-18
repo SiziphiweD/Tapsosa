@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MockApiService, Job, Bid, Escrow } from '../../../../shared/services/mock-api.service';
 
 @Component({
   selector: 'app-member-view-bids-page',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './member-view-bids-page.html',
   styleUrl: './member-view-bids-page.css',
 })
