@@ -12,7 +12,7 @@ import { AuthService, User } from '../../services/auth.service';
   styleUrl: './app-layout.css',
 })
 export class AppLayout {
-  role: 'member' | 'supplier' | null = null;
+  role: 'member' | 'supplier' | 'admin' | null = null;
   user: User | null = null;
 
   constructor(private router: Router, private auth: AuthService) {
@@ -25,7 +25,14 @@ export class AppLayout {
     auth.currentUser$.subscribe((u) => {
       this.user = u;
       if (u?.role) {
-        this.role = u.role === 'member' ? 'member' : u.role === 'supplier' ? 'supplier' : null;
+        this.role =
+          u.role === 'member'
+            ? 'member'
+            : u.role === 'supplier'
+            ? 'supplier'
+            : u.role === 'admin'
+            ? 'admin'
+            : null;
       }
     });
   }
@@ -35,6 +42,8 @@ export class AppLayout {
       this.role = 'member';
     } else if (url.startsWith('/supplier')) {
       this.role = 'supplier';
+    } else if (url.startsWith('/admin')) {
+      this.role = 'admin';
     } else {
       this.role = null;
     }

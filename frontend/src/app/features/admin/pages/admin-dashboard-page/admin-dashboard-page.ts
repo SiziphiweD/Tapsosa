@@ -7,7 +7,7 @@ import { MockApiService, Job, Activity } from '../../../../shared/services/mock-
   selector: 'app-admin-dashboard-page',
   imports: [CommonModule, RouterLink],
   templateUrl: './admin-dashboard-page.html',
-  styleUrl: './admin-dashboard-page.css',
+  styleUrls: ['./admin-dashboard-page.css', '../../../../shared/styles/dashboard-cards.css'],
 })
 export class AdminDashboardPage {
   membersCount = 0;

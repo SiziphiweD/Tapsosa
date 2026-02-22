@@ -7,13 +7,14 @@ import { MockApiService, Job, Activity, Bid } from '../../../../shared/services/
   selector: 'app-member-dashboard-page',
   imports: [CommonModule, RouterLink],
   templateUrl: './member-dashboard-page.html',
-  styleUrl: './member-dashboard-page.css',
+  styleUrls: ['./member-dashboard-page.css', '../../../../shared/styles/dashboard-cards.css'],
 })
 export class MemberDashboardPage {
 
   jobs: Job[] = [];
   bids: Bid[] = [];
   bidsCount = 0;
+  complianceAlerts = 0;
   pendingCount = 0;
   fundedCount = 0;
   releasedCount = 0;

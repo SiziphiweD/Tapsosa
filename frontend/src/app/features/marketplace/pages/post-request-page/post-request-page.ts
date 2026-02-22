@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MockApiService } from '../../../../shared/services/mock-api.service';
+import { MockApiService, Attachment } from '../../../../shared/services/mock-api.service';
 
 @Component({
   selector: 'app-post-request-page',
@@ -18,11 +18,12 @@ export class PostRequestPage {
   requiredCertsText = '';
   minBudget: number | null = null;
   maxBudget: number | null = null;
+  quantity: number | null = null;
   bidDeadline = '';
   startDate = '';
   endDate = '';
   durationDays: number | null = null;
-  attachments: File[] = [];
+  attachments: Attachment[] = [];
   submitted = false;
 
   constructor(private api: MockApiService) {}
@@ -45,17 +46,29 @@ export class PostRequestPage {
       (this.startDate !== '' &&
         this.endDate !== '' &&
         new Date(this.startDate).getTime() <= new Date(this.endDate).getTime());
-    return required && budgetOk && datesOk;
+    const qtyOk = this.quantity !== null && this.quantity > 0;
+    return required && budgetOk && datesOk && qtyOk;
   }
 
   get datesInvalid() {
     if (!this.startDate || !this.endDate) return false;
     return new Date(this.startDate).getTime() > new Date(this.endDate).getTime();
   }
-
-  onFilesSelected(files: FileList | null) {
+ 
+  async onFilesSelected(files: FileList | null) {
     if (!files) return;
-    this.attachments = Array.from(files);
+    const readers = Array.from(files).map((f) => this.readFileToDataUrl(f));
+    const dataUrls = await Promise.all(readers);
+    this.attachments = Array.from(files).map((f, i) => ({ name: f.name, size: f.size, type: f.type, dataUrl: dataUrls[i] }));
+  }
+ 
+  private readFileToDataUrl(file: File): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = (e) => reject(e);
+      reader.readAsDataURL(file);
+    });
   }
 
   publish() {
@@ -74,6 +87,8 @@ export class PostRequestPage {
         requiredCertifications: requiredCertifications.length ? requiredCertifications : undefined,
         minBudget: this.minBudget as number,
         maxBudget: this.maxBudget as number,
+        quantity: this.quantity as number,
+        attachments: this.attachments.length ? this.attachments : undefined,
         bidDeadline: this.bidDeadline,
         startDate: this.startDate || undefined,
         endDate: this.endDate || undefined,
@@ -88,6 +103,7 @@ export class PostRequestPage {
         this.requiredCertsText = '';
         this.minBudget = null;
         this.maxBudget = null;
+        this.quantity = null;
         this.bidDeadline = '';
         this.startDate = '';
         this.endDate = '';

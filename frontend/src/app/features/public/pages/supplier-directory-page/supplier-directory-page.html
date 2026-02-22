@@ -1,5 +1,8 @@
 <div class="grid">
-  <section class="card">
+  <section class="public-page">
+    <a routerLink=".." class="back-arrow">
+      <i class="bi bi-arrow-left-circle"></i> Back
+    </a>
     <h1>Supplier Directory</h1>
     <p>Browse verified suppliers by category and location.</p>
 
@@ -33,10 +36,10 @@
   </section>
 
   <section class="grid cols-3">
-    <article class="card supplier" *ngFor="let s of filteredSuppliers">
+    <article class="supplier-card" *ngFor="let s of filteredSuppliers">
       <div class="head">
         <h3>{{ s.name }}</h3>
-        <span class="badge verified" *ngIf="s.verified">Verified</span>
+        <span class="pill verified" *ngIf="s.verified">Verified</span>
       </div>
       <div class="rating">
         <span

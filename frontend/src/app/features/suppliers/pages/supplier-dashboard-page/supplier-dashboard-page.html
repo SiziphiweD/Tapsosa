@@ -1,46 +1,38 @@
 <div class="grid">
   <section class="card">
-    <h1>Supplier Dashboard</h1>
     <p>Find jobs, submit bids, and track earnings.</p>
   </section>
 
   <section class="metrics">
-    <div class="metric">
-      <div class="value">{{ jobs.length }}</div>
-      <div class="label">Available Jobs</div>
+    <div class="metric card">
+      <div class="icon"><i class="bi bi-briefcase"></i></div>
+      <div class="metric-content">
+        <div class="value">{{ jobs.length }}</div>
+        <div class="label">Available Jobs</div>
+      </div>
     </div>
-    <div class="metric">
-      <div class="value">{{ activeBidsCount }}</div>
-      <div class="label">Active Bids</div>
+    <div class="metric card">
+      <div class="icon"><i class="bi bi-clipboard-check"></i></div>
+      <div class="metric-content">
+        <div class="value">{{ activeBidsCount }}</div>
+        <div class="label">Active Bids</div>
+      </div>
     </div>
-    <div class="metric">
-      <div class="value">R{{ pendingPayouts.toLocaleString() }}</div>
-      <div class="label">Pending Payouts</div>
+    <div class="metric card">
+      <div class="icon"><i class="bi bi-wallet2"></i></div>
+      <div class="metric-content">
+        <div class="value">R{{ pendingPayouts.toLocaleString() }}</div>
+        <div class="label">Pending Payouts</div>
+      </div>
     </div>
   </section>
 
-  <section class="grid cols-3">
-    <div class="card">
-      <h3>Browse Jobs</h3>
-      <p>Search and filter member requests.</p>
-      <a class="btn primary" routerLink="/supplier/jobs">Open Jobs</a>
-    </div>
-    <div class="card">
-      <h3>Compliance</h3>
-      <p>Maintain verification documents.</p>
-      <a class="btn" routerLink="/supplier/compliance">Update Docs</a>
-    </div>
-    <div class="card">
-      <h3>Earnings</h3>
-      <p>Track payouts and UKHUSELO SUPPLIER PORTAL fees.</p>
-      <a class="btn" routerLink="/supplier/earnings">View Earnings</a>
-    </div>
-  </section>
+ 
 
   <section class="grid cols-2">
     <div class="card">
       <h3>Performance Score</h3>
-      <div class="metric big">
+      <div class="metric big card">
         <div class="value">{{ performanceScore }}%</div>
         <div class="label">Win rate estimate</div>
       </div>

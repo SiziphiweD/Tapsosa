@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-register-supplier-page',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './register-supplier-page.html',
-  styleUrl: './register-supplier-page.css',
+
 })
 export class RegisterSupplierPage {
 
@@ -18,8 +18,13 @@ export class RegisterSupplierPage {
   password = '';
   loading = false;
   error = '';
+  passwordFieldType: string = 'password';
 
   constructor(private auth: AuthService, private router: Router) {}
+
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
 
   async register() {
     this.error = '';

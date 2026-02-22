@@ -1,21 +1,286 @@
-<section class="landing-hero">
-  <div class="panel">
-    <div class="brand">
-      <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
-        <path fill="#1e3a8a" d="M32 4l20 8v14c0 12-7 24-20 30-13-6-20-18-20-30V12l20-8z"/>
-        <path fill="#34d399" d="M46 24l-14 14-6-6-6 6 12 12 20-20z"/>
-      </svg>
-      <div class="title">
-        <span class="tapsosa">UKHUSELO</span>
-        <span class="subtitle">SUPPLIER PORTAL</span>
+<div class="landing-root">
+  <div class="grid-background"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <header>
+    <nav>
+      <div class="logo">
+        <div class="logo-mark"></div>
+        <div class="logo-text">
+          <h1>TAPSOSA</h1>
+          <span>Supplier Portal</span>
+        </div>
+      </div>
+      <div class="nav-links">
+        <a [routerLink]="'/how-it-works'">How It Works</a>
+        <a [routerLink]="'/pricing'">Pricing</a>
+
+        <a [routerLink]="'/about'">About Us</a>
+        <a [routerLink]="'/faqs'">FAQs</a>
+        <a [routerLink]="'/contact'">Contact</a>
+      </div>
+      <a href="#" class="nav-cta" (click)="scrollTo('get-started')">GET STARTED</a>
+    </nav>
+  </header>
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <div class="hero-text">
+          <span class="eyebrow">🔒 Verified. Trusted. Secured.</span>
+          <h2>
+            <span class="highlight">Verified Suppliers.</span><br>
+            <span class="highlight">Secure Transactions.</span><br>
+            One Platform.
+          </h2>
+          <p class="hero-description">
+            South Africa's premier marketplace connecting security service members with
+            verified, compliant suppliers. Post jobs, receive competitive bids, and manage
+            payments securely—all in one place.
+          </p>
+          <div class="stats-row">
+            <div class="stat">
+              <span class="stat-number">500+</span>
+              <span class="stat-label">Active Members</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">150+</span>
+              <span class="stat-label">Verified Suppliers</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">R50M+</span>
+              <span class="stat-label">Secured Value</span>
+            </div>
+          </div>
+          <div class="cta-group">
+            <a class="btn btn-primary" [routerLink]="'/auth/register-member'">Start Hiring →</a>
+            <a class="btn btn-secondary" [routerLink]="'/auth/register-supplier'">Become a Supplier</a>
+          </div>
+        </div>
+        <div class="hero-card" id="get-started">
+          <div class="card-header">
+            <h3>Join TAPSOSA Today</h3>
+            <p>Choose your role to get started</p>
+          </div>
+          <div class="role-selector">
+            <button class="role-option" [class.active]="selectedRole==='member'" (click)="selectRole('member')">
+              I Need Services
+            </button>
+            <button class="role-option" [class.active]="selectedRole==='supplier'" (click)="selectRole('supplier')">
+              I Provide Services
+            </button>
+          </div>
+          <div class="auth-actions">
+            <a class="btn btn-primary" style="justify-content: center;" [routerLink]="'/auth/sign-in'">
+              Sign In
+            </a>
+            <div class="divider">
+              <span>or create account</span>
+            </div>
+            <a class="btn btn-secondary" id="register-btn" style="justify-content: center;"
+               [routerLink]="selectedRole==='member' ? '/auth/register-member' : '/auth/register-supplier'">
+              {{ selectedRole==='member' ? 'Register as Member' : 'Register as Supplier' }}
+            </a>
+          </div>
+          <div class="trust-badges">
+            <div class="badge">
+              <div class="badge-icon">✓</div>
+              <span>PSIRA Verified</span>
+            </div>
+            <div class="badge">
+              <div class="badge-icon">🔒</div>
+              <span>Secure Escrow</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
-    <p class="tagline">Verified Suppliers. Secure Transactions.</p>
-  </div>
-  <div class="actions">
-    <a class="btn primary big" routerLink="/auth/sign-in">Sign In</a>
-    <a class="btn success big" routerLink="/auth/register-member">Register as Member</a>
-    <a class="btn primary big" routerLink="/auth/register-supplier">Register as Supplier</a>
-  </div>
-</section>
+  </section>
+  <section class="features">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">Why TAPSOSA</div>
+        <h2 class="section-title">Built for Security Professionals</h2>
+        <p class="section-description">
+          A comprehensive platform designed to streamline security procurement
+          with enterprise-grade protection and industry-leading compliance.
+        </p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">✓</div>
+          <h3>Verified Suppliers Only</h3>
+          <p>
+            Every supplier undergoes rigorous PSIRA registration checks, insurance
+            verification, and comprehensive background screening. Work only with
+            certified professionals.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔒</div>
+          <h3>Escrow Protection</h3>
+          <p>
+            Your payments are secured in escrow until job completion. Release funds
+            only when you're satisfied. Complete transparency, zero risk.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">💰</div>
+          <h3>Competitive Bidding</h3>
+          <p>
+            Post your requirements once and receive multiple competitive bids.
+            Compare proposals, credentials, and pricing to find the perfect match.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⭐</div>
+          <h3>Rating & Reviews</h3>
+          <p>
+            Make informed decisions with transparent supplier ratings, verified reviews,
+            and detailed performance history from real members.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📊</div>
+          <h3>Full Transparency</h3>
+          <p>
+            Track every transaction, download invoices, monitor job progress, and
+            access complete audit trails for regulatory compliance.
+          </p>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">⚡</div>
+          <h3>Instant Matching</h3>
+          <p>
+            AI-powered supplier recommendations based on your requirements, location,
+            and past preferences. Find the right partner faster.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="process">
+    <div class="container">
+      <div class="section-header">
+        <div class="section-label">How It Works</div>
+        <h2 class="section-title">From Post to Payment in 4 Steps</h2>
+      </div>
+      <div class="process-timeline">
+        <div class="timeline-line"></div>
+        <div class="process-step">
+          <div class="step-number">1</div>
+          <div class="step-content">
+            <h3>Post Your Requirements</h3>
+            <p>
+              Describe your security needs, set your budget, and specify requirements.
+              Your job listing goes live instantly to 150+ verified suppliers.
+            </p>
+          </div>
+          <div class="step-visual">
+            <div class="visual-icon">📋</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">2</div>
+          <div class="step-content">
+            <h3>Review Competitive Bids</h3>
+            <p>
+              Receive proposals from qualified suppliers with detailed pricing, timelines,
+              and credentials. Compare and choose the best fit for your needs.
+            </p>
+          </div>
+          <div class="step-visual">
+            <div class="visual-icon">💼</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">3</div>
+          <div class="step-content">
+            <h3>Secure Payment in Escrow</h3>
+            <p>
+              Once you select a supplier, your payment is held securely in escrow.
+              Both parties are protected throughout the job execution.
+            </p>
+          </div>
+          <div class="step-visual">
+            <div class="visual-icon">🔒</div>
+          </div>
+        </div>
+        <div class="process-step">
+          <div class="step-number">4</div>
+          <div class="step-content">
+            <h3>Release & Review</h3>
+            <p>
+              After successful job completion, release payment to the supplier and
+              leave a review. Build your network of trusted partners.
+            </p>
+          </div>
+          <div class="step-visual">
+            <div class="visual-icon">✨</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="cta-section">
+    <div class="container">
+      <div class="cta-box">
+        <div class="cta-content">
+          <h2>Ready to Transform Your Security Procurement?</h2>
+          <p>
+            Join 500+ companies already using TAPSOSA to find verified suppliers,
+            manage contracts, and secure every transaction.
+          </p>
+          <a href="#" class="btn" (click)="scrollTo('get-started')">Get Started Now →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-brand">
+          <h3>TAPSOSA</h3>
+          <p>
+            South Africa's premier marketplace connecting security service members
+            with verified, compliant suppliers.
+          </p>
+          <div class="social-links">
+            <a href="#" class="social-link">𝕏</a>
+            <a href="#" class="social-link">in</a>
+            <a href="#" class="social-link">f</a>
+          </div>
+        </div>
+        <div class="footer-links">
+          <h4>Platform</h4>
+          <ul>
+            <li><a [routerLink]="'/how-it-works'">How It Works</a></li>
+            <li><a [routerLink]="'/pricing'">Pricing</a></li>
+            <li><a [routerLink]="'/auth/register-member'">For Members</a></li>
+            <li><a [routerLink]="'/auth/register-supplier'">For Suppliers</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Company</h4>
+          <ul>
+            <li><a [routerLink]="'/about'">About Us</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+            <li><a [routerLink]="'/contact'">Contact</a></li>
+          </ul>
+        </div>
+        <div class="footer-links">
+          <h4>Legal</h4>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+            <li><a href="#">Cookie Policy</a></li>
+            <li><a href="#">POPIA Compliance</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 TAPSOSA Supplier Portal. All rights reserved. Built for South African security professionals.</p>
+      </div>
+    </div>
+  </footer>
+</div>

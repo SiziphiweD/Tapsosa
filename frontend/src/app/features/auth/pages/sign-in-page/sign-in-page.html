@@ -1,28 +1,109 @@
-<section class="auth-hero">
-  <div class="auth-panel card">
-    <h1>Sign In</h1>
-    <p>Access your member, supplier, or admin dashboard.</p>
+    <!-- Animated Background -->
+    <div class="grid-background"></div>
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
 
-    <form class="form" autocomplete="on">
-      <label>
-        Email
-        <input name="email" [(ngModel)]="email" type="email" placeholder="name@company.com" />
-      </label>
+    <!-- Sign In Container -->
+    <div class="signin-container">
+        <!-- Logo -->
+        <div class="signin-logo">
+            <a routerLink="/" class="logo-link">
+                <div class="logo-mark"></div>
+                <div class="logo-text">
+                    <h1>TAPSOSA</h1>
+                </div>
+            </a>
+        </div>
 
-      <label>
-        Password
-        <input name="password" [(ngModel)]="password" type="password" placeholder="••••••••" />
-      </label>
+        <!-- Sign In Card -->
+        <div class="signin-card">
+            <div class="card-header">
+                <h2>Welcome Back</h2>
+                <p>Sign in to your account to continue</p>
+            </div>
 
-      <div class="errors" *ngIf="error">{{ error }}</div>
-      <button type="button" [disabled]="loading || !email || !password" (click)="signIn()">Sign In</button>
+            <!-- Error Message -->
+            <div class="error-message" [class.show]="error">
+                <i class="bi bi-exclamation-circle"></i>
+                <span>{{ error }}</span>
+            </div>
 
-      <div class="register-cta">
-        <span>Don't have an account?</span>
-        <a routerLink="/auth/register-member">Register as Member</a>
-        <span>or</span>
-        <a routerLink="/auth/register-supplier">Register as Supplier</a>
-      </div>
-    </form>
-  </div>
-</section>
+            <!-- Sign In Form -->
+            <form (ngSubmit)="signIn()">
+                <div class="form-group">
+                    <label class="form-label" for="email">
+                        Email Address <span class="required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="bi bi-square input-icon"></i>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            class="form-input"
+                            placeholder="you@example.com"
+                            required
+                            [(ngModel)]="email"
+                        >
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">
+                        Password <span class="required">*</span>
+                    </label>
+                    <div class="input-wrapper">
+                        <i class="bi bi-square input-icon"></i>
+                        <input
+                            [type]="passwordFieldType"
+                            id="password"
+                            name="password"
+                            class="form-input"
+                            placeholder="Enter your password"
+                            required
+                            [(ngModel)]="password"
+                        >
+                        <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+                            <i class="bi" [class.bi-eye]="passwordFieldType === 'password'" [class.bi-eye-slash]="passwordFieldType === 'text'"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <div class="checkbox-wrapper">
+                        <input type="checkbox" id="remember" name="remember">
+                        <label for="remember">Remember me</label>
+                    </div>
+                    <a routerLink="/auth/forgot-password" class="forgot-link">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn btn-primary" [disabled]="loading || !email || !password">
+                    <ng-container *ngIf="!loading">
+                        Sign In
+                        <i class="bi bi-arrow-right"></i>
+                    </ng-container>
+                    <ng-container *ngIf="loading">
+                        Signing in...
+                    </ng-container>
+                </button>
+            </form>
+
+            <div class="divider">
+                <span>or</span>
+            </div>
+
+            <div class="signup-prompt">
+                Don't have an account?
+                <a routerLink="/auth/register-member">Register as Member</a> or
+                <a routerLink="/auth/register-supplier">Register as Supplier</a>
+            </div>
+        </div>
+
+        <!-- Back to Home -->
+        <div class="back-home">
+            <a routerLink="/">
+                <i class="bi bi-arrow-left"></i>
+                Back to Home
+            </a>
+        </div>
+    </div>

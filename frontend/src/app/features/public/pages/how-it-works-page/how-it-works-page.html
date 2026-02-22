@@ -1,89 +1,99 @@
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 <section class="card public-page">
+  <a routerLink=".." class="back-arrow">
+    <i class="bi bi-arrow-left-circle"></i> Back
+  </a>
   <h1>How It Works</h1>
   <p>
     UKHUSELO SUPPLIER PORTAL connects verified members and suppliers through a controlled marketplace with escrow-backed
     payments and built-in compliance.
   </p>
 
-  <div class="workflow-grid grid cols-3">
-    <article class="workflow-card">
-      <div class="workflow-icon">
+  <h2>Frequently Asked Questions</h2>
+  <div class="grid cols-3 faqs-grid">
+    <article class="faq-card">
+      <div class="faq-icon">
+        <i class="bi bi-person-plus"></i>
+      </div>
+      <h2>Getting Started</h2>
+      <h3>Who can register as a member?</h3>
+      <p>
+        Members are organisations that procure security or related services and products. You register your
+        company profile, contact details, and basic verification information before posting requests.
+      </p>
+      <h3>Who can register as a supplier?</h3>
+      <p>
+        Suppliers are vetted service providers and product vendors in categories such as guarding, uniforms
+        and PPE, technology, patrol monitoring, radios, finance, and insurance.
+      </p>
+    </article>
+
+    <article class="faq-card">
+      <div class="faq-icon">
+        <i class="bi bi-megaphone"></i>
+      </div>
+      <h2>Requests & Bidding</h2>
+      <h3>How do members submit requirements?</h3>
+      <p>
+        Members complete a structured request form that captures category, scope, quantities, location,
+        delivery timelines, and budget range. Once submitted, the request is published to eligible suppliers.
+      </p>
+      <h3>How do suppliers receive job alerts?</h3>
+      <p>
+        Suppliers are notified in real time when new requests match their registered categories, allowing
+        them to review the brief and submit bids directly on the platform.
+      </p>
+    </article>
+
+    <article class="faq-card">
+      <div class="faq-icon">
         <i class="bi bi-clipboard-check"></i>
       </div>
-      <h2>1. Member Onboarding & Requirement Submission</h2>
+      <h2>Bid Evaluation</h2>
+      <h3>How are bids compared?</h3>
       <p>
-        Verified members log into the platform and complete a structured request form describing what they
-        need. Requests can cover services or products such as uniforms, SIM cards, access control systems,
-        patrol monitoring, two-way radios, financial assistance, or insurance solutions.
+        Bids are presented in a standardised comparison view showing pricing, specifications, timelines, and
+        compliance information so members can make like-for-like decisions.
       </p>
+      <h3>Can members see supplier history?</h3>
       <p>
-        The member selects a category, quantity, delivery timelines, and a budget range, then submits the
-        request to the marketplace. The request becomes visible for relevant suppliers to engage.
+        Where available, the platform surfaces past transaction history, performance indicators, and
+        compliance status to support informed selection.
       </p>
     </article>
 
-    <article class="workflow-card">
-      <div class="workflow-icon">
-        <i class="bi bi-bell"></i>
+    <article class="faq-card">
+      <div class="faq-icon">
+        <i class="bi bi-shield-lock"></i>
       </div>
-      <h2>2. Supplier Notification & Bidding</h2>
+      <h2>Compliance & Verification</h2>
+      <h3>What compliance checks are performed?</h3>
       <p>
-        Registered suppliers in the selected category automatically receive notifications when a new
-        request matches their offering. They review the requirements and submit structured bids directly on
-        the platform.
+        TAPSOSA verifies supplier credentials, regulatory documents, and other compliance requirements, and
+        confirms that members are in good standing before trade is activated.
       </p>
+      <h3>What happens when documents expire?</h3>
       <p>
-        Each bid typically includes pricing, product or service specifications, delivery timelines, and,
-        where required, compliance credentials. Suppliers can attach supporting documents or product
-        catalogues to strengthen their proposals.
-      </p>
-    </article>
-
-    <article class="workflow-card">
-      <div class="workflow-icon">
-        <i class="bi bi-graph-up"></i>
-      </div>
-      <h2>3. Bid Evaluation & Supplier Selection</h2>
-      <p>
-        Members compare all bids within a standardised comparison interface. The platform displays key
-        supplier information including compliance status, industry credentials, and, where available, past
-        transaction history.
-      </p>
-      <p>
-        Based on price, quality, service offering, and credibility, the member selects the preferred
-        supplier. Once awarded, the system digitally connects both parties and moves the job to the next
-        stage.
+        Expiry alerts and trade controls help ensure that suppliers maintain up-to-date documentation in
+        order to remain eligible for new work.
       </p>
     </article>
 
-    <article class="workflow-card">
-      <div class="workflow-icon">
-        <i class="bi bi-shield-check"></i>
-      </div>
-      <h2>4. Compliance & Trade Verification</h2>
-      <p>
-        Before any funds move, the platform performs verification checks to ensure trade eligibility.
-        This includes confirming that supplier credentials are valid and up to date, that the member is in
-        good standing, that payment methods or financial capacity are confirmed, and that all required
-        compliance documentation has been verified.
-      </p>
-      <p>Only verified parties are allowed to proceed with the transaction.</p>
-    </article>
-
-    <article class="workflow-card">
-      <div class="workflow-icon">
+    <article class="faq-card">
+      <div class="faq-icon">
         <i class="bi bi-credit-card"></i>
       </div>
-      <h2>5. Transaction Monitoring & Payment Processing</h2>
+      <h2>Payments & Fees</h2>
+      <h3>How does escrow work?</h3>
       <p>
-        Payments are processed via a secure, integrated gateway. Funds are held in escrow until service
-        delivery or agreed milestones are completed. The platform automatically deducts any facilitation
-        fees (where applicable) and releases the remaining funds to the supplier when the job is completed.
+        Members fund payments into escrow via the integrated gateway. Funds are held until delivery or
+        milestones are confirmed, then released to the supplier.
       </p>
+      <h3>What fees apply?</h3>
       <p>
-        Every transaction generates a full audit trail, with receipts and reports available to both
-        parties. This provides transparency, reduces disputes, and supports revenue accountability and
-        governance.
+        A standard platform fee is applied to the member’s payment. The net payout goes to the supplier.
+        See the Pricing page for a full breakdown and examples.
       </p>
     </article>
   </div>
@@ -97,7 +107,7 @@
         </div>
         <h3>Members</h3>
         <p>Submit structured requirements, evaluate bids, and approve secure payments.</p>
-        <a class="role-btn" routerLink="/auth/register-member">
+        <a class="btn primary" routerLink="/auth/register-member">
           <i class="bi bi-arrow-right-circle"></i>
           Member Portal
         </a>
@@ -109,21 +119,9 @@
         </div>
         <h3>Suppliers</h3>
         <p>Receive targeted job alerts, submit bids, and track escrow-backed payouts.</p>
-        <a class="role-btn" routerLink="/auth/register-supplier">
+        <a class="btn primary" routerLink="/auth/register-supplier">
           <i class="bi bi-arrow-right-circle"></i>
           Supplier Portal
-        </a>
-      </article>
-
-      <article class="role-card">
-        <div class="role-icon">
-          <i class="bi bi-shield-lock"></i>
-        </div>
-        <h3>Admins</h3>
-        <p>Oversee compliance, transactions, and platform configuration in one console.</p>
-        <a class="role-btn" routerLink="/auth/sign-in">
-          <i class="bi bi-arrow-right-circle"></i>
-          Admin Console
         </a>
       </article>
     </div>

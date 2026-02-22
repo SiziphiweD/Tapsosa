@@ -45,7 +45,7 @@
 .pill .caret{margin-left:4px}
 .nav.member .pill{background:#e6f1ff}
 .nav.supplier .pill{background:#e9f9ef}
-.nav.admin .pill{background:#e9f9ef}
+.nav.admin .pill{background:var(--color-admin-bg)}
 .menu{position:absolute;right:0;margin-top:8px;width:300px;background:#fff;border:1px solid #e7e7e7;border-radius:12px;box-shadow:0 8px 24px rgba(0,0,0,0.08);z-index:50;padding:10px}
 .menu .header{display:flex;gap:12px;align-items:center;padding:10px 10px 14px 10px;border-bottom:1px solid #eee}
 .menu .header .avatar{display:flex;align-items:center;justify-content:center;height:44px;width:44px;border-radius:999px;background:#f1f5f9;font-size:22px}
@@ -63,7 +63,7 @@
 .nav.supplier .brand {
   color: var(--color-success);
 }
-.nav.admin .brand { color: var(--color-success); }
+.nav.admin .brand { color: var(--color-admin); }
 .nav.member .links a.active {
   background: #e6f1ff;
   color: var(--color-primary);
@@ -72,4 +72,4 @@
   background: #e9f9ef;
   color: var(--color-success-dark);
 }
-.nav.admin .links a.active { background: #e9f9ef; color: var(--color-success-dark); }
+.nav.admin .links a.active { background: var(--color-admin-bg); color: var(--color-admin); }

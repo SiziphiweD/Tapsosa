@@ -8,7 +8,7 @@ import { AuthService } from '../../../../shared/services/auth.service';
   selector: 'app-sign-in-page',
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './sign-in-page.html',
-  styleUrl: './sign-in-page.css',
+
 })
 export class SignInPage {
 
@@ -16,8 +16,13 @@ export class SignInPage {
   password = '';
   error = '';
   loading = false;
+  passwordFieldType: string = 'password';
 
   constructor(private auth: AuthService, private router: Router) {}
+
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
 
   async signIn() {
     this.error = '';

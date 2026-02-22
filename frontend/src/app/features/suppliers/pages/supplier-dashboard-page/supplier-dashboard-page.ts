@@ -7,7 +7,7 @@ import { MockApiService, Job, Activity, Bid } from '../../../../shared/services/
   selector: 'app-supplier-dashboard-page',
   imports: [CommonModule, RouterLink],
   templateUrl: './supplier-dashboard-page.html',
-  styleUrl: './supplier-dashboard-page.css',
+  styleUrls: ['./supplier-dashboard-page.css', '../../../../shared/styles/dashboard-cards.css'],
 })
 export class SupplierDashboardPage {
 

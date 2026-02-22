@@ -1,0 +1,40 @@
+<section class="card">
+  <h1>Admin Profile</h1>
+  <p class="muted">Update your display name and contact email.</p>
+
+  <div *ngIf="user as u; else noUser" class="profile-layout">
+    <div class="profile-summary">
+      <div class="avatar">
+        <span>{{ initial }}</span>
+      </div>
+      <div class="summary-meta">
+        <h2>{{ model.name }}</h2>
+        <p class="muted">{{ model.email }}</p>
+        <p class="muted">Admin since {{ u.createdAt | date: 'mediumDate' }}</p>
+      </div>
+    </div>
+
+    <form class="profile-form" autocomplete="on">
+      <div class="grid cols-2">
+        <label>
+          Display name
+          <input name="name" type="text" [(ngModel)]="model.name" />
+        </label>
+      </div>
+
+      <label>
+        Contact email
+        <input name="email" type="email" [(ngModel)]="model.email" />
+      </label>
+
+      <div class="actions">
+        <button type="button" (click)="save()" [disabled]="!model.name || !model.email">Save Profile</button>
+        <span class="toast success" *ngIf="saved">Saved</span>
+      </div>
+    </form>
+  </div>
+
+  <ng-template #noUser>
+    <p class="muted">You must be signed in as an admin to view or edit your profile.</p>
+  </ng-template>
+</section>

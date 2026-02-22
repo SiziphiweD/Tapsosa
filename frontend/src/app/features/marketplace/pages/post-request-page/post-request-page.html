@@ -46,6 +46,10 @@
         Max budget
         <input name="maxBudget" [(ngModel)]="maxBudget" type="number" placeholder="e.g. 40000" />
       </label>
+      <label>
+        Quantity
+        <input name="quantity" [(ngModel)]="quantity" type="number" placeholder="e.g. 50" />
+      </label>
     </div>
 
     <label>
@@ -78,6 +82,7 @@
       <div *ngIf="location.trim().length === 0">Location is required.</div>
       <div *ngIf="!minBudget || !maxBudget">Budget range is required.</div>
       <div *ngIf="minBudget && maxBudget && minBudget > maxBudget">Min budget must be less than or equal to max budget.</div>
+      <div *ngIf="!quantity || quantity <= 0">Quantity is required.</div>
       <div *ngIf="!bidDeadline">Bid deadline is required.</div>
       <div *ngIf="datesInvalid">Start date must be before end date.</div>
     </div>

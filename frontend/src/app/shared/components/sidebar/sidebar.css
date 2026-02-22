@@ -1,26 +1,30 @@
-.sidebar{display:flex;flex-direction:column;gap:14px;padding:12px 18px;border-right:1px solid #e7e7e7;background:#fff;width:280px;position:fixed;top:0;left:0;bottom:0;overflow:auto;z-index:30;-ms-overflow-style:none;scrollbar-width:none}
+.sidebar{display:flex;flex-direction:column;gap:14px;padding:12px 18px;border-right:none;background:var(--color-brand-dark);width:280px;position:fixed;top:0;left:0;bottom:0;overflow:auto;z-index:30;-ms-overflow-style:none;scrollbar-width:none}
+.sidebar.member{background:var(--color-brand-dark)}
+.sidebar.supplier{background:var(--color-brand-dark)}
+.sidebar.admin{background:var(--color-brand-dark)}
 .sidebar::-webkit-scrollbar{display:none}
 .brand-block{display:flex;flex-direction:column;align-items:center;gap:10px}
-.brand-block .logo{display:flex;align-items:center;justify-content:center;height:72px;width:72px;border-radius:999px;background:#f1f5f9;color:#0f172a;font-size:28px}
-.brand-block .org{font-size:16px;font-weight:700;color:#0f172a}
-.rule{height:1px;background:#e7e7e7;margin:8px 0}
-.caption{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin:2px 0 4px}
-.item{display:flex;align-items:center;gap:12px;text-decoration:none;color:#334155;padding:12px 14px;border-radius:16px;transition:background .15s ease}
-.item:hover{background:#f8fafc}
-.item i.bi{font-size:18px}
-.item.active{background:#f1f5f9;color:#0f172a}
-.sidebar.member .item.active{background:#e6f1ff;color:var(--color-primary)}
-.sidebar.supplier .item.active{background:#e9f9ef;color:var(--color-success-dark)}
-.sidebar.admin .item.active{background:#e9f9ef;color:var(--color-success-dark)}
-.sidebar.member .brand-block .logo{background:#e6f1ff;color:var(--color-primary)}
-.sidebar.supplier .brand-block .logo{background:#e9f9ef;color:var(--color-success-dark)}
-.sidebar.admin .brand-block .logo{background:#e9f9ef;color:var(--color-success-dark)}
-.sidebar.member .brand-block .org{color:var(--color-primary)}
-.sidebar.supplier .brand-block .org{color:var(--color-success)}
-.sidebar.admin .brand-block .org{color:var(--color-success)}
+.brand-block .logo{display:flex;align-items:center;justify-content:center;height:72px;width:72px;border-radius:999px;background:rgba(255,255,255,0.1);color:#ffffff;font-size:28px}
+.brand-block .org{font-size:16px;font-weight:700;color:#ffffff}
+.rule{height:1px;background:rgba(255,255,255,0.18);margin:8px 0}
+.caption{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#cbd5e1;margin:2px 0 4px}
+.item{display:flex;align-items:center;gap:12px;text-decoration:none;color:#ffffff;padding:12px 14px;border-radius:16px;transition:background .15s ease}
+.item:hover{background:rgba(255,255,255,0.08)}
+.item i.bi{font-size:18px;color:#ffffff}
+.item.active{background:rgba(255,255,255,0.16);color:#ffffff}
+.sidebar.member .item.active{background:rgba(255,255,255,0.16);color:#ffffff}
+.sidebar.supplier .item.active{background:rgba(255,255,255,0.16);color:#ffffff}
+.sidebar.admin .item.active{background:rgba(255,255,255,0.16);color:#ffffff}
+.sidebar.member .brand-block .logo{background:rgba(255,255,255,0.1);color:#ffffff}
+.sidebar.supplier .brand-block .logo{background:rgba(255,255,255,0.1);color:#ffffff}
+.sidebar.admin .brand-block .logo{background:rgba(255,255,255,0.1);color:#ffffff}
+.sidebar.member .brand-block .org{color:#ffffff}
+.sidebar.supplier .brand-block .org{color:#ffffff}
+.sidebar.admin .brand-block .org{color:#ffffff}
 .spacer{flex:1 1 auto}
 .footer{display:flex;flex-direction:column;gap:8px;margin-top:8px}
-.footer .item.signout{color:#ef4444}
-.fine-links{display:flex;gap:10px;align-items:center;justify-content:center;color:#64748b;font-size:12px}
-.fine-links a{color:#64748b;text-decoration:none}
-.copyright{color:#94a3b8;font-size:12px;text-align:center}
+.footer .item.signout{color:#ef4444;background:rgba(255,255,255,0.16);border:1px solid rgba(0,0,0,0.7)}
+.footer .item.signout:hover{background:rgba(255,255,255,0.16)}
+.fine-links{display:flex;gap:10px;align-items:center;justify-content:center;color:#cbd5e1;font-size:12px}
+.fine-links a{color:#cbd5e1;text-decoration:none}
+.copyright{color:#cbd5e1;font-size:12px;text-align:center}

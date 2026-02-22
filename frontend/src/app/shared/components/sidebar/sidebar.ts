@@ -45,6 +45,11 @@ export class Sidebar {
     return 'bi-person-circle';
   }
 
+  isMemberBidsActive() {
+    const url = this.router.url;
+    return url.startsWith('/member/requests') && !url.startsWith('/member/requests/new');
+  }
+
   signOut() {
     this.auth.logout();
     this.router.navigateByUrl('/');

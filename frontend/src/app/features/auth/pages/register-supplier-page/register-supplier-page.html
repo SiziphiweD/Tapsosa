@@ -1,37 +1,141 @@
-<section class="auth-hero">
-  <div class="auth-panel card">
-    <h1>Register as Supplier</h1>
-    <p>Create a supplier account and submit compliance documents for verification.</p>
+<!-- Animated Background -->
+<div class="grid-background"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
-    <form class="form" autocomplete="on">
-      <label>
-        Company name
-        <input name="company" [(ngModel)]="company" type="text" placeholder="Supplier company" />
-      </label>
+<!-- Register Supplier Container -->
+<div class="signin-container">
+    <!-- Logo -->
+    <div class="signin-logo">
+        <a routerLink="/" class="logo-link">
+            <div class="logo-mark"></div>
+            <div class="logo-text">
+                <h1>TAPSOSA</h1>
+            </div>
+        </a>
+    </div>
 
-      <label>
-        Contact email
-        <input name="email" [(ngModel)]="email" type="email" placeholder="name@supplier.com" />
-      </label>
+    <!-- Register Supplier Card -->
+    <div class="register-supplier-card">
+        <div class="card-header">
+            <h2>Register as Supplier</h2>
+            <p>Create a supplier account and submit compliance documents for verification.</p>
+        </div>
 
-      <label>
-        Primary category
-        <select name="category" [(ngModel)]="category">
-          <option>Guarding Services</option>
-          <option>Technology</option>
-          <option>Uniforms</option>
-          <option>Vehicles</option>
-          <option>Training</option>
-        </select>
-      </label>
+        <!-- Error Message -->
+        <div class="error-message" [class.show]="error">
+            <i class="bi bi-exclamation-circle"></i>
+            <span>{{ error }}</span>
+        </div>
 
-      <label>
-        Password
-        <input name="password" [(ngModel)]="password" type="password" placeholder="••••••••" />
-      </label>
+        <!-- Register Supplier Form -->
+        <form (ngSubmit)="register()">
+            <div class="form-group">
+                <label class="form-label" for="company">
+                    Company Name <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                    <i class="bi bi-square input-icon"></i>
+                    <input
+                        type="text"
+                        id="company"
+                        name="company"
+                        class="form-input"
+                        placeholder="Supplier company"
+                        required
+                        [(ngModel)]="company"
+                    >
+                </div>
+            </div>
 
-        <div class="errors" *ngIf="error">{{ error }}</div>
-        <button type="button" [disabled]="loading || !company || !email || !password" (click)="register()">Create Supplier Account</button>
-    </form>
-  </div>
-</section>
+            <div class="form-group">
+                <label class="form-label" for="email">
+                    Contact Email <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                    <i class="bi bi-square input-icon"></i>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        class="form-input"
+                        placeholder="name@supplier.com"
+                        required
+                        [(ngModel)]="email"
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="category">
+                    Primary Category <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                    <i class="bi bi-square input-icon"></i>
+                    <select
+                        id="category"
+                        name="category"
+                        class="form-input"
+                        required
+                        [(ngModel)]="category"
+                    >
+                        <option value="" disabled selected>Select a category</option>
+                        <option>Guarding Services</option>
+                        <option>Technology</option>
+                        <option>Uniforms</option>
+                        <option>Vehicles</option>
+                        <option>Training</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="password">
+                    Password <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                    <i class="bi bi-square input-icon"></i>
+                    <input
+                        [type]="passwordFieldType"
+                        id="password"
+                        name="password"
+                        class="form-input"
+                        placeholder="Enter your password"
+                        required
+                        [(ngModel)]="password"
+                    >
+                    <button type="button" class="password-toggle" (click)="togglePasswordVisibility()">
+                        <i class="bi" [class.bi-eye]="passwordFieldType === 'password'" [class.bi-eye-slash]="passwordFieldType === 'text'"></i>
+                    </button>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="loading || !company || !email || !category || !password">
+                <ng-container *ngIf="!loading">
+                    Create Supplier Account
+                    <i class="bi bi-arrow-right"></i>
+                </ng-container>
+                <ng-container *ngIf="loading">
+                    Registering...
+                </ng-container>
+            </button>
+        </form>
+
+        <div class="divider">
+            <span>or</span>
+        </div>
+
+        <div class="signup-prompt">
+            Already have an account?
+            <a routerLink="/auth/sign-in">Sign In</a>
+        </div>
+    </div>
+
+    <!-- Back to Home -->
+    <div class="back-home">
+        <a routerLink="/">
+            <i class="bi bi-arrow-left"></i>
+            Back to Home
+        </a>
+    </div>
+</div>

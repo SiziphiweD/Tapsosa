@@ -60,7 +60,7 @@ export class Navbar {
   profileLink() {
     if (this.role === 'member') return '/member/settings/profile';
     if (this.role === 'supplier') return '/supplier/profile';
-    if (this.role === 'admin') return '/admin/dashboard';
+    if (this.role === 'admin') return '/admin/profile';
     return '/';
   }
 

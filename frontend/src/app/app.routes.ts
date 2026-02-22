@@ -40,20 +40,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/public/pages/contact-page/contact-page').then((m) => m.ContactPage)
       },
-      {
-        path: 'suppliers',
-        loadComponent: () =>
-          import('./features/public/pages/supplier-directory-page/supplier-directory-page').then(
-            (m) => m.SupplierDirectoryPage
-          )
-      },
-      {
-        path: 'suppliers/:supplierId',
-        loadComponent: () =>
-          import('./features/public/pages/supplier-profile-page/supplier-profile-page').then(
-            (m) => m.SupplierProfilePage
-          )
-      },
+
       {
         path: 'auth',
         children: [
@@ -386,6 +373,13 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/admin/pages/admin-dashboard-page/admin-dashboard-page').then(
                 (m) => m.AdminDashboardPage
+              )
+          },
+          {
+            path: 'profile',
+            loadComponent: () =>
+              import('./features/admin/pages/admin-profile-page/admin-profile-page').then(
+                (m) => m.AdminProfilePage
               )
           },
           {

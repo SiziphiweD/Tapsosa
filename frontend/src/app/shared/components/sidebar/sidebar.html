@@ -7,9 +7,11 @@
 
   <ng-container *ngIf="role === 'member'">
     <a class="item" routerLink="/member/dashboard" routerLinkActive="active"><i class="bi bi-grid-1x2"></i><span>Dashboard</span></a>
-    <a class="item" routerLink="/member/suppliers" routerLinkActive="active"><i class="bi bi-building"></i><span>Find Suppliers</span></a>
-    <a class="item" routerLink="/member/requests/new" routerLinkActive="active"><i class="bi bi-plus-square"></i><span>Post Request</span></a>
+    <a class="item" routerLink="/member/requests/new" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="bi bi-plus-square"></i><span>Post Request</span></a>
+    <a class="item" routerLink="/member/requests" [class.active]="isMemberBidsActive()"><i class="bi bi-tags"></i><span>Bids</span></a>
     <a class="item" routerLink="/member/transactions" routerLinkActive="active"><i class="bi bi-cash-coin"></i><span>Transactions</span></a>
+    <a class="item" routerLink="/member/reports" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="bi bi-shield-check"></i><span>Compliance</span></a>
+    <a class="item" routerLink="/member/reports/spending" routerLinkActive="active"><i class="bi bi-bar-chart"></i><span>Reports</span></a>
   </ng-container>
 
   <ng-container *ngIf="role === 'supplier'">

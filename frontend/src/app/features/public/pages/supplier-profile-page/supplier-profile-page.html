@@ -1,12 +1,15 @@
 <div class="grid" *ngIf="supplier; else notFound">
-  <section class="card">
+  <section class="public-page">
+    <a routerLink=".." class="back-arrow">
+      <i class="bi bi-arrow-left-circle"></i> Back
+    </a>
     <div class="supplier-header">
       <div>
         <h1>{{ supplier.name }}</h1>
         <p class="muted">{{ supplier.category }} • {{ supplier.region }}</p>
       </div>
       <div class="supplier-meta">
-        <span class="badge verified" *ngIf="supplier.verified">Verified</span>
+        <span class="pill verified" *ngIf="supplier.verified">Verified</span>
         <div class="rating">
           <span
             class="star"
@@ -22,17 +25,17 @@
   </section>
 
   <section class="grid cols-3">
-    <div class="card">
+    <div class="profile-card">
       <h3>Services</h3>
       <ul>
         <li *ngFor="let svc of supplier.services">{{ svc }}</li>
       </ul>
     </div>
-    <div class="card">
+    <div class="profile-card">
       <h3>Compliance</h3>
       <p>{{ supplier.complianceSummary }}</p>
     </div>
-    <div class="card">
+    <div class="profile-card">
       <h3>Performance</h3>
       <p>{{ supplier.performanceSummary }}</p>
       <p class="muted">Ratings and contract history are illustrative for demo purposes.</p>
@@ -42,7 +45,7 @@
 </div>
 
 <ng-template #notFound>
-  <section class="card">
+  <section class="public-card">
     <h1>Supplier not found</h1>
     <p>This supplier could not be found in the public directory.</p>
     <a class="link" routerLink="/suppliers">Back to Supplier Directory</a>

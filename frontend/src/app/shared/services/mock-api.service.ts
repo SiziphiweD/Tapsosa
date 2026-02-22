@@ -11,6 +11,8 @@ export interface Job {
   requiredCertifications?: string[];
   minBudget: number;
   maxBudget: number;
+  quantity?: number;
+  attachments?: Attachment[];
   bidDeadline: string;
   startDate?: string;
   endDate?: string;
@@ -258,6 +260,13 @@ export interface Bid {
   message: string;
   days: number;
   createdAt: string;
+}
+
+export interface Attachment {
+  name: string;
+  size: number;
+  type: string;
+  dataUrl?: string;
 }
 
 export interface Escrow {

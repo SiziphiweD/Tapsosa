@@ -13,3 +13,27 @@ app-navbar {
   display: block;
   margin-left: 280px;
 }
+
+/* Member-only subtle motion */
+.shell.member .card,
+.shell.admin .card,
+.shell.supplier .card {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.shell.member .card:hover,
+.shell.admin .card:hover,
+.shell.supplier .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+}
+
+.shell.member .fade-in,
+.shell.admin .fade-in,
+.shell.supplier .fade-in {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

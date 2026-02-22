@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-register-member-page',
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './register-member-page.html',
-  styleUrl: './register-member-page.css',
+
 })
 export class RegisterMemberPage {
 
@@ -17,8 +17,13 @@ export class RegisterMemberPage {
   password = '';
   loading = false;
   error = '';
+  passwordFieldType: string = 'password';
 
   constructor(private auth: AuthService, private router: Router) {}
+
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
 
   async register() {
     this.error = '';

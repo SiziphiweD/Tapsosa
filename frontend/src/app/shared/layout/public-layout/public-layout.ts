@@ -14,10 +14,10 @@ export class PublicLayout {
   showNavbar = true;
 
   constructor(private router: Router) {
-    this.showNavbar = true;
+    this.showNavbar = this.router.url === '/';
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {
-        this.showNavbar = true;
+        this.showNavbar = e.urlAfterRedirects === '/';
       }
     });
   }

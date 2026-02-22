@@ -36,7 +36,7 @@
     <article class="card supplier" *ngFor="let s of filteredSuppliers">
       <div class="head">
         <h3>{{ s.name }}</h3>
-        <span class="badge verified" *ngIf="s.verified">Verified</span>
+        <span class="pill verified" *ngIf="s.verified">Verified</span>
       </div>
       <div class="rating">
         <span

@@ -69,3 +69,10 @@
     grid-template-columns: 1fr;
   }
 }
+ 
+.metric-big {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 8px 0 12px;
+}

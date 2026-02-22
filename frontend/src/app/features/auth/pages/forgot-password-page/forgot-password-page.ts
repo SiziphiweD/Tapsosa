@@ -7,11 +7,13 @@ import { RouterLink } from '@angular/router';
   selector: 'app-forgot-password-page',
   imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './forgot-password-page.html',
-  styleUrl: './forgot-password-page.css',
+
 })
 export class ForgotPasswordPage {
   email = '';
   sent = false;
+  loading = false;
+  error: string | null = null;
 
   requestReset() {
     this.sent = true;
