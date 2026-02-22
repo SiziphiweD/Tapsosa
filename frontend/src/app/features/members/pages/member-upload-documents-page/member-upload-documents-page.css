@@ -1,0 +1,78 @@
+.card {
+  max-width: 780px;
+  margin: 0 auto;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.12);
+}
+
+.card > h1 {
+  font-size: 24px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+}
+
+.card > .muted {
+  margin-top: 4px;
+  font-size: 14px;
+}
+
+.form {
+  display: grid;
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.form .grid {
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 13px;
+}
+
+.form input[type='file'],
+.form input[type='date'] {
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 0 12px;
+  background: var(--color-surface);
+}
+
+.upload-status {
+  font-size: 12px;
+  color: var(--color-muted);
+}
+
+.toast {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+.toast.error {
+  background: #fef2f2;
+  color: #991b1b;
+  border: 1px solid #fecaca;
+}
+
+.toast.success {
+  background: #e9f9ef;
+  color: #0f5132;
+  border: 1px solid #b7e4c7;
+}
+
+.btn {
+  margin-top: 16px;
+  width: 100%;
+}
+
+@media (max-width: 800px) {
+  .form .grid {
+    grid-template-columns: 1fr;
+  }
+}

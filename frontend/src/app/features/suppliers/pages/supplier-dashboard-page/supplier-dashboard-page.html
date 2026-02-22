@@ -1,6 +1,11 @@
 <div class="grid">
   <section class="card">
-    <p>Find jobs, submit bids, and track earnings.</p>
+    <ng-container *ngIf="isApproved; else supplierPendingCopy">
+      <p>Find jobs, submit bids, and track earnings.</p>
+    </ng-container>
+    <ng-template #supplierPendingCopy>
+      <p>Your supplier profile is pending approval. You may browse jobs but cannot submit bids yet.</p>
+    </ng-template>
   </section>
 
   <section class="metrics">

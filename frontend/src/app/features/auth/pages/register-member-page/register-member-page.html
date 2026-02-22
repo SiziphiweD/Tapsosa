@@ -32,7 +32,7 @@
         <form (ngSubmit)="register()">
             <div class="form-group">
                 <label class="form-label" for="organization">
-                    Organization Name <span class="required">*</span>
+                    Company Name <span class="required">*</span>
                 </label>
                 <div class="input-wrapper">
                     <i class="bi bi-square input-icon"></i>
@@ -44,6 +44,42 @@
                         placeholder="Company / Agency"
                         required
                         [(ngModel)]="organization"
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="registrationNumber">
+                    Registration Number <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                    <i class="bi bi-square input-icon"></i>
+                    <input
+                        type="text"
+                        id="registrationNumber"
+                        name="registrationNumber"
+                        class="form-input"
+                        placeholder="Company registration number"
+                        required
+                        [(ngModel)]="registrationNumber"
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="contactPersonName">
+                    Contact Person Name <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                    <i class="bi bi-square input-icon"></i>
+                    <input
+                        type="text"
+                        id="contactPersonName"
+                        name="contactPersonName"
+                        class="form-input"
+                        placeholder="Full name of primary contact"
+                        required
+                        [(ngModel)]="contactPersonName"
                     >
                 </div>
             </div>
@@ -62,6 +98,60 @@
                         placeholder="you@example.com"
                         required
                         [(ngModel)]="email"
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="phoneNumber">
+                    Phone Number <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                    <i class="bi bi-square input-icon"></i>
+                    <input
+                        type="tel"
+                        id="phoneNumber"
+                        name="phoneNumber"
+                        class="form-input"
+                        placeholder="e.g. +27 82 000 0000"
+                        required
+                        [(ngModel)]="phoneNumber"
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="industryType">
+                    Industry Type <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                    <i class="bi bi-square input-icon"></i>
+                    <input
+                        type="text"
+                        id="industryType"
+                        name="industryType"
+                        class="form-input"
+                        placeholder="e.g. Security services, Facilities, etc."
+                        required
+                        [(ngModel)]="industryType"
+                    >
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label" for="physicalAddress">
+                    Physical Address <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                    <i class="bi bi-square input-icon"></i>
+                    <input
+                        type="text"
+                        id="physicalAddress"
+                        name="physicalAddress"
+                        class="form-input"
+                        placeholder="Street, suburb, city"
+                        required
+                        [(ngModel)]="physicalAddress"
                     >
                 </div>
             </div>
@@ -87,7 +177,39 @@
                 </div>
             </div>
 
-            <button type="submit" class="btn btn-primary" [disabled]="loading || !organization || !email || !password">
+            <div class="form-group">
+                <label class="form-label" for="confirmPassword">
+                    Confirm Password <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                    <i class="bi bi-square input-icon"></i>
+                    <input
+                        [type]="passwordFieldType"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        class="form-input"
+                        placeholder="Re-enter your password"
+                        required
+                        [(ngModel)]="confirmPassword"
+                    >
+                </div>
+            </div>
+
+            <button
+                type="submit"
+                class="btn btn-primary"
+                [disabled]="
+                    loading
+                    || !organization
+                    || !registrationNumber
+                    || !contactPersonName
+                    || !email
+                    || !phoneNumber
+                    || !industryType
+                    || !physicalAddress
+                    || !password
+                "
+            >
                 <ng-container *ngIf="!loading">
                     Register as Member
                     <i class="bi bi-arrow-right"></i>

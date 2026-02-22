@@ -1,16 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MockApiService, Job, Activity, Bid } from '../../../../shared/services/mock-api.service';
+import { AuthService, User } from '../../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-supplier-dashboard-page',
   imports: [CommonModule, RouterLink],
   templateUrl: './supplier-dashboard-page.html',
-  styleUrls: ['./supplier-dashboard-page.css', '../../../../shared/styles/dashboard-cards.css'],
+  styleUrl: './supplier-dashboard-page.css',
 })
 export class SupplierDashboardPage {
-
   jobs: Job[] = [];
   pendingPayouts = 0;
   releasedPayouts = 0;
@@ -21,7 +21,21 @@ export class SupplierDashboardPage {
   performanceScore = 0;
   recentActivities: Array<{ label: string; amount: number | null; jobTitle: string; when: string }> = [];
 
-  constructor(private api: MockApiService) {
+  status: string = 'Pending';
+  isApproved = false;
+
+  private api = inject(MockApiService);
+  private auth = inject(AuthService);
+
+  constructor() {
+    const current = this.auth.currentUser$.value as User | null;
+    if (current) {
+      this.status = current.status || 'Pending';
+      this.isApproved = (this.status || '').toLowerCase() === 'approved';
+    }
+
+    const api = this.api;
+
     api.listJobs().subscribe((jobs) => {
       this.jobs = jobs;
       const escrows = jobs.map((j) => j.escrow).filter((e): e is NonNullable<Job['escrow']> => !!e);

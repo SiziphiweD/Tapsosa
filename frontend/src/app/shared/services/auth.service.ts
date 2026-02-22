@@ -10,6 +10,8 @@ export interface User {
   company?: string;
   passwordHash: string;
   createdAt: string;
+  status?: string;
+  statusReason?: string;
 }
 
 @Injectable({ providedIn: 'root' })
@@ -45,10 +47,13 @@ export class AuthService {
       name: name.trim(),
       passwordHash: hash,
       createdAt: new Date().toISOString(),
+      status: 'Pending',
     };
     const users = [user, ...this.users$.value];
     this.users$.next(users);
     this.saveUsers(users);
+    this.currentUser$.next(user);
+    this.saveCurrentUser(user);
     return user;
   }
 
@@ -63,6 +68,7 @@ export class AuthService {
       company: company.trim(),
       passwordHash: hash,
       createdAt: new Date().toISOString(),
+      status: 'Pending',
     };
     const users = [user, ...this.users$.value];
     this.users$.next(users);

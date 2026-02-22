@@ -1,19 +1,47 @@
 <section class="card">
   <ng-container *ngIf="job; else jobMissing">
-    <h1>View Bids</h1>
+    <h1>Bid Comparison</h1>
     <p>{{ job.title }} • {{ job.category }} • {{ job.location }}</p>
-    <p class="muted">Budget R{{ job.minBudget.toLocaleString() }} – R{{ job.maxBudget.toLocaleString() }}</p>
+    <p class="muted">
+      Review price, delivery, supplier status, and compliance before awarding a winner.
+    </p>
+    <p class="muted">
+      Budget R{{ job.minBudget.toLocaleString() }} – R{{ job.maxBudget.toLocaleString() }}
+    </p>
+    <p class="muted" *ngIf="job.attachments?.length">
+      Attachments: {{ job.attachments!.length }} file(s) uploaded with this request
+    </p>
 
     <div class="bids">
       <div class="bid" *ngFor="let b of bids">
         <div class="row">
           <div>
             <div class="title">{{ b.supplierName }}</div>
-            <div class="meta">R{{ b.price.toLocaleString() }} • {{ b.days }} days</div>
+            <div class="meta">
+              R{{ b.price.toLocaleString() }} • {{ b.days }} days delivery
+            </div>
             <div class="msg">{{ b.message }}</div>
+            <div class="meta">
+              Supplier Status:
+              <span class="chip" [ngClass]="getSupplierStatusClass(b)">
+                {{ getSupplierStatus(b) }}
+              </span>
+            </div>
+            <div class="meta">
+              Compliance:
+              <span class="chip" [ngClass]="getComplianceClass(b)">
+                {{ getComplianceLabel(b) }}
+              </span>
+            </div>
           </div>
           <div class="actions">
-            <button type="button" [disabled]="selecting" (click)="selectWinner(b.id)">Select Winner</button>
+            <button
+              type="button"
+              [disabled]="selecting || !isApproved"
+              (click)="selectWinner(b.id)"
+            >
+              Award Bid
+            </button>
           </div>
         </div>
         <div class="chip" *ngIf="isWinner(b)">Winner</div>
@@ -22,20 +50,21 @@
     </div>
 
     <div class="toast success" *ngIf="success">Winner selected</div>
+    <div class="toast warning" *ngIf="warning">{{ warning }}</div>
 
     <section class="card" *ngIf="escrow as e">
-      <h3>Fees & Escrow</h3>
+      <h3>Escrow Payment</h3>
       <div class="escrow">
         <div class="row">
-          <div>Gross</div>
+          <div>Total Amount</div>
           <div>R{{ e.gross.toLocaleString() }}</div>
         </div>
         <div class="row">
-          <div>Fee (7%)</div>
+          <div>Platform Fee (7%)</div>
           <div>R{{ e.fee.toLocaleString() }}</div>
         </div>
         <div class="row">
-          <div>Net Payout</div>
+          <div>Escrow Amount</div>
           <div>R{{ e.net.toLocaleString() }}</div>
         </div>
         <div class="row">
@@ -43,15 +72,30 @@
           <div class="chip">{{ e.status }}</div>
         </div>
         <div class="actions">
-          <button type="button" [disabled]="funding" (click)="fundEscrow()">Fund Escrow</button>
-          <button type="button" [disabled]="releasing" (click)="releaseEscrow()">Release Escrow</button>
+          <button
+            type="button"
+            [disabled]="funding || !isApproved"
+            (click)="fundEscrow()"
+          >
+            Fund Escrow
+          </button>
+          <button
+            type="button"
+            [disabled]="releasing || !isApproved"
+            (click)="releaseEscrow()"
+          >
+            Release Escrow
+          </button>
         </div>
+        <p class="muted" style="margin-top: 8px;">
+          Payment options: EFT or card (simulated for demo purposes).
+        </p>
       </div>
     </section>
   </ng-container>
 
   <ng-template #jobMissing>
-    <h1>View Bids</h1>
+    <h1>Bid Comparison</h1>
     <p class="muted">This job is no longer available or could not be found.</p>
     <p class="muted">It may have been removed, completed, or the link may be outdated.</p>
     <div class="actions" style="margin-top: 12px; display: flex; gap: 8px;">

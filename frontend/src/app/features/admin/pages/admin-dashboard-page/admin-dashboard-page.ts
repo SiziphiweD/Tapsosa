@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MockApiService, Job, Activity } from '../../../../shared/services/mock-api.service';
@@ -7,9 +7,11 @@ import { MockApiService, Job, Activity } from '../../../../shared/services/mock-
   selector: 'app-admin-dashboard-page',
   imports: [CommonModule, RouterLink],
   templateUrl: './admin-dashboard-page.html',
-  styleUrls: ['./admin-dashboard-page.css', '../../../../shared/styles/dashboard-cards.css'],
+  styleUrl: './admin-dashboard-page.css',
 })
 export class AdminDashboardPage {
+  private api = inject(MockApiService);
+
   membersCount = 0;
   suppliersCount = 0;
   activeJobsCount = 0;
@@ -19,7 +21,10 @@ export class AdminDashboardPage {
   escrowFundRate = 0;
   recent: Activity[] = [];
 
-  constructor(private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.loadUsersCounts();
     this.api.listJobs().subscribe((jobs: Job[]) => {
       const chosen = jobs.filter(j => !!j.chosenBidId);

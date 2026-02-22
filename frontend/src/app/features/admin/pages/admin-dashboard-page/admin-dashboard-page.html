@@ -4,48 +4,30 @@
     <p>Platform overview, health metrics, and latest activity.</p>
   </section>
 
-  <section class="metrics">
-    <div class="metric card">
-      <div class="icon"><i class="bi bi-people"></i></div>
-      <div class="metric-content">
-        <div class="value">{{ membersCount }}</div>
-        <div class="label">Total Members</div>
-      </div>
+  <section class="grid cols-3">
+    <div class="card stat">
+      <div class="label">Total Members</div>
+      <div class="value">{{ membersCount }}</div>
     </div>
-    <div class="metric card">
-      <div class="icon"><i class="bi bi-person-workspace"></i></div>
-      <div class="metric-content">
-        <div class="value">{{ suppliersCount }}</div>
-        <div class="label">Total Suppliers</div>
-      </div>
+    <div class="card stat">
+      <div class="label">Total Suppliers</div>
+      <div class="value">{{ suppliersCount }}</div>
     </div>
-    <div class="metric card">
-      <div class="icon"><i class="bi bi-briefcase"></i></div>
-      <div class="metric-content">
-        <div class="value">{{ activeJobsCount }}</div>
-        <div class="label">Active Jobs</div>
-      </div>
+    <div class="card stat">
+      <div class="label">Active Jobs</div>
+      <div class="value">{{ activeJobsCount }}</div>
     </div>
-    <div class="metric card">
-      <div class="icon"><i class="bi bi-cash-stack"></i></div>
-      <div class="metric-content">
-        <div class="value">R{{ totalTransactionValue.toLocaleString() }}</div>
-        <div class="label">Total Transaction Value</div>
-      </div>
+    <div class="card stat">
+      <div class="label">Total Transaction Value</div>
+      <div class="value">R{{ totalTransactionValue.toLocaleString() }}</div>
     </div>
-    <div class="metric card">
-      <div class="icon"><i class="bi bi-wallet2"></i></div>
-      <div class="metric-content">
-        <div class="value">R{{ tapsosaRevenue.toLocaleString() }}</div>
-        <div class="label">TAPSOSA Revenue (7%)</div>
-      </div>
+    <div class="card stat">
+      <div class="label">TAPSOSA Revenue (7%)</div>
+      <div class="value">R{{ tapsosaRevenue.toLocaleString() }}</div>
     </div>
-    <div class="metric card">
-      <div class="icon"><i class="bi bi-percent"></i></div>
-      <div class="metric-content">
-        <div class="value">{{ escrowFundRate }}%</div>
-        <div class="label">Escrow Fund Rate</div>
-      </div>
+    <div class="card stat">
+      <div class="label">Escrow Fund Rate</div>
+      <div class="value">{{ escrowFundRate }}%</div>
     </div>
   </section>
 

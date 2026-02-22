@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MockApiService, Activity } from '../../../../shared/services/mock-api.service';
@@ -11,10 +11,15 @@ import { MockApiService, Activity } from '../../../../shared/services/mock-api.s
   styleUrl: './admin-finance-transactions-page.css',
 })
 export class AdminFinanceTransactionsPage {
+  private api = inject(MockApiService);
+
   type: 'all' | 'bid_submitted' | 'winner_selected' | 'escrow_funded' | 'escrow_released' = 'all';
   rows: Activity[] = [];
 
-  constructor(private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.api.listActivities().subscribe((a) => (this.rows = a));
   }
 

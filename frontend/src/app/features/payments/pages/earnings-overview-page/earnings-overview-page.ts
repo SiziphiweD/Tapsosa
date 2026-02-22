@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MockApiService, Job, Bid } from '../../../../shared/services/mock-api.service';
 import { AuthService, User } from '../../../../shared/services/auth.service';
@@ -10,6 +10,9 @@ import { AuthService, User } from '../../../../shared/services/auth.service';
   styleUrl: './earnings-overview-page.css',
 })
 export class EarningsOverviewPage implements OnInit {
+  private api = inject(MockApiService);
+  private auth = inject(AuthService);
+
   totalGross = 0;
   totalFees = 0;
   netPayout = 0;
@@ -17,7 +20,10 @@ export class EarningsOverviewPage implements OnInit {
   success = false;
   user: User | null = null;
 
-  constructor(private api: MockApiService, private auth: AuthService) {}
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {}
 
   ngOnInit(): void {
     this.auth.currentUser$.subscribe((u) => {

@@ -231,9 +231,36 @@ export class MockApiService {
       } catch {}
     }
     return [
-      { id: 'bid-1', jobId: 'seed-1', supplierName: 'SecureCo', price: 22000, message: 'Experienced event team', days: 3, createdAt: new Date().toISOString() },
-      { id: 'bid-2', jobId: 'seed-1', supplierName: 'GuardPro', price: 25000, message: 'All guards PSIRA registered', days: 3, createdAt: new Date().toISOString() },
-      { id: 'bid-3', jobId: 'seed-2', supplierName: 'TechSecure', price: 18000, message: 'Fast install + warranty', days: 5, createdAt: new Date().toISOString() },
+      {
+        id: 'bid-1',
+        jobId: 'seed-1',
+        supplierId: 'seed-supplier-1',
+        supplierName: 'SecureCo',
+        price: 22000,
+        message: 'Experienced event team',
+        days: 3,
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: 'bid-2',
+        jobId: 'seed-1',
+        supplierId: 'seed-supplier-2',
+        supplierName: 'GuardPro',
+        price: 25000,
+        message: 'All guards PSIRA registered',
+        days: 3,
+        createdAt: new Date().toISOString(),
+      },
+      {
+        id: 'bid-3',
+        jobId: 'seed-2',
+        supplierId: 'seed-supplier-3',
+        supplierName: 'TechSecure',
+        price: 18000,
+        message: 'Fast install + warranty',
+        days: 5,
+        createdAt: new Date().toISOString(),
+      },
     ];
   }
  
@@ -255,6 +282,7 @@ export class MockApiService {
 export interface Bid {
   id: string;
   jobId: string;
+  supplierId: string;
   supplierName: string;
   price: number;
   message: string;

@@ -1,38 +1,24 @@
 <section class="card fade-in">
-  <h1>My Jobs</h1>
-  <div class="jobs">
-    <div class="job" *ngFor="let j of jobs">
-      <div class="row">
-        <div class="title">{{ j.title }}</div>
-        <div class="meta">{{ j.category }} • {{ j.location }}</div>
-      </div>
-      <div class="row">
-        <div>Budget</div>
-        <div>R{{ j.minBudget.toLocaleString() }} – R{{ j.maxBudget.toLocaleString() }}</div>
-      </div>
-      <div class="row" *ngIf="j.quantity">
-        <div>Quantity</div>
-        <div>{{ j.quantity }}</div>
-      </div>
-      <div class="row" *ngIf="j.attachments?.length">
-        <div>Attachments</div>
-        <div>{{ j.attachments!.length }} file(s)</div>
-      </div>
-      <div class="row">
-        <div>Compliance</div>
-        <div>
-          <span class="pill verified" *ngIf="j.verified">🟢 Verified</span>
-          <span class="pill non-compliant" *ngIf="!j.verified">🔴 Non-Compliant</span>
-        </div>
-      </div>
-      <div class="row" *ngIf="j.escrow as e">
-        <div>Escrow</div>
-        <div class="chip">{{ e.status }}</div>
-      </div>
-      <div class="actions">
-        <a class="btn" [routerLink]="['/member/requests', j.id, 'bids']">View Bids</a>
+  <h1>My Requests</h1>
+  <div class="jobs-table" *ngIf="jobs.length > 0; else noJobs">
+    <div class="table-header">
+      <div>Request ID</div>
+      <div>Category</div>
+      <div>Status</div>
+      <div>Bids</div>
+      <div>Action</div>
+    </div>
+    <div class="table-row" *ngFor="let j of jobs">
+      <div>{{ j.id }}</div>
+      <div>{{ j.category }}</div>
+      <div>{{ getStatus(j) }}</div>
+      <div>{{ bidsByJob[j.id] || 0 }}</div>
+      <div>
+        <a class="btn" [routerLink]="['/member/requests', j.id, 'bids']">View &amp; Compare</a>
       </div>
     </div>
-    <div class="muted" *ngIf="jobs.length === 0">No jobs yet</div>
   </div>
+  <ng-template #noJobs>
+    <div class="muted">No requests yet</div>
+  </ng-template>
 </section>

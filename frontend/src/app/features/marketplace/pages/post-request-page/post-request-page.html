@@ -1,13 +1,8 @@
 <section class="card">
-  <h1>Post a Service Request</h1>
-  <p>Describe the requirement so verified suppliers can bid.</p>
+  <h1>Create Procurement Request</h1>
+  <p>Submit a detailed procurement request so verified suppliers can bid.</p>
 
   <form class="form">
-    <label>
-      Title
-      <input name="title" [(ngModel)]="title" type="text" placeholder="e.g. Event Security for Corporate Function" />
-    </label>
-
     <label>
       Category
       <select name="category" [(ngModel)]="category">
@@ -22,13 +17,23 @@
     </label>
 
     <label>
-      Location
-      <input name="location" [(ngModel)]="location" type="text" placeholder="e.g. Johannesburg, Gauteng" />
+      Product / Service Description
+      <textarea
+        name="requirements"
+        [(ngModel)]="requirements"
+        rows="4"
+        placeholder="Describe the product or service you need, scope, and key requirements."
+      ></textarea>
     </label>
 
     <label>
-      Requirements & Specifications
-      <textarea name="requirements" [(ngModel)]="requirements" rows="4" placeholder="Detail scope, hours, site layout, comms, etc."></textarea>
+      Delivery Location
+      <input
+        name="location"
+        [(ngModel)]="location"
+        type="text"
+        placeholder="e.g. Johannesburg, Gauteng"
+      />
     </label>
 
     <label>
@@ -39,16 +44,16 @@
 
     <div class="grid">
       <label>
+        Quantity
+        <input name="quantity" [(ngModel)]="quantity" type="number" placeholder="e.g. 50" />
+      </label>
+      <label>
         Min budget
         <input name="minBudget" [(ngModel)]="minBudget" type="number" placeholder="e.g. 20000" />
       </label>
       <label>
         Max budget
         <input name="maxBudget" [(ngModel)]="maxBudget" type="number" placeholder="e.g. 40000" />
-      </label>
-      <label>
-        Quantity
-        <input name="quantity" [(ngModel)]="quantity" type="number" placeholder="e.g. 50" />
       </label>
     </div>
 
@@ -68,7 +73,12 @@
       </label>
       <label>
         Duration (days)
-        <input name="durationDays" [(ngModel)]="durationDays" type="number" placeholder="e.g. 3" />
+        <input
+          name="durationDays"
+          [(ngModel)]="durationDays"
+          type="number"
+          placeholder="e.g. 3"
+        />
       </label>
     </div>
 
@@ -78,16 +88,18 @@
     </label>
 
     <div class="errors">
-      <div *ngIf="title.trim().length === 0">Title is required.</div>
-      <div *ngIf="location.trim().length === 0">Location is required.</div>
+      <div *ngIf="requirements.trim().length === 0">Description is required.</div>
+      <div *ngIf="location.trim().length === 0">Delivery location is required.</div>
       <div *ngIf="!minBudget || !maxBudget">Budget range is required.</div>
       <div *ngIf="minBudget && maxBudget && minBudget > maxBudget">Min budget must be less than or equal to max budget.</div>
       <div *ngIf="!quantity || quantity <= 0">Quantity is required.</div>
       <div *ngIf="!bidDeadline">Bid deadline is required.</div>
+      <div *ngIf="deadlineInPast">Bid deadline must be a future date.</div>
       <div *ngIf="datesInvalid">Start date must be before end date.</div>
+      <div *ngIf="attachments.length === 0">At least one attachment is required.</div>
     </div>
 
-    <button type="button" [disabled]="!isValid" (click)="publish()">Publish Request</button>
+    <button type="button" [disabled]="!isValid" (click)="publish()">Create Request</button>
   </form>
 
   <div class="toast success" *ngIf="submitted">

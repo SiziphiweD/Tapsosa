@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService, User } from '../../services/auth.service';
@@ -10,11 +10,20 @@ import { AuthService, User } from '../../services/auth.service';
   styleUrl: './sidebar.css',
 })
 export class Sidebar {
+  private router = inject(Router);
+  private auth = inject(AuthService);
+
   role: 'member' | 'supplier' | 'admin' | null = null;
   user: User | null = null;
   year = new Date().getFullYear();
 
-  constructor(private router: Router, private auth: AuthService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
+    const router = this.router;
+    const auth = this.auth;
+
     this.setRole(router.url);
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {

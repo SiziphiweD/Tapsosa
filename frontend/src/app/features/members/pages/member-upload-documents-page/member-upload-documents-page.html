@@ -1,0 +1,123 @@
+<section class="card">
+  <h1>Compliance Documents</h1>
+  <p class="muted">
+    Upload the required compliance documents as PDF files and provide their expiry dates before
+    submitting for review.
+  </p>
+
+  <form class="form" (ngSubmit)="submitForReview()">
+    <div class="grid cols-2">
+      <label>
+        Business registration certificate (PDF)
+        <input
+          type="file"
+          accept="application/pdf"
+          (change)="onFileSelected($event, 'businessRegistrationCertificate')"
+        />
+        <span class="upload-status">
+          {{ businessRegistrationCertificate ? ('Uploaded: ' + businessRegistrationCertificate.name) : 'Not uploaded' }}
+        </span>
+      </label>
+      <label>
+        Expiry date
+        <input
+          type="date"
+          [(ngModel)]="businessRegistrationCertificateExpiry"
+          name="businessRegistrationCertificateExpiry"
+        />
+      </label>
+
+      <label>
+        Tax clearance certificate (PDF)
+        <input
+          type="file"
+          accept="application/pdf"
+          (change)="onFileSelected($event, 'taxClearanceCertificate')"
+        />
+        <span class="upload-status">
+          {{ taxClearanceCertificate ? ('Uploaded: ' + taxClearanceCertificate.name) : 'Not uploaded' }}
+        </span>
+      </label>
+      <label>
+        Expiry date
+        <input
+          type="date"
+          [(ngModel)]="taxClearanceCertificateExpiry"
+          name="taxClearanceCertificateExpiry"
+        />
+      </label>
+
+      <label>
+        Industry compliance certificate (PDF)
+        <input
+          type="file"
+          accept="application/pdf"
+          (change)="onFileSelected($event, 'industryComplianceCertificate')"
+        />
+        <span class="upload-status">
+          {{ industryComplianceCertificate ? ('Uploaded: ' + industryComplianceCertificate.name) : 'Not uploaded' }}
+        </span>
+      </label>
+      <label>
+        Expiry date
+        <input
+          type="date"
+          [(ngModel)]="industryComplianceCertificateExpiry"
+          name="industryComplianceCertificateExpiry"
+        />
+      </label>
+
+      <label>
+        Director ID copy (PDF)
+        <input
+          type="file"
+          accept="application/pdf"
+          (change)="onFileSelected($event, 'directorIdCopy')"
+        />
+        <span class="upload-status">
+          {{ directorIdCopy ? ('Uploaded: ' + directorIdCopy.name) : 'Not uploaded' }}
+        </span>
+      </label>
+      <label>
+        Expiry date
+        <input
+          type="date"
+          [(ngModel)]="directorIdCopyExpiry"
+          name="directorIdCopyExpiry"
+        />
+      </label>
+
+      <label>
+        Proof of address (PDF)
+        <input
+          type="file"
+          accept="application/pdf"
+          (change)="onFileSelected($event, 'proofOfAddress')"
+        />
+        <span class="upload-status">
+          {{ proofOfAddress ? ('Uploaded: ' + proofOfAddress.name) : 'Not uploaded' }}
+        </span>
+      </label>
+      <label>
+        Expiry date
+        <input
+          type="date"
+          [(ngModel)]="proofOfAddressExpiry"
+          name="proofOfAddressExpiry"
+        />
+      </label>
+    </div>
+
+    <div *ngIf="error" class="toast error">
+      {{ error }}
+    </div>
+
+    <div *ngIf="successMessage" class="toast success">
+      {{ successMessage }}
+    </div>
+
+    <button type="submit" class="btn primary" [disabled]="loading">
+      {{ loading ? 'Submitting…' : 'Submit for review' }}
+    </button>
+  </form>
+</section>

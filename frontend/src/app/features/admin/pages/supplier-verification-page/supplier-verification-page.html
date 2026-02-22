@@ -1,4 +1,74 @@
 <section class="card">
   <h1>Supplier Verification</h1>
   <p>Review uploaded documents and manage verification status.</p>
+
+  <div class="actions">
+    <input
+      type="text"
+      [(ngModel)]="query"
+      placeholder="Search by name, email or company"
+    />
+    <div class="muted">{{ filtered.length }} results</div>
+  </div>
+
+  <div class="table">
+    <div class="row head">
+      <div>Supplier</div>
+      <div>Company</div>
+      <div>Status</div>
+      <div>Docs</div>
+      <div>Last Updated</div>
+      <div></div>
+    </div>
+
+    <div class="row" *ngFor="let r of filtered">
+      <div>
+        <div class="name">{{ r.name }}</div>
+        <div class="email muted">{{ r.email }}</div>
+      </div>
+      <div>{{ r.company || '—' }}</div>
+      <div>
+        <span class="status-badge" [ngClass]="statusClass(r.status)">{{ r.status || 'Pending' }}</span>
+      </div>
+      <div>
+        <div class="doc-pill" *ngFor="let d of r.documents">
+          <span class="doc-name">{{ d.name }}</span>
+          <span class="doc-status" [ngClass]="{ uploaded: d.status === 'Uploaded' }">
+            {{ d.status }}
+          </span>
+        </div>
+        <div class="muted small">Completeness: {{ r.completeness }}%</div>
+      </div>
+      <div>{{ r.createdAt | date: 'mediumDate' }}</div>
+      <div class="actions-cell">
+        <button type="button" class="btn-approve" (click)="approve(r.id)">Approve</button>
+        <button type="button" class="btn-reject" (click)="openReject(r.id)">Reject</button>
+      </div>
+    </div>
+
+    <div class="muted" *ngIf="filtered.length === 0">No suppliers awaiting verification.</div>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="rejectingId">
+    <div class="modal">
+      <h3>Reject Supplier</h3>
+      <p class="muted">Provide a reason. The supplier will see this on their side.</p>
+      <textarea
+        [(ngModel)]="rejectReason"
+        rows="4"
+        placeholder="Type rejection reason..."
+      ></textarea>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" (click)="closeReject()">Cancel</button>
+        <button
+          type="button"
+          class="btn-danger"
+          [disabled]="!rejectReason.trim()"
+          (click)="confirmReject()"
+        >
+          Reject Supplier
+        </button>
+      </div>
+    </div>
+  </div>
 </section>

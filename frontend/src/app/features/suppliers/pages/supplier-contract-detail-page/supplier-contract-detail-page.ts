@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { MockApiService, Job } from '../../../../shared/services/mock-api.service';
@@ -10,9 +10,15 @@ import { MockApiService, Job } from '../../../../shared/services/mock-api.servic
   styleUrl: './supplier-contract-detail-page.css',
 })
 export class SupplierContractDetailPage {
+  private route = inject(ActivatedRoute);
+  private api = inject(MockApiService);
+
   job?: Job;
 
-  constructor(private route: ActivatedRoute, private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     const id = this.route.snapshot.paramMap.get('jobId')!;
     this.api.listJobs().subscribe((jobs) => {
       this.job = jobs.find((j) => j.id === id);

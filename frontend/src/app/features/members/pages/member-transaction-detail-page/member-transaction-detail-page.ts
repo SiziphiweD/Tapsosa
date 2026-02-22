@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { MockApiService, Job, Escrow, Activity, Bid } from '../../../../shared/services/mock-api.service';
@@ -17,12 +17,22 @@ type ActivityRow = {
   styleUrl: './member-transaction-detail-page.css',
 })
 export class MemberTransactionDetailPage {
+  private route = inject(ActivatedRoute);
+  private api = inject(MockApiService);
+
   job: Job | undefined;
   escrow: Escrow | null = null;
   winningBid: Bid | null = null;
   activities: ActivityRow[] = [];
+  supplierStatus: string | null = null;
+  complianceLabel: string | null = null;
+  supplierStatusClass = '';
+  complianceClass = '';
 
-  constructor(private route: ActivatedRoute, private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     const id = this.route.snapshot.paramMap.get('transactionId');
     if (!id) {
       return;
@@ -37,7 +47,12 @@ export class MemberTransactionDetailPage {
     });
 
     this.api.listActivities().subscribe((acts: Activity[]) => {
-      const filtered = acts.filter((a) => a.jobId === id);
+      const filtered = acts
+        .filter((a) => a.jobId === id)
+        .sort(
+          (a, b) =>
+            new Date(b.timestamp).getTime() - new Date(a.timestamp).getTime()
+        );
       this.activities = filtered.map((a) => ({
         id: a.id,
         label:
@@ -65,13 +80,91 @@ export class MemberTransactionDetailPage {
     return 'Payment Released to Supplier';
   }
 
+  get lastEvent(): ActivityRow | null {
+    if (this.activities.length === 0) return null;
+    return this.activities[0];
+  }
+
   private loadBid(job: Job) {
     if (!job.chosenBidId) {
       this.winningBid = null;
+      this.supplierStatus = null;
+      this.complianceLabel = null;
+      this.supplierStatusClass = '';
+      this.complianceClass = '';
       return;
     }
     this.api.listBids(job.id).subscribe((bids) => {
-      this.winningBid = bids.find((b) => b.id === job.chosenBidId) ?? null;
+      const bid = bids.find((b) => b.id === job.chosenBidId) ?? null;
+      this.winningBid = bid;
+      if (!bid || !bid.supplierId) {
+        this.supplierStatus = null;
+        this.complianceLabel = null;
+        this.supplierStatusClass = '';
+        this.complianceClass = '';
+        return;
+      }
+
+      let users: any[] = [];
+      try {
+        const rawUsers = localStorage.getItem('tapsosa.users');
+        users = rawUsers ? JSON.parse(rawUsers) : [];
+      } catch {
+        users = [];
+      }
+
+      const user = users.find((u) => u.id === bid.supplierId);
+      const status = (user?.status || 'Pending') as string;
+      this.supplierStatus = status;
+      const meta = this.computeComplianceMeta(bid.supplierId);
+      this.complianceLabel = `${meta.label} • ${meta.completeness}%`;
+      this.supplierStatusClass = this.mapStatusClass(status);
+      this.complianceClass = this.mapComplianceClass(meta.label);
     });
+  }
+
+  private computeComplianceMeta(supplierId: string): {
+    label: string;
+    completeness: number;
+  } {
+    const key = `tapsosa.compliance.${supplierId}`;
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) {
+        return { label: 'No documents', completeness: 0 };
+      }
+      const docs: Array<{ status?: string }> = JSON.parse(raw);
+      if (!Array.isArray(docs) || docs.length === 0) {
+        return { label: 'No documents', completeness: 0 };
+      }
+      const total = docs.length;
+      const uploaded = docs.filter((d) => d.status === 'Uploaded').length;
+      const completeness = total > 0 ? Math.round((uploaded / total) * 100) : 0;
+      let label = 'No documents';
+      if (uploaded === 0) {
+        label = 'No documents';
+      } else if (uploaded === total) {
+        label = 'Complete';
+      } else {
+        label = 'Partial';
+      }
+      return { label, completeness };
+    } catch {
+      return { label: 'Unknown', completeness: 0 };
+    }
+  }
+
+  private mapStatusClass(status: string): string {
+    const value = status.toLowerCase();
+    if (value === 'approved') return 'chip-status-approved';
+    if (value === 'rejected') return 'chip-status-rejected';
+    if (value === 'pending') return 'chip-status-pending';
+    return '';
+  }
+
+  private mapComplianceClass(label: string): string {
+    if (label === 'Complete') return 'chip-compliance-complete';
+    if (label === 'Partial') return 'chip-compliance-partial';
+    return 'chip-compliance-none';
   }
 }

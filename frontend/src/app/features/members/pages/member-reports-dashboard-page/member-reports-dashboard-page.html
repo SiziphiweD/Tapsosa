@@ -1,22 +1,124 @@
 <section class="card">
-  <h1>Procurement Dashboard</h1>
-  <div class="grid cols-3">
-    <div class="card">
-      <h3>Jobs Posted vs Completed</h3>
-      <p>Total Jobs: <strong>{{ totalJobs }}</strong></p>
-      <p>Completed Jobs: <strong>{{ completedJobs }}</strong></p>
-      <p>Completion Rate: <strong>{{ completionRate }}%</strong></p>
+  <h1>Compliance Overview</h1>
+  <ng-container *ngIf="user; else noUser">
+    <div class="status-row">
+      <span class="status-badge" [ngClass]="complianceStatus.toLowerCase()">
+        {{ complianceStatus }}
+      </span>
+      <div class="status-copy">
+        <p class="muted" *ngIf="complianceStatus === 'Pending'">
+          Your documents have not been submitted for review yet. Upload all required documents to start
+          the verification process.
+        </p>
+        <p class="muted" *ngIf="complianceStatus === 'Under Review'">
+          Your documents are under review. You may browse the platform but cannot submit requests until
+          approved.
+        </p>
+        <p class="muted" *ngIf="complianceStatus === 'Approved'">
+          Your account is compliant. You can create procurement requests and transact via escrow.
+        </p>
+        <p class="muted" *ngIf="complianceStatus === 'Rejected'">
+          Your last submission was rejected. Review the feedback on the verification screen and submit
+          updated documents.
+        </p>
+        <p class="muted meta" *ngIf="lastSubmissionDate">
+          Last submission: {{ lastSubmissionDate | date: 'medium' }}
+        </p>
+      </div>
     </div>
-    <div class="card">
-      <h3>Average Time to Fill Jobs</h3>
-      <p *ngIf="averageFillDays !== null">Approx. <strong>{{ averageFillDays }}</strong> days from first bid to award.</p>
-      <p *ngIf="averageFillDays === null" class="muted">Not enough awarded jobs to calculate yet.</p>
+    <div class="summary-metrics">
+      <div class="metric-card">
+        <div class="label">Documents Uploaded</div>
+        <div class="value">{{ documentsUploaded }} / {{ totalRequiredDocs }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Expiring Soon</div>
+        <div class="value">{{ expiringSoonCount }}</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Expired</div>
+        <div class="value">{{ expiredCount }}</div>
+      </div>
     </div>
-    <div class="card">
-      <h3>Supplier Performance</h3>
-      <p>Suppliers used: <strong>{{ suppliersUsed }}</strong></p>
-      <p *ngIf="topSupplier">Top supplier by spend: <strong>{{ topSupplier }}</strong></p>
-      <p *ngIf="!topSupplier" class="muted">No spend recorded yet.</p>
+  </ng-container>
+  <ng-template #noUser>
+    <p class="muted">Sign in as a member to view compliance status and documents.</p>
+  </ng-template>
+</section>
+
+<section class="card" *ngIf="user">
+  <h3>Compliance Documents</h3>
+  <div class="docs-table">
+    <div class="table-header">
+      <div>Document</div>
+      <div>Status</div>
+      <div>Expiry Date</div>
+      <div>Last Updated</div>
     </div>
+    <div class="table-row" *ngFor="let d of docs">
+      <div>{{ d.name }}</div>
+      <div>
+        <span
+          class="chip"
+          [ngClass]="{
+            'chip-ok': d.status === 'Uploaded' && !isExpired(d),
+            'chip-warn': d.status !== 'Uploaded' || isExpired(d)
+          }"
+        >
+          {{ d.status }}
+        </span>
+      </div>
+      <div>
+        <ng-container *ngIf="d.expiry; else noExpiry">
+          <span
+            [ngClass]="{
+              'text-danger': isExpired(d),
+              'text-warning': !isExpired(d) && isExpiringSoon(d)
+            }"
+          >
+            {{ d.expiry | date: 'mediumDate' }}
+          </span>
+        </ng-container>
+        <ng-template #noExpiry>
+          <span class="muted">Not set</span>
+        </ng-template>
+      </div>
+      <div>
+        <ng-container *ngIf="d.uploadedAt; else neverUpdated">
+          {{ d.uploadedAt | date: 'mediumDate' }}
+        </ng-container>
+        <ng-template #neverUpdated>
+          <span class="muted">Never</span>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="card" *ngIf="user">
+  <h3>Compliance Alerts</h3>
+  <p class="muted" *ngIf="expiredCount === 0 && expiringSoonCount === 0">
+    No compliance alerts right now. Keep your documents up to date to remain compliant.
+  </p>
+  <ul class="alerts-list" *ngIf="expiredCount > 0 || expiringSoonCount > 0">
+    <li *ngFor="let d of docs">
+      <ng-container *ngIf="d.expiry">
+        <span *ngIf="isExpired(d)">
+          <strong>{{ d.name }}</strong> has expired. Upload an updated document to restore compliance.
+        </span>
+        <span *ngIf="!isExpired(d) && isExpiringSoon(d)">
+          <strong>{{ d.name }}</strong> is expiring soon ({{ d.expiry | date: 'mediumDate' }}). Prepare a
+          renewed document.
+        </span>
+      </ng-container>
+    </li>
+  </ul>
+</section>
+
+<section class="card" *ngIf="user">
+  <h3>Next Steps</h3>
+  <div class="actions-row">
+    <a class="btn primary" routerLink="/member/upload-documents">Update Documents</a>
+    <a class="link" routerLink="/member/verification-pending">View Verification Status</a>
   </div>
 </section>

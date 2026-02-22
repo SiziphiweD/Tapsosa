@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { UserPrefsService } from '../../../../shared/services/user-prefs.service';
@@ -10,6 +10,8 @@ import { UserPrefsService } from '../../../../shared/services/user-prefs.service
   styleUrl: './member-notification-settings-page.css',
 })
 export class MemberNotificationSettingsPage {
+  private prefs = inject(UserPrefsService);
+
   email = true;
   sms = false;
   push = false;
@@ -22,7 +24,10 @@ export class MemberNotificationSettingsPage {
     system: true,
   };
 
-  constructor(private prefs: UserPrefsService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     const p = this.prefs.prefs;
     this.email = p.channels.email;
     this.sms = p.channels.sms;

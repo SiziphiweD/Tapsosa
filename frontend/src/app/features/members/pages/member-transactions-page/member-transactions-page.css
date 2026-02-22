@@ -36,7 +36,7 @@ section.card {
 
 .row {
   display: grid;
-  grid-template-columns: 1.6fr 1fr 120px 120px 1.4fr 80px;
+  grid-template-columns: 1.6fr 1fr 100px 100px 1.4fr 1.6fr 80px;
   gap: 12px;
   align-items: center;
   padding: 10px 12px;
@@ -74,6 +74,42 @@ section.card {
   color: #1b7a3e;
 }
 
+.supplier-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.supplier-name {
+  font-weight: 600;
+}
+
+.supplier-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 6px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: #eef1f4;
+}
+
+.chip-status {
+  background: #e0f2fe;
+  color: #075985;
+}
+
+.chip-compliance {
+  background: #ecfdf3;
+  color: #166534;
+}
+
 .link {
   font-weight: 700;
   color: var(--color-primary);
@@ -90,15 +126,17 @@ section.card {
   }
 
   .row {
-    grid-template-columns: 1.5fr 1fr 100px;
-    grid-template-rows: auto auto;
+    grid-template-columns: 1.5fr 1fr 80px;
+    grid-template-rows: auto auto auto;
     grid-template-areas:
       'job job job'
-      'status gross net';
+      'status gross net'
+      'supplier supplier supplier';
   }
 
   .row > :nth-child(1) { grid-area: job; }
   .row > :nth-child(2) { grid-area: status; }
   .row > :nth-child(3) { grid-area: gross; }
   .row > :nth-child(4) { grid-area: net; }
+  .row > :nth-child(5) { grid-area: supplier; }
 }

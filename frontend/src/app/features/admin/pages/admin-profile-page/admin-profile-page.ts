@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { AuthService, User } from '../../../../shared/services/auth.service';
@@ -10,6 +10,8 @@ import { AuthService, User } from '../../../../shared/services/auth.service';
   styleUrl: './admin-profile-page.css',
 })
 export class AdminProfilePage {
+  private auth = inject(AuthService);
+
   user: User | null = null;
   model = {
     name: '',
@@ -17,7 +19,10 @@ export class AdminProfilePage {
   };
   saved = false;
 
-  constructor(private auth: AuthService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.auth.currentUser$.subscribe((u) => {
       this.user = u;
       if (u) {

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MockApiService, Job, Activity } from '../../../../shared/services/mock-api.service';
@@ -13,6 +13,8 @@ type Report = { id: string; name: string; dataset: string; createdAt: string };
   styleUrl: './admin-analytics-reports-page.css',
 })
 export class AdminAnalyticsReportsPage {
+  private api = inject(MockApiService);
+
   usersTotal = 0;
   suppliersTotal = 0;
   membersTotal = 0;
@@ -27,7 +29,10 @@ export class AdminAnalyticsReportsPage {
   dataset = 'transactions';
   savedReports: Report[] = [];
 
-  constructor(private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.loadUsers();
     this.api.listJobs().subscribe((jobs: Job[]) => {
       this.jobsTotal = jobs.length;

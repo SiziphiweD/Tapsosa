@@ -1,7 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MockApiService, Attachment } from '../../../../shared/services/mock-api.service';
+import { AuthService, User } from '../../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-post-request-page',
@@ -10,6 +12,10 @@ import { MockApiService, Attachment } from '../../../../shared/services/mock-api
   styleUrl: './post-request-page.css',
 })
 export class PostRequestPage {
+  private api = inject(MockApiService);
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
 
   title = '';
   category = 'Uniforms & PPE';
@@ -25,16 +31,33 @@ export class PostRequestPage {
   durationDays: number | null = null;
   attachments: Attachment[] = [];
   submitted = false;
+  isApproved = false;
 
-  constructor(private api: MockApiService) {}
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
+    const current = this.auth.currentUser$.value as User | null;
+    if (current) {
+      const status = current.status || 'Pending';
+      this.isApproved = status.toLowerCase() === 'approved';
+    }
+
+    if (!this.isApproved) {
+      this.router.navigateByUrl('/member/verification-pending');
+      return;
+    }
+  }
 
   get isValid() {
     const required =
       this.title.trim().length > 0 &&
       this.location.trim().length > 0 &&
+      this.requirements.trim().length > 0 &&
       !!this.minBudget &&
       !!this.maxBudget &&
-      !!this.bidDeadline;
+      !!this.bidDeadline &&
+      this.attachments.length > 0;
     const budgetOk =
       this.minBudget !== null &&
       this.maxBudget !== null &&
@@ -47,12 +70,22 @@ export class PostRequestPage {
         this.endDate !== '' &&
         new Date(this.startDate).getTime() <= new Date(this.endDate).getTime());
     const qtyOk = this.quantity !== null && this.quantity > 0;
-    return required && budgetOk && datesOk && qtyOk;
+    const deadlineOk = !this.deadlineInPast;
+    return required && budgetOk && datesOk && qtyOk && deadlineOk;
   }
 
   get datesInvalid() {
     if (!this.startDate || !this.endDate) return false;
     return new Date(this.startDate).getTime() > new Date(this.endDate).getTime();
+  }
+
+  get deadlineInPast() {
+    if (!this.bidDeadline) return false;
+    const d = new Date(this.bidDeadline);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    d.setHours(0, 0, 0, 0);
+    return d.getTime() <= today.getTime();
   }
  
   async onFilesSelected(files: FileList | null) {

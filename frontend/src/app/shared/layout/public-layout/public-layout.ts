@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
 import { NgIf } from '@angular/common';
 
@@ -11,9 +11,16 @@ import { Navbar } from '../../components/navbar/navbar';
   styleUrl: './public-layout.css',
 })
 export class PublicLayout {
+  private router = inject(Router);
+
   showNavbar = true;
 
-  constructor(private router: Router) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
+    const router = this.router;
+
     this.showNavbar = this.router.url === '/';
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {

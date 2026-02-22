@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MockApiService, Bid, Job } from '../../../../shared/services/mock-api.service';
@@ -19,10 +19,15 @@ type BidRow = {
   styleUrl: './supplier-bids-page.css',
 })
 export class SupplierBidsPage {
+  private api = inject(MockApiService);
+
   rows: BidRow[] = [];
   tab: 'Active' | 'Accepted' | 'Rejected' | 'Drafts' = 'Active';
 
-  constructor(private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.api.listAllBids().subscribe((bids: Bid[]) => {
       this.api.listJobs().subscribe((jobs: Job[]) => {
         this.rows = bids.map((b) => {

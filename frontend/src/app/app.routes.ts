@@ -89,11 +89,25 @@ export const routes: Routes = [
         path: 'member',
         children: [
           {
+            path: 'verification-pending',
+            loadComponent: () =>
+              import(
+                './features/members/pages/member-verification-pending-page/member-verification-pending-page'
+              ).then((m) => m.MemberVerificationPendingPage),
+          },
+          {
             path: 'dashboard',
             loadComponent: () =>
               import('./features/members/pages/member-dashboard-page/member-dashboard-page').then(
                 (m) => m.MemberDashboardPage
               )
+          },
+          {
+            path: 'upload-documents',
+            loadComponent: () =>
+              import(
+                './features/members/pages/member-upload-documents-page/member-upload-documents-page'
+              ).then((m) => m.MemberUploadDocumentsPage),
           },
           {
             path: 'suppliers',

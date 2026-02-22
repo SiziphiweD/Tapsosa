@@ -6,16 +6,50 @@
   </div>
   <div class="table">
     <div class="row head">
-      <div>Name</div><div>Email</div><div>Joined</div><div></div>
+      <div>Name</div><div>Email</div><div>Joined</div><div>Status</div><div></div>
     </div>
     <div class="row" *ngFor="let r of filtered">
       <div>{{ r.name }}</div>
       <div>{{ r.email }}</div>
       <div>{{ r.createdAt | date: 'mediumDate' }}</div>
       <div>
-        <button type="button" (click)="suspend(r.id)">{{ r.suspended ? 'Reinstate' : 'Suspend' }}</button>
+        <span class="status-badge" [ngClass]="statusClass(r.status)">{{ r.status || 'Pending' }}</span>
+      </div>
+      <div class="user-actions">
+        <button type="button" class="icon-btn accept" (click)="setStatus(r.id, 'Approved')">
+          <i class="bi bi-check-lg"></i>
+        </button>
+        <button type="button" class="icon-btn reject" (click)="openReject(r.id)">
+          <i class="bi bi-x-lg"></i>
+        </button>
+        <button type="button" class="icon-btn view" (click)="view(r.id)">
+          <i class="bi bi-eye"></i>
+        </button>
       </div>
     </div>
     <div class="muted" *ngIf="filtered.length===0">No members found</div>
+  </div>
+
+  <div class="modal-backdrop" *ngIf="rejectingId">
+    <div class="modal">
+      <h3>Reject Member</h3>
+      <p class="muted">Provide a reason. The member will see this on their side.</p>
+      <textarea
+        [(ngModel)]="rejectReason"
+        rows="4"
+        placeholder="Type rejection reason..."
+      ></textarea>
+      <div class="modal-actions">
+        <button type="button" class="btn-secondary" (click)="closeReject()">Cancel</button>
+        <button
+          type="button"
+          class="btn-danger"
+          [disabled]="!rejectReason.trim()"
+          (click)="confirmReject()"
+        >
+          Reject Member
+        </button>
+      </div>
+    </div>
   </div>
 </section>

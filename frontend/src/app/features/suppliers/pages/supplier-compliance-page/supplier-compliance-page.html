@@ -1,6 +1,9 @@
 <section class="card">
   <h1>Compliance Documents</h1>
-  <p class="muted">Upload documents for verification (PSiRA, tax clearance, insurance, certifications).</p>
+  <p class="muted">
+    Upload core regulatory and onboarding documents (PSiRA, tax, B-BBEE, insurance, CIPC, bank letter, IDs,
+    certifications) for verification.
+  </p>
 
   <div *ngIf="user; else noUser" class="grid cols-3 compliance-grid">
     <div class="card compliance-card" *ngFor="let d of docs">

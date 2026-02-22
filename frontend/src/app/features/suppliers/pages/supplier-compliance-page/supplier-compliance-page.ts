@@ -1,8 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService, User } from '../../../../shared/services/auth.service';
 
-type ComplianceKey = 'psira' | 'tax' | 'insurance' | 'certifications';
+type ComplianceKey =
+  | 'psira'
+  | 'tax'
+  | 'bee'
+  | 'insurance'
+  | 'cipc'
+  | 'bank'
+  | 'id'
+  | 'certifications';
+
 type ComplianceStatus = 'Pending' | 'Uploaded';
 
 type ComplianceDoc = {
@@ -20,10 +29,14 @@ type ComplianceDoc = {
   styleUrl: './supplier-compliance-page.css',
 })
 export class SupplierCompliancePage {
+  private auth = inject(AuthService);
+
   user: User | null = null;
   docs: ComplianceDoc[] = [];
 
-  constructor(private auth: AuthService) {
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.auth.currentUser$.subscribe((u) => {
       this.user = u;
       this.docs = this.loadDocs(u?.id);
@@ -47,10 +60,14 @@ export class SupplierCompliancePage {
 
   private baseDocs(): ComplianceDoc[] {
     return [
-      { key: 'psira', name: 'PSiRA', status: 'Pending' },
-      { key: 'tax', name: 'Tax Clearance', status: 'Pending' },
-      { key: 'insurance', name: 'Insurance', status: 'Pending' },
-      { key: 'certifications', name: 'Other Certifications', status: 'Pending' },
+      { key: 'psira', name: 'PSiRA Registration', status: 'Pending' },
+      { key: 'tax', name: 'Tax Clearance / SARS PIN', status: 'Pending' },
+      { key: 'bee', name: 'B-BBEE Certificate', status: 'Pending' },
+      { key: 'insurance', name: 'Public Liability Insurance', status: 'Pending' },
+      { key: 'cipc', name: 'CIPC / Company Registration', status: 'Pending' },
+      { key: 'bank', name: 'Bank Confirmation Letter', status: 'Pending' },
+      { key: 'id', name: 'Director ID Documents', status: 'Pending' },
+      { key: 'certifications', name: 'Other Industry Certifications', status: 'Pending' },
     ];
   }
 

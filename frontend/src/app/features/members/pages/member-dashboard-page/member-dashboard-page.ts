@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MockApiService, Job, Activity, Bid } from '../../../../shared/services/mock-api.service';
+import { AuthService, User } from '../../../../shared/services/auth.service';
 
 @Component({
   selector: 'app-member-dashboard-page',
   imports: [CommonModule, RouterLink],
   templateUrl: './member-dashboard-page.html',
-  styleUrls: ['./member-dashboard-page.css', '../../../../shared/styles/dashboard-cards.css'],
+  styleUrl: './member-dashboard-page.css',
 })
 export class MemberDashboardPage {
 
@@ -24,7 +25,21 @@ export class MemberDashboardPage {
   activeJobs = 0;
   recentActivities: Array<{ label: string; amount: number | null; jobTitle: string; when: string }> = [];
 
-  constructor(private api: MockApiService) {
+  status: string = 'Pending';
+  isApproved = false;
+
+  private api = inject(MockApiService);
+  private auth = inject(AuthService);
+
+  constructor() {
+    const current = this.auth.currentUser$.value as User | null;
+    if (current) {
+      this.status = current.status || 'Pending';
+      this.isApproved = (this.status || '').toLowerCase() === 'approved';
+    }
+
+    const api = this.api;
+
     api.listJobs().subscribe((jobs) => {
       this.jobs = jobs;
       const escrows = jobs.map((j) => j.escrow).filter((e): e is NonNullable<Job['escrow']> => !!e);
@@ -61,6 +76,7 @@ export class MemberDashboardPage {
             when: new Date(a.timestamp).toLocaleString(),
           };
         });
+      this.refreshComplianceAlerts();
     });
   }
 
@@ -75,5 +91,81 @@ export class MemberDashboardPage {
         .map((j) => j.id)
     );
     this.bidsCount = this.bids.filter((b) => pendingJobIds.has(b.jobId)).length;
+  }
+
+  private refreshComplianceAlerts() {
+    if (this.jobs.length === 0) {
+      this.complianceAlerts = 0;
+      return;
+    }
+
+    let nonCompliantCount = 0;
+
+    try {
+      const rawJobs = localStorage.getItem('tapsosa.jobs');
+      const jobsStorage: any[] = rawJobs ? JSON.parse(rawJobs) : [];
+      const rawBids = localStorage.getItem('tapsosa.bids');
+      const bidsStorage: any[] = rawBids ? JSON.parse(rawBids) : [];
+      const rawUsers = localStorage.getItem('tapsosa.users');
+      const usersStorage: any[] = rawUsers ? JSON.parse(rawUsers) : [];
+
+      const releasedJobIds = new Set(
+        this.jobs.filter((j) => j.escrow && j.escrow.status === 'released').map((j) => j.id)
+      );
+
+      releasedJobIds.forEach((jobId) => {
+        const job = jobsStorage.find((j) => j.id === jobId);
+        if (!job || !job.chosenBidId) {
+          return;
+        }
+        const bid = bidsStorage.find((b) => b.id === job.chosenBidId);
+        if (!bid) {
+          return;
+        }
+        const user = usersStorage.find((u) => u.id === bid.supplierId);
+        const status = (user?.status || 'Pending') as string;
+        const compliance = this.computeComplianceMeta(bid.supplierId);
+        const isFullyCompliant =
+          status.toLowerCase() === 'approved' && compliance.label === 'Complete';
+        if (!isFullyCompliant) {
+          nonCompliantCount += 1;
+        }
+      });
+    } catch {
+      nonCompliantCount = 0;
+    }
+
+    this.complianceAlerts = nonCompliantCount;
+  }
+
+  private computeComplianceMeta(supplierId: string): {
+    label: string;
+    completeness: number;
+  } {
+    const key = `tapsosa.compliance.${supplierId}`;
+    try {
+      const raw = localStorage.getItem(key);
+      if (!raw) {
+        return { label: 'No documents', completeness: 0 };
+      }
+      const docs: Array<{ status?: string }> = JSON.parse(raw);
+      if (!Array.isArray(docs) || docs.length === 0) {
+        return { label: 'No documents', completeness: 0 };
+      }
+      const total = docs.length;
+      const uploaded = docs.filter((d) => d.status === 'Uploaded').length;
+      const completeness = total > 0 ? Math.round((uploaded / total) * 100) : 0;
+      let label = 'No documents';
+      if (uploaded === 0) {
+        label = 'No documents';
+      } else if (uploaded === total) {
+        label = 'Complete';
+      } else {
+        label = 'Partial';
+      }
+      return { label, completeness };
+    } catch {
+      return { label: 'Unknown', completeness: 0 };
+    }
   }
 }

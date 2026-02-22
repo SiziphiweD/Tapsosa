@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MockApiService, Job } from '../../../../shared/services/mock-api.service';
 
@@ -10,6 +10,8 @@ import { MockApiService, Job } from '../../../../shared/services/mock-api.servic
   styleUrl: './admin-finance-revenue-page.css',
 })
 export class AdminFinanceRevenuePage {
+  private api = inject(MockApiService);
+
   totalGross = 0;
   totalFee = 0;
   totalNet = 0;
@@ -17,7 +19,10 @@ export class AdminFinanceRevenuePage {
   releasedNet = 0;
   rows: Array<{ title: string; status: string; gross: number; fee: number; net: number }> = [];
 
-  constructor(private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.api.listJobs().subscribe((jobs: Job[]) => {
       const esc = jobs.filter((j) => j.escrow);
       this.rows = esc.map((j) => ({

@@ -1,6 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink } from '@angular/router';
 import { MockApiService, Job, Activity } from '../../../../shared/services/mock-api.service';
 
 type SupplierTransactionRow = {
@@ -17,16 +16,21 @@ type SupplierTransactionRow = {
 
 @Component({
   selector: 'app-supplier-transactions-page',
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './supplier-transactions-page.html',
   styleUrl: './supplier-transactions-page.css',
 })
 export class SupplierTransactionsPage {
+  private api = inject(MockApiService);
+
   rows: SupplierTransactionRow[] = [];
   jobs: Job[] = [];
   activities: Activity[] = [];
 
-  constructor(private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.api.listJobs().subscribe((jobs: Job[]) => {
       this.jobs = jobs;
       this.refreshRows();

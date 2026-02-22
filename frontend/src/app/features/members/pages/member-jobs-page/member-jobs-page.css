@@ -1,8 +1,49 @@
-.jobs { display: grid; gap: 12px; }
-.job { border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 12px; background: var(--color-surface); }
-.row { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 4px 0; border-bottom: 1px solid var(--color-border); }
-.row:last-child { border-bottom: none; }
-.title { font-weight: 800; }
-.meta { color: var(--color-muted); }
-.btn { display: inline-flex; align-items: center; justify-content: center; height: 36px; padding: 0 12px; border: 1px solid var(--color-border); border-radius: 8px; text-decoration: none; font-weight: 700; }
-.chip { padding: 2px 8px; border-radius: 999px; background: #eef5ff; color: #1f5fa6; font-weight: 700; }
+.jobs-table {
+  display: grid;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  overflow: hidden;
+}
+
+.table-header,
+.table-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.5fr 1fr 1.5fr;
+  gap: 8px;
+  padding: 10px 12px;
+  align-items: center;
+}
+
+.table-header {
+  background: #0f172a;
+  color: #e5e7eb;
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.table-row:nth-child(odd) {
+  background: rgba(15, 23, 42, 0.03);
+}
+
+.table-row:nth-child(even) {
+  background: rgba(15, 23, 42, 0.06);
+}
+
+.table-row > div {
+  font-size: 14px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 12px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+}

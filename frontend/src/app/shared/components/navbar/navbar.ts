@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService, User } from '../../services/auth.service';
@@ -11,12 +11,22 @@ import { MockApiService } from '../../services/mock-api.service';
   styleUrl: './navbar.css',
 })
 export class Navbar {
+  private router = inject(Router);
+  private auth = inject(AuthService);
+  private api = inject(MockApiService);
+
   role: 'member' | 'supplier' | 'admin' | null = null;
   user: User | null = null;
   menuOpen = false;
   notificationsCount = 0;
 
-  constructor(private router: Router, private auth: AuthService, private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
+    const router = this.router;
+    const auth = this.auth;
+
     this.setRole(router.url);
     router.events.subscribe((e) => {
       if (e instanceof NavigationEnd) {

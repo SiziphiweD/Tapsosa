@@ -2,7 +2,14 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-type UserRow = { id: string; name: string; email: string; createdAt: string; suspended?: boolean };
+type UserRow = {
+  id: string;
+  name: string;
+  email: string;
+  createdAt: string;
+  status: string;
+  statusReason?: string;
+};
 
 @Component({
   selector: 'app-admin-users-members-page',
@@ -14,6 +21,8 @@ type UserRow = { id: string; name: string; email: string; createdAt: string; sus
 export class AdminUsersMembersPage {
   query = '';
   rows: UserRow[] = [];
+  rejectingId: string | null = null;
+  rejectReason = '';
 
   constructor() {
     this.load();
@@ -31,14 +40,56 @@ export class AdminUsersMembersPage {
       const users: any[] = raw ? JSON.parse(raw) : [];
       this.rows = users
         .filter((u) => u.role === 'member')
-        .map((u) => ({ id: u.id, name: u.name, email: u.email, createdAt: u.createdAt }));
+        .map((u) => ({
+          id: u.id,
+          name: u.name,
+          email: u.email,
+          createdAt: u.createdAt,
+          status: u.status || 'Pending',
+          statusReason: u.statusReason,
+        }));
     } catch {
       this.rows = [];
     }
   }
 
-  suspend(id: string) {
-    // placeholder: toggle suspended in-memory
-    this.rows = this.rows.map((r) => (r.id === id ? { ...r, suspended: !r.suspended } : r));
+  setStatus(id: string, status: 'Pending' | 'Approved' | 'Rejected', statusReason?: string) {
+    this.rows = this.rows.map((r) => (r.id === id ? { ...r, status, statusReason } : r));
+    try {
+      const raw = localStorage.getItem('tapsosa.users');
+      const users: any[] = raw ? JSON.parse(raw) : [];
+      const updated = users.map((u) => (u.id === id ? { ...u, status, statusReason } : u));
+      localStorage.setItem('tapsosa.users', JSON.stringify(updated));
+    } catch {}
+  }
+
+  statusClass(status?: string) {
+    const value = (status || 'Pending').toLowerCase();
+    if (value === 'approved') return 'approved';
+    if (value === 'rejected') return 'rejected';
+    return 'pending';
+  }
+
+  view(id: string) {
+    try {
+      console.log('View member', id);
+    } catch {}
+  }
+
+  openReject(id: string) {
+    this.rejectingId = id;
+    this.rejectReason = '';
+  }
+
+  closeReject() {
+    this.rejectingId = null;
+    this.rejectReason = '';
+  }
+
+  confirmReject() {
+    if (!this.rejectingId) return;
+    const reason = this.rejectReason.trim();
+    this.setStatus(this.rejectingId, 'Rejected', reason || undefined);
+    this.closeReject();
   }
 }

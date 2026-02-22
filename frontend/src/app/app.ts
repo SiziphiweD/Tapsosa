@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -8,7 +8,12 @@ import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
   styleUrl: './app.css'
 })
 export class App implements OnInit {
-  constructor(private router: Router) {}
+  private router = inject(Router);
+
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {}
 
   ngOnInit() {
     this.router.events.subscribe((event) => {

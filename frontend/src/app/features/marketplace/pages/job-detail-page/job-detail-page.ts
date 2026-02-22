@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -12,6 +12,10 @@ import { AuthService, User } from '../../../../shared/services/auth.service';
   styleUrl: './job-detail-page.css',
 })
 export class JobDetailPage {
+  private route = inject(ActivatedRoute);
+  private api = inject(MockApiService);
+  private auth = inject(AuthService);
+
   job: Job | undefined;
   bids: Bid[] = [];
   winningBid: Bid | undefined;
@@ -32,7 +36,13 @@ export class JobDetailPage {
   validityDays: number | null = null;
   submitted = false;
 
-  constructor(private route: ActivatedRoute, private api: MockApiService, private auth: AuthService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
+    const route = this.route;
+    const api = this.api;
+
     const id = route.snapshot.paramMap.get('jobId')!;
     api.getJob(id).subscribe((j) => {
       this.job = j;
@@ -72,6 +82,10 @@ export class JobDetailPage {
     if (!this.job) return 'Job not found';
     if (!this.user) return 'Sign in as a supplier to submit a bid.';
     if (this.user.role !== 'supplier') return 'You must be signed in as a supplier to submit bids.';
+    const status = (this.user.status || 'Pending').toLowerCase();
+    if (status !== 'approved') {
+      return 'Your supplier account is pending approval. You may review opportunities but cannot submit bids yet.';
+    }
     if (this.job.escrow) return 'This job has already been awarded and is in escrow.';
     if (this.daysLeft(this.job.bidDeadline) <= 0) return 'Bidding deadline has passed.';
     return null;
@@ -79,9 +93,11 @@ export class JobDetailPage {
 
   submitBid() {
     if (!this.job || !this.isValid || !this.canBid) return;
+    const supplierId = this.user?.id || 'unknown';
     this.api
       .createBid({
         jobId: this.job.id,
+        supplierId,
         supplierName: this.supplierName,
         price: this.price as number,
         days: this.days as number,

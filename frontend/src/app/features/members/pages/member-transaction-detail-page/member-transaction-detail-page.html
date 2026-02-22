@@ -1,28 +1,36 @@
 <div class="grid">
   <section class="card fade-in">
-    <h1>Transaction Detail</h1>
+    <h1>Escrow Transaction</h1>
     <p *ngIf="job">{{ job.title }}</p>
     <p class="muted" *ngIf="winningBid">Supplier: {{ winningBid.supplierName }}</p>
+    <p class="muted" *ngIf="supplierStatus">
+      Status:
+      <span class="chip" [ngClass]="supplierStatusClass">{{ supplierStatus }}</span>
+    </p>
+    <p class="muted" *ngIf="complianceLabel">
+      Compliance:
+      <span class="chip" [ngClass]="complianceClass">{{ complianceLabel }}</span>
+    </p>
   </section>
 
   <section class="grid cols-3">
     <div class="card">
-      <h3>Overview</h3>
+      <h3>Escrow Payment</h3>
       <div *ngIf="hasEscrow; else noEscrow">
         <div class="row">
           <div>Status</div>
           <div>{{ statusText }}</div>
         </div>
         <div class="row">
-          <div>Gross</div>
+          <div>Total Amount</div>
           <div>R{{ escrow!.gross.toLocaleString() }}</div>
         </div>
         <div class="row">
-          <div>Platform Fee</div>
+          <div>Platform Fee (7%)</div>
           <div>R{{ escrow!.fee.toLocaleString() }}</div>
         </div>
         <div class="row">
-          <div>Net to Supplier</div>
+          <div>Escrow Amount</div>
           <div>R{{ escrow!.net.toLocaleString() }}</div>
         </div>
       </div>
@@ -31,8 +39,23 @@
       </ng-template>
     </div>
     <div class="card">
-      <h3>Documents</h3>
-      <p class="muted">Document uploads and compliance evidence to be added.</p>
+      <h3>Payment Details</h3>
+      <div class="row">
+        <div>Job</div>
+        <div>{{ job?.title || '—' }}</div>
+      </div>
+      <div class="row">
+        <div>Transaction ID</div>
+        <div>{{ job?.id || '—' }}</div>
+      </div>
+      <div class="row">
+        <div>Last Event</div>
+        <div>{{ lastEvent?.label || '—' }}</div>
+      </div>
+      <div class="row">
+        <div>Last Updated</div>
+        <div>{{ lastEvent?.when || '—' }}</div>
+      </div>
     </div>
     <div class="card">
       <h3>Activity</h3>

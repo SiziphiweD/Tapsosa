@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MockApiService, Activity } from '../../../../shared/services/mock-api.service';
@@ -11,9 +11,15 @@ import { UserPrefsService } from '../../../../shared/services/user-prefs.service
   styleUrl: './member-notifications-unread-page.css',
 })
 export class MemberNotificationsUnreadPage {
+  private api = inject(MockApiService);
+  private prefs = inject(UserPrefsService);
+
   items: Array<{ id: string; title: string; when: string }> = [];
 
-  constructor(private api: MockApiService, private prefs: UserPrefsService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.api.listActivities().subscribe((acts: Activity[]) => {
       this.items = acts
         .filter((a) => !this.prefs.isRead(a.id))

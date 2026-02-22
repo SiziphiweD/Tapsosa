@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { MockApiService, Job, Bid } from '../../../../shared/services/mock-api.service';
@@ -10,9 +10,14 @@ import { MockApiService, Job, Bid } from '../../../../shared/services/mock-api.s
   styleUrl: './supplier-jobs-recommended-page.css',
 })
 export class SupplierJobsRecommendedPage {
+  private api = inject(MockApiService);
+
   jobs: Job[] = [];
 
-  constructor(private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.api.listJobs().subscribe((jobs) => {
       this.jobs = [...jobs].sort((a, b) => b.maxBudget - a.maxBudget).slice(0, 12);
     });

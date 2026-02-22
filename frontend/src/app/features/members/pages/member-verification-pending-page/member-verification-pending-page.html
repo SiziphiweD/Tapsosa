@@ -1,0 +1,55 @@
+<div class="grid-background"></div>
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+
+<div class="verification-pending-container">
+  <div class="verification-pending-card">
+    <div class="card-header">
+      <ng-container *ngIf="status.toLowerCase() === 'rejected'; else pendingHeader">
+        <h2>Verification Rejected</h2>
+        <p>Your submission did not meet the verification requirements.</p>
+      </ng-container>
+      <ng-template #pendingHeader>
+        <h2>Verification Pending</h2>
+        <p>Your account is currently under review.</p>
+      </ng-template>
+    </div>
+
+    <div class="status-badge pending" *ngIf="status.toLowerCase() !== 'rejected'">
+      <i class="bi bi-hourglass-split"></i>
+      <span>Pending Approval</span>
+    </div>
+
+    <div *ngIf="rejectionReason" class="toast error">
+      <strong>Previous submission was rejected:</strong>
+      <div>{{ rejectionReason }}</div>
+    </div>
+
+    <div class="documents-list">
+      <h3>Uploaded Documents:</h3>
+      <ul>
+        <li *ngFor="let doc of documentsUploaded">
+          <i class="bi bi-file-earmark-check"></i> {{ doc }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="message">
+      <p *ngIf="status.toLowerCase() === 'rejected'; else pendingMsg">
+        Your account is not approved. You cannot use the member portal until a new submission is
+        reviewed and approved.
+      </p>
+      <ng-template #pendingMsg>
+        <p>
+          You may browse the platform but cannot submit requests until approved.
+        </p>
+      </ng-template>
+    </div>
+
+    <div class="actions">
+      <button class="btn btn-secondary" routerLink="/home">
+        Browse Platform
+      </button>
+    </div>
+  </div>
+</div>

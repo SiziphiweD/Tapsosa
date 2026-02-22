@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 
@@ -202,10 +202,15 @@ const SUPPLIERS: SupplierProfile[] = [
   styleUrl: './supplier-profile-page.css',
 })
 export class SupplierProfilePage {
+  private route = inject(ActivatedRoute);
+
   supplier?: SupplierProfile;
   stars = [1, 2, 3, 4, 5];
 
-  constructor(private route: ActivatedRoute) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     const id = this.route.snapshot.paramMap.get('supplierId');
     if (id) {
       this.supplier = SUPPLIERS.find((s) => s.id === id);

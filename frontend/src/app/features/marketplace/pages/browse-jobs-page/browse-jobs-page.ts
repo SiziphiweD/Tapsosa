@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -11,6 +11,8 @@ import { MockApiService, Job } from '../../../../shared/services/mock-api.servic
   styleUrl: './browse-jobs-page.css',
 })
 export class BrowseJobsPage {
+  private api = inject(MockApiService);
+
 
   filters = {
     category: 'All',
@@ -25,7 +27,12 @@ export class BrowseJobsPage {
   jobs: Job[] = [];
   savedIds = new Set<string>();
 
-  constructor(private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
+    const api = this.api;
+
     this.savedIds = this.loadSaved();
     api.listJobs().subscribe((list: Job[]) => {
       this.jobs = list;

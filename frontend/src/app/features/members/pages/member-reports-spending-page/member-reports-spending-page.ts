@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MockApiService, Job, Bid, Activity } from '../../../../shared/services/mock-api.service';
 
@@ -11,6 +11,8 @@ type SpendingRow = { label: string; total: number };
   styleUrl: './member-reports-spending-page.css',
 })
 export class MemberReportsSpendingPage {
+  private api = inject(MockApiService);
+
   jobs: Job[] = [];
   bids: Bid[] = [];
   activities: Activity[] = [];
@@ -20,7 +22,10 @@ export class MemberReportsSpendingPage {
   bySupplier: SpendingRow[] = [];
   byPeriod: SpendingRow[] = [];
 
-  constructor(private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.api.listJobs().subscribe((jobs: Job[]) => {
       this.jobs = jobs;
       this.refresh();

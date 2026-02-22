@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MockApiService, Job } from '../../../../shared/services/mock-api.service';
 
@@ -18,9 +18,14 @@ type PayoutRow = {
   styleUrl: './payouts-history-page.css',
 })
 export class PayoutsHistoryPage {
+  private api = inject(MockApiService);
+
   rows: PayoutRow[] = [];
 
-  constructor(private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.api.listJobs().subscribe((jobs: Job[]) => {
       const released = jobs.filter((j) => j.escrow?.status === 'released');
       this.rows = released.map((j) => ({

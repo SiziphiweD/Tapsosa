@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
@@ -11,6 +11,9 @@ import { AuthService } from '../../../../shared/services/auth.service';
 
 })
 export class SignInPage {
+  private auth = inject(AuthService);
+  private router = inject(Router);
+
 
   email = '';
   password = '';
@@ -18,7 +21,10 @@ export class SignInPage {
   loading = false;
   passwordFieldType: string = 'password';
 
-  constructor(private auth: AuthService, private router: Router) {}
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {}
 
   togglePasswordVisibility() {
     this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';

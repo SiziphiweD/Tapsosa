@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MockApiService, Job } from '../../../../shared/services/mock-api.service';
 
@@ -9,10 +9,17 @@ import { MockApiService, Job } from '../../../../shared/services/mock-api.servic
   styleUrl: './pending-payouts-page.css',
 })
 export class PendingPayoutsPage {
+  private api = inject(MockApiService);
+
   jobs: Job[] = [];
   total = 0;
 
-  constructor(private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
+    const api = this.api;
+
     api.listJobs().subscribe((jobs) => {
       this.jobs = jobs.filter((j) => j.escrow?.status === 'funded');
       this.total = this.jobs.reduce((s, j) => s + (j.escrow?.net || 0), 0);

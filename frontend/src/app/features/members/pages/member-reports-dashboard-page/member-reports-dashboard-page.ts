@@ -1,105 +1,118 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MockApiService, Job, Activity, Bid } from '../../../../shared/services/mock-api.service';
+import { RouterLink } from '@angular/router';
+import { AuthService, User } from '../../../../shared/services/auth.service';
+
+type MemberComplianceStatus = 'Pending' | 'Under Review' | 'Approved' | 'Rejected';
+
+type MemberComplianceDoc = {
+  key: string;
+  name: string;
+  status: 'Not Uploaded' | 'Uploaded';
+  expiry?: string;
+  uploadedAt?: string;
+};
 
 @Component({
   selector: 'app-member-reports-dashboard-page',
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: './member-reports-dashboard-page.html',
   styleUrl: './member-reports-dashboard-page.css',
 })
 export class MemberReportsDashboardPage {
-  jobs: Job[] = [];
-  activities: Activity[] = [];
-  bids: Bid[] = [];
+  private auth = inject(AuthService);
 
-  totalJobs = 0;
-  completedJobs = 0;
-  activeJobs = 0;
-  completionRate = 0;
+  user: User | null = null;
+  docs: MemberComplianceDoc[] = [];
 
-  averageFillDays: number | null = null;
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
 
-  suppliersUsed = 0;
-  topSupplier: string | null = null;
-
-  constructor(private api: MockApiService) {
-    this.api.listJobs().subscribe((jobs: Job[]) => {
-      this.jobs = jobs;
-      this.computeJobMetrics();
-      this.computeFillTime();
-    });
-    this.api.listActivities().subscribe((acts: Activity[]) => {
-      this.activities = acts;
-      this.computeFillTime();
-    });
-    this.api.listAllBids().subscribe((bids: Bid[]) => {
-      this.bids = bids;
-      this.computeSupplierMetrics();
+  constructor() {
+    this.auth.currentUser$.subscribe((u) => {
+      this.user = u;
+      this.docs = this.loadDocs(u?.id);
     });
   }
 
-  private computeJobMetrics() {
-    this.totalJobs = this.jobs.length;
-    const withEscrow = this.jobs.filter((j) => !!j.escrow);
-    this.completedJobs = withEscrow.filter((j) => j.escrow!.status === 'released').length;
-    this.activeJobs = this.totalJobs - this.completedJobs;
-    this.completionRate = this.totalJobs === 0 ? 0 : Math.round((this.completedJobs / this.totalJobs) * 100);
+  get complianceStatus(): MemberComplianceStatus {
+    const raw = (this.user?.status || 'Pending') as MemberComplianceStatus;
+    if (raw === 'Under Review' || raw === 'Approved' || raw === 'Rejected') {
+      return raw;
+    }
+    return 'Pending';
   }
 
-  private computeFillTime() {
-    if (this.jobs.length === 0 || this.activities.length === 0) {
-      this.averageFillDays = null;
-      return;
-    }
-    const perJob: number[] = [];
-    for (const job of this.jobs) {
-      const acts = this.activities.filter((a) => a.jobId === job.id);
-      const firstBid = acts
-        .filter((a) => a.type === 'bid_submitted')
-        .reduce<Date | null>((min, a) => {
-          const d = new Date(a.timestamp);
-          return !min || d < min ? d : min;
-        }, null);
-      const winner = acts.find((a) => a.type === 'winner_selected');
-      if (!firstBid || !winner) continue;
-      const start = firstBid.getTime();
-      const end = new Date(winner.timestamp).getTime();
-      if (end <= start) continue;
-      const days = (end - start) / 86400000;
-      perJob.push(days);
-    }
-    if (perJob.length === 0) {
-      this.averageFillDays = null;
-      return;
-    }
-    const sum = perJob.reduce((s, d) => s + d, 0);
-    this.averageFillDays = Math.round((sum / perJob.length) * 10) / 10;
+  get documentsUploaded() {
+    return this.docs.filter((d) => d.status === 'Uploaded').length;
   }
 
-  private computeSupplierMetrics() {
-    if (this.jobs.length === 0 || this.bids.length === 0) {
-      this.suppliersUsed = 0;
-      this.topSupplier = null;
-      return;
+  get totalRequiredDocs() {
+    return this.docs.length;
+  }
+
+  get expiredCount() {
+    return this.docs.filter((d) => this.isExpired(d)).length;
+  }
+
+  get expiringSoonCount() {
+    return this.docs.filter((d) => !this.isExpired(d) && this.isExpiringSoon(d)).length;
+  }
+
+  get lastSubmissionDate(): string | null {
+    const uploaded = this.docs.filter((d) => d.uploadedAt);
+    if (uploaded.length === 0) return null;
+    const latest = uploaded.reduce((latestDoc, doc) => {
+      if (!latestDoc.uploadedAt) return doc;
+      if (!doc.uploadedAt) return latestDoc;
+      return new Date(doc.uploadedAt) > new Date(latestDoc.uploadedAt) ? doc : latestDoc;
+    });
+    return latest.uploadedAt || null;
+  }
+
+  private baseDocs(): MemberComplianceDoc[] {
+    return [
+      { key: 'businessRegistrationCertificate', name: 'Business Registration Certificate', status: 'Not Uploaded' },
+      { key: 'taxClearanceCertificate', name: 'Tax Clearance Certificate', status: 'Not Uploaded' },
+      { key: 'industryComplianceCertificate', name: 'Industry Compliance Certificate', status: 'Not Uploaded' },
+      { key: 'directorIdCopy', name: 'Director ID copy', status: 'Not Uploaded' },
+      { key: 'proofOfAddress', name: 'Proof of Address', status: 'Not Uploaded' },
+    ];
+  }
+
+  private loadDocs(userId: string | undefined): MemberComplianceDoc[] {
+    const base = this.baseDocs();
+    if (!userId) return base;
+    const key = `tapsosa.memberCompliance.${userId}`;
+    const raw = localStorage.getItem(key);
+    if (!raw) return base;
+    try {
+      const saved = JSON.parse(raw) as MemberComplianceDoc[];
+      return base.map(
+        (d) => saved.find((s) => s.key === d.key) || d
+      );
+    } catch {
+      return base;
     }
-    const totals = new Map<string, number>();
-    for (const job of this.jobs) {
-      if (!job.escrow) continue;
-      const winningBid = this.bids.find((b) => b.id === job.escrow!.bidId);
-      const name = winningBid?.supplierName || 'Unknown Supplier';
-      const prev = totals.get(name) || 0;
-      totals.set(name, prev + job.escrow.net);
-    }
-    this.suppliersUsed = totals.size;
-    let topName: string | null = null;
-    let topTotal = 0;
-    for (const [name, value] of totals.entries()) {
-      if (value > topTotal) {
-        topTotal = value;
-        topName = name;
-      }
-    }
-    this.topSupplier = topName;
+  }
+
+  isExpired(doc: MemberComplianceDoc) {
+    if (!doc.expiry) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const expiry = new Date(doc.expiry);
+    expiry.setHours(0, 0, 0, 0);
+    return expiry.getTime() < today.getTime();
+  }
+
+  isExpiringSoon(doc: MemberComplianceDoc) {
+    if (!doc.expiry) return false;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const expiry = new Date(doc.expiry);
+    expiry.setHours(0, 0, 0, 0);
+    if (expiry.getTime() <= today.getTime()) return false;
+    const diffDays = (expiry.getTime() - today.getTime()) / 86400000;
+    return diffDays <= 30;
   }
 }

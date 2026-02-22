@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MockApiService, Job } from '../../../../shared/services/mock-api.service';
@@ -11,11 +11,16 @@ import { MockApiService, Job } from '../../../../shared/services/mock-api.servic
   styleUrl: './admin-jobs-page.css',
 })
 export class AdminJobsPage {
+  private api = inject(MockApiService);
+
   query = '';
   status: 'All' | 'Unawarded' | 'Pending' | 'Funded' | 'Released' = 'All';
   jobs: Job[] = [];
 
-  constructor(private api: MockApiService) {
+  /** Inserted by Angular inject() migration for backwards compatibility */
+  constructor(...args: unknown[]);
+
+  constructor() {
     this.api.listJobs().subscribe((jobs) => (this.jobs = jobs));
   }
 
