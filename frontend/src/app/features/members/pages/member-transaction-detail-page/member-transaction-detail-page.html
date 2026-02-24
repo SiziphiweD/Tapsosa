@@ -1,76 +1,142 @@
 <div class="grid">
+  <!-- Header Section -->
   <section class="card fade-in">
-    <h1>Escrow Transaction</h1>
-    <p *ngIf="job">{{ job.title }}</p>
-    <p class="muted" *ngIf="winningBid">Supplier: {{ winningBid.supplierName }}</p>
+    <h1>
+      <i class="bi bi-cash-stack" style="margin-right: 8px;"></i>
+      Escrow Transaction
+    </h1>
+    
+    <p *ngIf="job">
+      <i class="bi bi-briefcase-fill" style="color: var(--color-primary);"></i>
+      {{ job.title }}
+    </p>
+    
+    <p class="muted" *ngIf="winningBid">
+      <i class="bi bi-building" style="color: var(--color-success);"></i>
+      Supplier: <strong>{{ winningBid.supplierName }}</strong>
+    </p>
+    
     <p class="muted" *ngIf="supplierStatus">
+      <i class="bi bi-person-badge"></i>
       Status:
       <span class="chip" [ngClass]="supplierStatusClass">{{ supplierStatus }}</span>
     </p>
+    
     <p class="muted" *ngIf="complianceLabel">
+      <i class="bi bi-shield-check"></i>
       Compliance:
       <span class="chip" [ngClass]="complianceClass">{{ complianceLabel }}</span>
     </p>
   </section>
 
+  <!-- Three Column Grid -->
   <section class="grid cols-3">
+    <!-- Escrow Payment Card -->
     <div class="card">
-      <h3>Escrow Payment</h3>
+      <h3><i class="bi bi-shield-lock"></i> Escrow Payment</h3>
+      
       <div *ngIf="hasEscrow; else noEscrow">
         <div class="row">
-          <div>Status</div>
-          <div>{{ statusText }}</div>
+          <div><i class="bi bi-flag"></i> Status</div>
+          <div [ngClass]="{
+            'status-pending': escrow?.status === 'pending',
+            'status-funded': escrow?.status === 'funded',
+            'status-released': escrow?.status === 'released'
+          }">
+            <i class="bi" [ngClass]="{
+              'bi-hourglass-split': escrow?.status === 'pending',
+              'bi-shield-lock': escrow?.status === 'funded',
+              'bi-check-circle-fill': escrow?.status === 'released'
+            }"></i>
+            {{ statusText }}
+          </div>
         </div>
+        
         <div class="row">
-          <div>Total Amount</div>
+          <div><i class="bi bi-cash-stack"></i> Total Amount</div>
           <div>R{{ escrow!.gross.toLocaleString() }}</div>
         </div>
+        
         <div class="row">
-          <div>Platform Fee (7%)</div>
+          <div><i class="bi bi-percent"></i> Platform Fee (7%)</div>
           <div>R{{ escrow!.fee.toLocaleString() }}</div>
         </div>
+        
         <div class="row">
-          <div>Escrow Amount</div>
-          <div>R{{ escrow!.net.toLocaleString() }}</div>
+          <div><i class="bi bi-wallet2"></i> Escrow Amount</div>
+          <div class="net-amount">R{{ escrow!.net.toLocaleString() }}</div>
         </div>
       </div>
+      
       <ng-template #noEscrow>
-        <p class="muted">No escrow has been created for this job.</p>
+        <div class="muted">
+          <i class="bi bi-inbox" style="font-size: 2rem; display: block; margin-bottom: 8px;"></i>
+          No escrow has been created for this job.
+        </div>
       </ng-template>
     </div>
+
+    <!-- Payment Details Card -->
     <div class="card">
-      <h3>Payment Details</h3>
+      <h3><i class="bi bi-info-circle"></i> Payment Details</h3>
+      
       <div class="row">
-        <div>Job</div>
+        <div><i class="bi bi-briefcase"></i> Job</div>
         <div>{{ job?.title || '—' }}</div>
       </div>
+      
       <div class="row">
-        <div>Transaction ID</div>
-        <div>{{ job?.id || '—' }}</div>
+        <div><i class="bi bi-hash"></i> Transaction ID</div>
+        <div><code>{{ job?.id || '—' }}</code></div>
       </div>
+      
       <div class="row">
-        <div>Last Event</div>
+        <div><i class="bi bi-calendar-event"></i> Last Event</div>
         <div>{{ lastEvent?.label || '—' }}</div>
       </div>
+      
       <div class="row">
-        <div>Last Updated</div>
+        <div><i class="bi bi-clock"></i> Last Updated</div>
         <div>{{ lastEvent?.when || '—' }}</div>
       </div>
     </div>
+
+    <!-- Activity Card -->
     <div class="card">
-      <h3>Activity</h3>
+      <h3><i class="bi bi-activity"></i> Activity</h3>
+      
       <div class="activities">
         <div class="item" *ngFor="let a of activities">
-          <div class="title">{{ a.label }}</div>
-          <div class="meta" *ngIf="a.amount !== null">R{{ a.amount!.toLocaleString() }}</div>
-          <div class="when">{{ a.when }}</div>
+          <div class="title">
+            <i class="bi" [ngClass]="{
+              'bi-trophy-fill': a.label === 'Winner Selected',
+              'bi-cash': a.label === 'Escrow Funded',
+              'bi-send': a.label === 'Escrow Released',
+              'bi-chat': a.label === 'Bid Submitted'
+            }"></i>
+            {{ a.label }}
+          </div>
+          <div class="meta" *ngIf="a.amount !== null">
+            R{{ a.amount!.toLocaleString() }}
+          </div>
+          <div class="when">
+            <i class="bi bi-clock-history"></i>
+            {{ a.when }}
+          </div>
         </div>
-        <div class="muted" *ngIf="activities.length === 0">No recorded activity yet</div>
+        
+        <div class="muted" *ngIf="activities.length === 0">
+          <i class="bi bi-inbox" style="font-size: 2rem; display: block; margin-bottom: 8px;"></i>
+          No recorded activity yet
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="card">
-    <a class="link" routerLink="/member/transactions">Back to Transactions</a>
+  <!-- Back Link -->
+  <section class="card" style="padding: 1rem 2rem;">
+    <a class="link" routerLink="/member/transactions">
+      <i class="bi bi-arrow-left"></i> Back to Transactions
+    </a>
   </section>
 </div>

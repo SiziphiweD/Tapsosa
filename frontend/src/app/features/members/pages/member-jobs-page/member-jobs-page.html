@@ -1,24 +1,67 @@
 <section class="card fade-in">
   <h1>My Requests</h1>
+
+  <!-- Loading State -->
+  <div class="loading" *ngIf="jobs.length === 0 && !jobs.length">
+    <div class="spinner"></div>
+    <div>Loading your requests...</div>
+  </div>
+
+  <!-- Jobs Table -->
   <div class="jobs-table" *ngIf="jobs.length > 0; else noJobs">
+    <!-- Table Header -->
     <div class="table-header">
-      <div>Request ID</div>
-      <div>Category</div>
-      <div>Status</div>
-      <div>Bids</div>
-      <div>Action</div>
+      <div><i class="bi bi-hash"></i> Request ID</div>
+      <div><i class="bi bi-tag"></i> Category</div>
+      <div><i class="bi bi-flag"></i> Status</div>
+      <div><i class="bi bi-chat"></i> Bids</div>
+      <div><i class="bi bi-gear"></i> Action</div>
     </div>
+
+    <!-- Table Rows -->
     <div class="table-row" *ngFor="let j of jobs">
-      <div>{{ j.id }}</div>
-      <div>{{ j.category }}</div>
-      <div>{{ getStatus(j) }}</div>
-      <div>{{ bidsByJob[j.id] || 0 }}</div>
-      <div>
-        <a class="btn" [routerLink]="['/member/requests', j.id, 'bids']">View &amp; Compare</a>
+      <div [attr.data-label]="'Request ID'">{{ j.id | slice:0:8 }}...</div>
+      
+      <div [attr.data-label]="'Category'">
+        <i class="bi bi-folder"></i> {{ j.category }}
+      </div>
+      
+      <div [attr.data-label]="'Status'">
+        <span class="status-badge" [ngClass]="{
+          'open': getStatus(j) === 'Open',
+          'awarded': getStatus(j) === 'Awarded',
+          'closed': getStatus(j) === 'Closed'
+        }">
+          <i class="bi" [ngClass]="{
+            'bi-check-circle-fill': getStatus(j) === 'Open',
+            'bi-award-fill': getStatus(j) === 'Awarded',
+            'bi-lock-fill': getStatus(j) === 'Closed'
+          }"></i>
+          {{ getStatus(j) }}
+        </span>
+      </div>
+      
+      <div [attr.data-label]="'Bids'">
+        <i class="bi bi-chat-dots"></i> {{ bidsByJob[j.id] || 0 }}
+      </div>
+      
+      <div [attr.data-label]="'Action'">
+        <a class="btn" [routerLink]="['/member/requests', j.id, 'bids']">
+          <i class="bi bi-eye"></i> View & Compare
+          <i class="bi bi-arrow-right-short"></i>
+        </a>
       </div>
     </div>
   </div>
+
+  <!-- Empty State -->
   <ng-template #noJobs>
-    <div class="muted">No requests yet</div>
+    <div class="muted" *ngIf="jobs.length === 0">
+      <i class="bi bi-inbox"></i>
+      <div>You haven't created any requests yet.</div>
+      <a class="btn" routerLink="/member/requests/new">
+        <i class="bi bi-plus-circle"></i> Create Your First Request
+      </a>
+    </div>
   </ng-template>
 </section>

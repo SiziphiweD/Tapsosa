@@ -1,65 +1,107 @@
 <div class="grid">
+  <!-- Header -->
   <section class="card">
     <h1>System & Security</h1>
     <p>Operational health, monitoring, backup & recovery, and admin activity.</p>
   </section>
 
+  <!-- Three Column Grid -->
   <section class="grid cols-3">
+    <!-- System Health -->
     <div class="card">
       <h3>System Health</h3>
       <div class="rows">
-        <div class="row"><div>Server Status</div><div><span class="badge accepted">{{ serverStatus }}</span></div></div>
-        <div class="row"><div>Database Performance</div><div><span class="badge accepted">{{ databaseStatus }}</span></div></div>
-        <div class="row"><div>API Status</div><div><span class="badge accepted">{{ apiStatus }}</span></div></div>
+        <div class="row">
+          <div>Server Status</div>
+          <div><span class="badge accepted">{{ serverStatus }}</span></div>
+        </div>
+        <div class="row">
+          <div>Database Performance</div>
+          <div><span class="badge accepted">{{ databaseStatus }}</span></div>
+        </div>
+        <div class="row">
+          <div>API Status</div>
+          <div><span class="badge accepted">{{ apiStatus }}</span></div>
+        </div>
       </div>
+      
       <h4>Error Logs</h4>
       <div class="list">
         <div class="item" *ngFor="let e of errorLogs">{{ e }}</div>
-        <div class="muted" *ngIf="errorLogs.length===0">No errors</div>
+        <div class="muted" *ngIf="errorLogs.length===0">✓ No errors detected</div>
       </div>
     </div>
 
+    <!-- Security Monitoring -->
     <div class="card">
       <h3>Security Monitoring</h3>
       <div class="rows">
-        <div class="row"><div>Login Attempts</div><div>{{ loginAttempts }}</div></div>
-        <div class="row"><div>Suspicious Activity</div><div>{{ suspicious }}</div></div>
-        <div class="row"><div>Blocked IPs</div><div>{{ blockedIps }}</div></div>
-        <div class="row"><div>Security Incidents</div><div>{{ incidents }}</div></div>
+        <div class="row">
+          <div>Login Attempts (24h)</div>
+          <div>{{ loginAttempts }}</div>
+        </div>
+        <div class="row">
+          <div>Suspicious Activity</div>
+          <div>{{ suspicious }}</div>
+        </div>
+        <div class="row">
+          <div>Blocked IPs</div>
+          <div>{{ blockedIps }}</div>
+        </div>
+        <div class="row">
+          <div>Security Incidents</div>
+          <div>{{ incidents }}</div>
+        </div>
       </div>
     </div>
 
+    <!-- Backup & Recovery -->
     <div class="card">
       <h3>Backup & Recovery</h3>
       <div class="form">
-        <label>Backup Name <input [(ngModel)]="backupName" /></label>
-        <button type="button" (click)="createBackup()">Create Backup</button>
+        <label>
+          Backup Name
+          <input [(ngModel)]="backupName" placeholder="e.g., Pre-update backup" />
+        </label>
+        <button type="button" class="btn" (click)="createBackup()" [disabled]="!backupName.trim()">
+          Create Backup
+        </button>
       </div>
+      
       <div class="table">
-        <div class="row head"><div>Name</div><div>Created</div><div></div></div>
+        <div class="row head">
+          <div>Name</div>
+          <div>Created</div>
+          <div>Actions</div>
+        </div>
         <div class="row" *ngFor="let b of backups">
-          <div>{{ b.name }}</div>
-          <div>{{ b.createdAt | date:'short' }}</div>
-          <div>
-            <button type="button" (click)="restoreBackup(b.id)">Restore</button>
-            <button type="button" (click)="deleteBackup(b.id)">Delete</button>
+          <div [attr.data-label]="'Name'">{{ b.name }}</div>
+          <div [attr.data-label]="'Created'">{{ b.createdAt | date:'short' }}</div>
+          <div [attr.data-label]="'Actions'">
+            <button type="button" class="btn" (click)="restoreBackup(b.id)" title="Restore this backup">Restore</button>
+            <button type="button" class="btn" (click)="deleteBackup(b.id)" title="Delete this backup">Delete</button>
           </div>
         </div>
-        <div class="muted" *ngIf="backups.length===0">No backups</div>
+        <div class="muted" *ngIf="backups.length===0">No backups available</div>
       </div>
     </div>
   </section>
 
+  <!-- Admin Activity Log -->
   <section class="card">
     <h3>Admin Activity Log</h3>
     <div class="table">
-      <div class="row head"><div>Action</div><div>Page</div><div>When</div></div>
-      <div class="row" *ngFor="let l of adminLogs">
-        <div>{{ l.action }}</div>
-        <div>{{ l.page }}</div>
-        <div>{{ l.timestamp | date:'short' }}</div>
+      <div class="row head">
+        <div>Action</div>
+        <div>Page</div>
+        <div>When</div>
       </div>
-      <div class="muted" *ngIf="adminLogs.length===0">No admin activity</div>
+      <div class="row" *ngFor="let l of adminLogs">
+        <div [attr.data-label]="'Action'">{{ l.action }}</div>
+        <div [attr.data-label]="'Page'">{{ l.page }}</div>
+        <div [attr.data-label]="'When'">{{ l.timestamp | date:'short' }}</div>
+      </div>
+      <div class="muted" *ngIf="adminLogs.length===0">No admin activity recorded</div>
     </div>
   </section>
 </div>

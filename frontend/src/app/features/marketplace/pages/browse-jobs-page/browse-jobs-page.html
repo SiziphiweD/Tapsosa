@@ -1,76 +1,116 @@
 <section class="card">
   <h1>Browse Jobs</h1>
-  <p>Search and filter active member requests to bid on.</p>
+  <p>Search and filter active member requests to find the perfect opportunity for your business.</p>
 
+  <!-- Filters -->
   <div class="filters">
     <label>
-      Category
+      <span><i class="bi bi-tag"></i> Category</span>
       <select name="category" [(ngModel)]="filters.category">
-        <option>All</option>
-        <option>Uniforms &amp; PPE</option>
-        <option>SIM Cards &amp; Connectivity</option>
+        <option>All Categories</option>
+        <option>Uniforms & PPE</option>
+        <option>SIM Cards & Connectivity</option>
         <option>Access Control Systems</option>
         <option>Patrol Monitoring Systems</option>
         <option>Two-Way Radios</option>
-        <option>Financial Assistance &amp; Asset Finance</option>
+        <option>Financial Assistance & Asset Finance</option>
         <option>Insurance Solutions</option>
       </select>
     </label>
+    
     <label>
-      Location
-      <input name="location" [(ngModel)]="filters.location" type="text" placeholder="e.g. Johannesburg, Gauteng" />
+      <span><i class="bi bi-geo-alt"></i> Location</span>
+      <input name="location" [(ngModel)]="filters.location" type="text" placeholder="e.g. Johannesburg" />
     </label>
+    
     <label>
-      Min Budget
-      <input name="minBudget" [(ngModel)]="filters.minBudget" type="number" placeholder="e.g. 10000" />
+      <span><i class="bi bi-currency-dollar"></i> Min Budget</span>
+      <input name="minBudget" [(ngModel)]="filters.minBudget" type="number" placeholder="R 10,000" />
     </label>
+    
     <label>
-      Max Budget
-      <input name="maxBudget" [(ngModel)]="filters.maxBudget" type="number" placeholder="e.g. 40000" />
+      <span><i class="bi bi-currency-dollar"></i> Max Budget</span>
+      <input name="maxBudget" [(ngModel)]="filters.maxBudget" type="number" placeholder="R 40,000" />
     </label>
+    
     <label>
-      Deadline
+      <span><i class="bi bi-calendar"></i> Deadline</span>
       <input name="deadline" [(ngModel)]="filters.deadline" type="date" />
     </label>
+    
     <label>
-      Search
-      <input name="search" [(ngModel)]="filters.search" type="text" placeholder="Search title, category, location" />
+      <span><i class="bi bi-search"></i> Search</span>
+      <input name="search" [(ngModel)]="filters.search" type="text" placeholder="Keywords, title, category..." />
     </label>
+    
     <label class="full">
-      Sort
+      <span><i class="bi bi-sort-down"></i> Sort By</span>
       <select name="sortBy" [(ngModel)]="filters.sortBy">
-        <option>Urgency</option>
-        <option>Budget (High→Low)</option>
-        <option>Budget (Low→High)</option>
+        <option>Urgency (Soonest First)</option>
+        <option>Budget (High → Low)</option>
+        <option>Budget (Low → High)</option>
         <option>Title (A–Z)</option>
       </select>
     </label>
+    
     <div class="links">
-      <a class="link" routerLink="/supplier/jobs/recommended">Recommended</a>
-      <a class="link" routerLink="/supplier/jobs/saved">Saved</a>
-      <a class="link" routerLink="/supplier/jobs/alerts">Job Alerts</a>
+      <a class="link" routerLink="/supplier/jobs/recommended">
+        <i class="bi bi-star"></i> Recommended
+      </a>
+      <a class="link" routerLink="/supplier/jobs/saved">
+        <i class="bi bi-bookmark"></i> Saved ({{ savedIds.size }})
+      </a>
+      <a class="link" routerLink="/supplier/jobs/alerts">
+        <i class="bi bi-bell"></i> Job Alerts
+      </a>
     </div>
   </div>
 
+  <!-- Filter Actions -->
   <div class="filters-actions">
-    <button type="button" (click)="resetFilters()">Clear filters</button>
+    <button type="button" (click)="resetFilters()">
+      <i class="bi bi-eraser"></i> Clear all filters
+    </button>
   </div>
 
+  <!-- Jobs Grid -->
   <div class="grid cols-3">
     <div class="card job-card" *ngFor="let j of filtered">
       <div class="head">
         <h3>{{ j.title }}</h3>
-        <span class="badge verified" *ngIf="j.verified">Verified</span>
+        <span class="badge verified" *ngIf="j.verified">
+          <i class="bi bi-patch-check-fill"></i> Verified
+        </span>
       </div>
-      <p>{{ j.category }} • {{ j.location }} • Budget R{{ j.minBudget.toLocaleString() }} – R{{ j.maxBudget.toLocaleString() }}</p>
-      <div class="meta">{{ daysLeft(j.bidDeadline) }} days left</div>
+      
+      <p>
+        <i class="bi bi-tag"></i> {{ j.category }} • 
+        <i class="bi bi-geo-alt"></i> {{ j.location }} • 
+        <i class="bi bi-currency-dollar"></i> R{{ j.minBudget.toLocaleString() }} – R{{ j.maxBudget.toLocaleString() }}
+      </p>
+      
+      <div class="meta">
+        <i class="bi bi-hourglass-split"></i> {{ daysLeft(j.bidDeadline) }} days left to bid
+      </div>
+      
       <div class="actions">
         <button type="button" class="btn secondary" [class.saved]="isSaved(j)" (click)="toggleSave(j)">
-          <ng-container *ngIf="isSaved(j); else saveLabel">Saved</ng-container>
-          <ng-template #saveLabel>Save</ng-template>
+          <i class="bi" [ngClass]="isSaved(j) ? 'bi-bookmark-fill' : 'bi-bookmark'"></i>
+          {{ isSaved(j) ? 'Saved' : 'Save' }}
         </button>
-        <a class="btn primary" [routerLink]="['/supplier/jobs', j.id]">View &amp; Bid</a>
+        
+        <a class="btn primary" [routerLink]="['/supplier/jobs', j.id]" [queryParams]="{ focus: 'bid' }">
+          <i class="bi bi-send"></i> View & Bid
+        </a>
       </div>
+    </div>
+
+    <!-- Empty State -->
+    <div class="empty-state" *ngIf="filtered.length === 0">
+      <i class="bi bi-inbox"></i>
+      <h3>No jobs found</h3>
+      <p>Try adjusting your filters or check back later for new opportunities.</p>
+      <button class="btn" (click)="resetFilters()">Clear filters</button>
     </div>
   </div>
 </section>

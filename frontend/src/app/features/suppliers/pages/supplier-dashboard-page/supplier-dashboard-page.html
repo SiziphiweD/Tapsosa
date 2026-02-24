@@ -4,7 +4,14 @@
       <p>Find jobs, submit bids, and track earnings.</p>
     </ng-container>
     <ng-template #supplierPendingCopy>
-      <p>Your supplier profile is pending approval. You may browse jobs but cannot submit bids yet.</p>
+      <ng-container *ngIf="status.toLowerCase() === 'rejected'; else pendingSupplier">
+        <p>Verification Rejected. Update your documents to resubmit for approval.</p>
+        <div class="toast error" *ngIf="rejectionReason">{{ rejectionReason }}</div>
+      </ng-container>
+      <ng-template #pendingSupplier>
+        <p>Your supplier profile is pending approval. You cannot browse jobs or submit bids yet.</p>
+      </ng-template>
+      <a class="btn" routerLink="/supplier/compliance">Manage Compliance</a>
     </ng-template>
   </section>
 
@@ -54,6 +61,7 @@
       <h3>Quick Actions</h3>
       <div class="actions">
         <a class="btn" routerLink="/supplier/jobs">Browse Jobs</a>
+        <a class="btn" *ngIf="!isApproved" routerLink="/supplier/compliance">Manage Compliance</a>
         <a class="btn" routerLink="/supplier/bids">View My Bids</a>
         <a class="btn" routerLink="/supplier/contracts">Active Contracts</a>
       </div>
@@ -86,7 +94,7 @@
     </div>
   </section>
 
-  <section class="card">
+  <section class="card" *ngIf="isApproved">
     <h3>Available Jobs</h3>
     <div class="jobs">
       <article class="job" *ngFor="let j of jobs | slice:0:5">

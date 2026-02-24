@@ -1,1 +1,256 @@
- .table .row.head{font-weight:700}
+/* Main grid layout */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Three column grid for escrow status cards */
+.grid.cols-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+/* Card styling - consistent with admin jobs */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  width: 100%;
+}
+
+/* Remove extra margin from cards in grids */
+.grid .card {
+  margin: 0;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+}
+
+h1::before {
+  content: '';
+  width: 6px;
+  height: 32px;
+  background: var(--color-success);
+  border-radius: 20px;
+  margin-right: 1rem;
+}
+
+h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem 0;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+}
+
+/* Header description */
+.card p {
+  color: var(--color-muted);
+  margin: 0.5rem 0 0 0;
+  font-size: 0.95rem;
+}
+
+/* Status-specific card headers */
+.grid.cols-3 .card:first-child h3 {
+  color: #f59e0b;  /* Amber for Pending */
+}
+
+.grid.cols-3 .card:nth-child(2) h3 {
+  color: #0ea5e9;  /* Blue for Funded */
+}
+
+.grid.cols-3 .card:last-child h3 {
+  color: #10b981;  /* Green for Released */
+}
+
+/* Add subtle status indicators */
+.grid.cols-3 .card {
+  position: relative;
+  overflow: hidden;
+}
+
+.grid.cols-3 .card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+}
+
+.grid.cols-3 .card:first-child::before {
+  background: #f59e0b;  /* Amber for Pending */
+}
+
+.grid.cols-3 .card:nth-child(2)::before {
+  background: #0ea5e9;  /* Blue for Funded */
+}
+
+.grid.cols-3 .card:last-child::before {
+  background: #10b981;  /* Green for Released */
+}
+
+/* Table styles - matching admin jobs */
+.table {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: white;
+}
+
+.table .row {
+  display: grid;
+  grid-template-columns: 2fr 1fr;  /* Job title | Amount */
+  gap: 16px;
+  align-items: center;
+  padding: 0.9rem 1.2rem;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.2s ease;
+}
+
+.table .row:last-child {
+  border-bottom: none;
+}
+
+.table .row:hover:not(.head) {
+  background-color: #fafbfc;
+}
+
+.table .row.head {
+  font-weight: 700;
+  color: var(--color-primary);
+  background: #f2f7fc;
+  border-bottom: 2px solid var(--color-border);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.02em;
+  padding: 0.75rem 1.2rem;
+}
+
+/* Table cell alignment */
+.table .row > div {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.9rem;
+}
+
+/* Right-align amount columns */
+.table .row > div:last-child {
+  text-align: right;
+  font-family: 'Inter', monospace;
+  font-weight: 500;
+}
+
+/* Amount colors by status */
+.grid.cols-3 .card:first-child .table .row > div:last-child {
+  color: #f59e0b;  /* Amber for Pending */
+}
+
+.grid.cols-3 .card:nth-child(2) .table .row > div:last-child {
+  color: #0ea5e9;  /* Blue for Funded */
+}
+
+.grid.cols-3 .card:last-child .table .row > div:last-child {
+  color: #10b981;  /* Green for Released */
+}
+
+/* Empty state */
+.table .muted {
+  padding: 2rem 1.2rem;
+  text-align: center;
+  background: white;
+  color: var(--color-muted);
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+/* Total summary - optional if you want to add later */
+.total-row {
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 2px solid var(--color-border);
+  font-weight: 600;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .grid.cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  .card {
+    padding: 1.5rem;
+  }
+  
+  .grid.cols-3 {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h1::before {
+    height: 28px;
+  }
+  
+  .table .row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .table .row.head {
+    display: none;
+  }
+  
+  .table .row > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .table .row > div:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-muted);
+    margin-right: 1rem;
+  }
+  
+  .table .row > div:last-child {
+    text-align: left;
+  }
+}
+
+@media (max-width: 500px) {
+  .card {
+    padding: 1.25rem;
+  }
+  
+  h3 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+}

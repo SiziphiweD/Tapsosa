@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MockApiService, Attachment } from '../../../../shared/services/mock-api.service';
 import { AuthService, User } from '../../../../shared/services/auth.service';
+import { DocStorageService } from '../../../../shared/services/doc-storage.service';
 
 @Component({
   selector: 'app-post-request-page',
@@ -15,7 +16,7 @@ export class PostRequestPage {
   private api = inject(MockApiService);
   private auth = inject(AuthService);
   private router = inject(Router);
-
+  private docStore = inject(DocStorageService);
 
   title = '';
   category = 'Uniforms & PPE';
@@ -32,9 +33,6 @@ export class PostRequestPage {
   attachments: Attachment[] = [];
   submitted = false;
   isApproved = false;
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
 
   constructor() {
     const current = this.auth.currentUser$.value as User | null;
@@ -57,21 +55,25 @@ export class PostRequestPage {
       !!this.minBudget &&
       !!this.maxBudget &&
       !!this.bidDeadline &&
-      this.attachments.length > 0;
+      !!this.quantity &&
+      this.quantity > 0;
+      
     const budgetOk =
       this.minBudget !== null &&
       this.maxBudget !== null &&
       this.minBudget > 0 &&
       this.maxBudget > 0 &&
       this.minBudget <= this.maxBudget;
+      
     const datesOk =
       (this.startDate === '' && this.endDate === '') ||
       (this.startDate !== '' &&
         this.endDate !== '' &&
         new Date(this.startDate).getTime() <= new Date(this.endDate).getTime());
-    const qtyOk = this.quantity !== null && this.quantity > 0;
+        
     const deadlineOk = !this.deadlineInPast;
-    return required && budgetOk && datesOk && qtyOk && deadlineOk;
+    
+    return required && budgetOk && datesOk && deadlineOk;
   }
 
   get datesInvalid() {
@@ -88,29 +90,34 @@ export class PostRequestPage {
     return d.getTime() <= today.getTime();
   }
  
-  async onFilesSelected(files: FileList | null) {
-    if (!files) return;
-    const readers = Array.from(files).map((f) => this.readFileToDataUrl(f));
-    const dataUrls = await Promise.all(readers);
-    this.attachments = Array.from(files).map((f, i) => ({ name: f.name, size: f.size, type: f.type, dataUrl: dataUrls[i] }));
+  get minBidDate() {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().slice(0, 10);
   }
  
-  private readFileToDataUrl(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(String(reader.result));
-      reader.onerror = (e) => reject(e);
-      reader.readAsDataURL(file);
-    });
+  async onFilesSelected(files: FileList | null) {
+    if (!files) return;
+    const refs = await Promise.all(Array.from(files).map((f) => this.docStore.save(f.name, f)));
+    this.attachments = Array.from(files).map((f, i) => ({ 
+      name: f.name, 
+      size: f.size, 
+      type: f.type, 
+      refId: refs[i] 
+    }));
   }
-
+ 
   publish() {
     if (!this.isValid) return;
+    
     const requiredCertifications =
       this.requiredCertsText
         .split(',')
         .map((s) => s.trim())
         .filter((s) => s.length > 0) || [];
+        
+    const current = this.auth.currentUser$.value as User | null;
+    
     this.api
       .createJob({
         title: this.title,
@@ -126,9 +133,14 @@ export class PostRequestPage {
         startDate: this.startDate || undefined,
         endDate: this.endDate || undefined,
         durationDays: this.durationDays,
+        createdById: current?.id,
+        createdByName: current?.name,
+        createdByEmail: current?.email,
       })
       .subscribe(() => {
         this.submitted = true;
+        
+        // Reset form
         this.title = '';
         this.category = 'Uniforms & PPE';
         this.location = '';
@@ -142,9 +154,12 @@ export class PostRequestPage {
         this.endDate = '';
         this.durationDays = null;
         this.attachments = [];
+        
+        // Redirect after success
         setTimeout(() => {
           this.submitted = false;
-        }, 3500);
+          this.router.navigateByUrl('/member/requests');
+        }, 2000);
       });
   }
 }

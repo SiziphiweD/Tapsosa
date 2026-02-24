@@ -1,0 +1,33 @@
+<section class="card">
+  <h1>All Bids</h1>
+  <div class="filters">
+    <input type="text" [(ngModel)]="query" placeholder="Search by job or supplier" />
+    <select [(ngModel)]="status">
+      <option>All</option>
+      <option>Under Review</option>
+      <option>Accepted</option>
+      <option>Rejected</option>
+    </select>
+    <div class="muted">{{ filtered.length }} results</div>
+  </div>
+
+  <div class="table">
+    <div class="row head">
+      <div>Job</div>
+      <div>Supplier</div>
+      <div>Amount</div>
+      <div>Days</div>
+      <div>Submitted</div>
+      <div>Status</div>
+    </div>
+    <div class="row" *ngFor="let r of filtered">
+      <div>{{ r.jobTitle }}</div>
+      <div>{{ r.supplierName }}</div>
+      <div>R{{ r.amount.toLocaleString() }}</div>
+      <div>{{ r.days }}</div>
+      <div>{{ r.submitted }}</div>
+      <div><span class="badge" [class.accepted]="r.status==='Accepted'">{{ r.status }}</span></div>
+    </div>
+    <div class="muted" *ngIf="filtered.length===0">No bids</div>
+  </div>
+</section>

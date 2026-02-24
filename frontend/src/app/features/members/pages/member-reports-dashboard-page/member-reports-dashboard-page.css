@@ -18,7 +18,7 @@
 }
 
 .status-badge.pending,
-.status-badge['under review'] {
+.status-badge.under.review {
   background: #fef3c7;
   color: #92400e;
   border: 1px solid #facc15;

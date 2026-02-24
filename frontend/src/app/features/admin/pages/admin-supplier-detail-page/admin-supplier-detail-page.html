@@ -1,0 +1,74 @@
+<section class="card">
+  <div class="header">
+    <a routerLink="/admin/users/suppliers" class="back btn">
+      <i class="bi bi-arrow-left"></i> Back to Suppliers
+    </a>
+    <h1>Supplier Details</h1>
+  </div>
+
+  <ng-container *ngIf="supplier; else notFound">
+    <div class="grid">
+      <!-- Supplier Information -->
+      <div class="info">
+        <div class="line">
+          <span class="label">Name</span>
+          <span>{{ supplier.name }}</span>
+        </div>
+        <div class="line">
+          <span class="label">Company</span>
+          <span>{{ supplier.company || '—' }}</span>
+        </div>
+        <div class="line">
+          <span class="label">Email</span>
+          <span>{{ supplier.email }}</span>
+        </div>
+        <div class="line">
+          <span class="label">Joined</span>
+          <span>{{ supplier.createdAt | date: 'medium' }}</span>
+        </div>
+        <div class="line">
+          <span class="label">Status</span>
+          <span>
+            <span class="badge" [ngClass]="statusClass(supplier.status)">
+              {{ supplier.status || 'Pending' }}
+            </span>
+          </span>
+        </div>
+        <div class="line" *ngIf="supplier.statusReason">
+          <span class="label">Reason</span>
+          <span>{{ supplier.statusReason }}</span>
+        </div>
+      </div>
+
+      <!-- Compliance Documents -->
+      <div class="docs">
+        <h3>Compliance Documents</h3>
+        <div class="doc" *ngFor="let d of documents">
+          <div class="doc-name">{{ d.name }}</div>
+          <div class="doc-meta">
+            <span class="doc-status" [class.uploaded]="d.status === 'Uploaded'">
+              {{ d.status }}
+            </span>
+            <button 
+              *ngIf="d.status === 'Uploaded'" 
+              class="view-link" 
+              [disabled]="!d.fileUrl && !d.fileRefId" 
+              type="button" 
+              (click)="openDoc(d)"
+              [title]="(!d.fileUrl && !d.fileRefId) ? 'Re-upload to enable preview' : 'View document'">
+              View
+            </button>
+            <span class="meta-spacer"></span>
+            <span *ngIf="d.fileName" class="file">{{ d.fileName }}</span>
+            <span *ngIf="d.uploadedAt" class="time">{{ d.uploadedAt | date:'short' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-template #notFound>
+    <p class="muted">Supplier not found.</p>
+    <a routerLink="/admin/users/suppliers" class="back btn">← Go back to Suppliers</a>
+  </ng-template>
+</section>

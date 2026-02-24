@@ -298,6 +298,9 @@ h2 .highlight::after {
   border-color: rgba(255, 255, 255, 0.3);
   color: white;
 }
+.landing-root .btn {
+  border-radius: var(--radius-md);
+}
 .btn-secondary:hover {
   border-color: white;
   background: rgba(255, 255, 255, 0.1);
@@ -402,14 +405,18 @@ h2 .highlight::after {
   padding-top: 32px;
   border-top: 1px solid rgba(255, 255, 255, 0.15);
 }
-.badge {
+.trust-badges .badge {
   display: flex;
   align-items: center;
   gap: 8px;
   font-size: 12px;
   color: rgba(255, 255, 255, 0.7);
+  padding: 0;
+  border: none;
+  background: transparent;
+  border-radius: 0;
 }
-.badge-icon {
+.trust-badges .badge-icon {
   width: 20px;
   height: 20px;
   background: var(--color-success);

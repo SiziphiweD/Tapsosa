@@ -29,9 +29,6 @@ export class MemberTransactionDetailPage {
   supplierStatusClass = '';
   complianceClass = '';
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
     const id = this.route.snapshot.paramMap.get('transactionId');
     if (!id) {
@@ -85,6 +82,16 @@ export class MemberTransactionDetailPage {
     return this.activities[0];
   }
 
+  // Helper for status icons
+  getStatusIcon(status: string): string {
+    switch(status) {
+      case 'pending': return 'bi-hourglass-split';
+      case 'funded': return 'bi-shield-lock';
+      case 'released': return 'bi-check-circle-fill';
+      default: return 'bi-question-circle';
+    }
+  }
+
   private loadBid(job: Job) {
     if (!job.chosenBidId) {
       this.winningBid = null;
@@ -94,9 +101,11 @@ export class MemberTransactionDetailPage {
       this.complianceClass = '';
       return;
     }
+    
     this.api.listBids(job.id).subscribe((bids) => {
       const bid = bids.find((b) => b.id === job.chosenBidId) ?? null;
       this.winningBid = bid;
+      
       if (!bid || !bid.supplierId) {
         this.supplierStatus = null;
         this.complianceLabel = null;
@@ -116,8 +125,10 @@ export class MemberTransactionDetailPage {
       const user = users.find((u) => u.id === bid.supplierId);
       const status = (user?.status || 'Pending') as string;
       this.supplierStatus = status;
+      
       const meta = this.computeComplianceMeta(bid.supplierId);
-      this.complianceLabel = `${meta.label} • ${meta.completeness}%`;
+      this.complianceLabel = `${meta.label}`;
+      
       this.supplierStatusClass = this.mapStatusClass(status);
       this.complianceClass = this.mapComplianceClass(meta.label);
     });

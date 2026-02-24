@@ -1,106 +1,160 @@
 <section class="card">
   <ng-container *ngIf="job; else jobMissing">
+    <!-- Header -->
     <h1>Bid Comparison</h1>
-    <p>{{ job.title }} • {{ job.category }} • {{ job.location }}</p>
-    <p class="muted">
-      Review price, delivery, supplier status, and compliance before awarding a winner.
+    
+    <!-- Job Summary -->
+    <p>
+      <i class="bi bi-briefcase-fill"></i> {{ job.title }}
+      <span class="chip" *ngIf="job.verified" style="background: #ecfdf3; color: #166534; margin-left: 12px;">
+        <i class="bi bi-patch-check-fill"></i> Verified
+      </span>
+    </p>
+    <p>
+      <i class="bi bi-tag"></i> {{ job.category }} • 
+      <i class="bi bi-geo-alt"></i> {{ job.location }}
     </p>
     <p class="muted">
-      Budget R{{ job.minBudget.toLocaleString() }} – R{{ job.maxBudget.toLocaleString() }}
+      <i class="bi bi-currency-dollar"></i> Budget Range: R{{ job.minBudget.toLocaleString() }} – R{{ job.maxBudget.toLocaleString() }}
     </p>
     <p class="muted" *ngIf="job.attachments?.length">
-      Attachments: {{ job.attachments!.length }} file(s) uploaded with this request
+      <i class="bi bi-paperclip"></i> {{ job.attachments!.length }} attachment(s) included with this request
     </p>
 
+    <p class="muted" style="margin-top: 16px; margin-bottom: 8px;">
+      <i class="bi bi-info-circle-fill" style="color: var(--color-primary);"></i>
+      Review price, delivery, supplier status, and compliance before awarding a winner.
+    </p>
+
+    <!-- Bids List -->
     <div class="bids">
-      <div class="bid" *ngFor="let b of bids">
+      <div class="bid" *ngFor="let b of bids" [class.winning-bid]="isWinner(b)">
         <div class="row">
+          <!-- Bid Details -->
           <div>
-            <div class="title">{{ b.supplierName }}</div>
-            <div class="meta">
-              R{{ b.price.toLocaleString() }} • {{ b.days }} days delivery
+            <div class="title">
+              <i class="bi bi-building"></i> {{ b.supplierName }}
             </div>
-            <div class="msg">{{ b.message }}</div>
+            
             <div class="meta">
-              Supplier Status:
+              <span><i class="bi bi-cash-stack"></i> <strong>R{{ b.price.toLocaleString() }}</strong></span>
+              <span><i class="bi bi-clock"></i> {{ b.days }} days delivery</span>
+              <span><i class="bi bi-calendar"></i> Submitted: {{ b.createdAt | date:'mediumDate' }}</span>
+            </div>
+
+            <!-- Bid Message -->
+            <div class="msg">
+              <i class="bi bi-quote" style="opacity: 0.5; margin-right: 4px;"></i>
+              {{ b.message }}
+            </div>
+
+            <!-- Supplier Status & Compliance -->
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-top: 8px;">
               <span class="chip" [ngClass]="getSupplierStatusClass(b)">
-                {{ getSupplierStatus(b) }}
+                <i class="bi bi-person-badge"></i> Status: {{ getSupplierStatus(b) }}
               </span>
-            </div>
-            <div class="meta">
-              Compliance:
+              
               <span class="chip" [ngClass]="getComplianceClass(b)">
-                {{ getComplianceLabel(b) }}
+                <i class="bi bi-shield-check"></i> Compliance: {{ getComplianceLabel(b) }}
               </span>
             </div>
           </div>
+
+          <!-- Award Button -->
           <div class="actions">
             <button
               type="button"
-              [disabled]="selecting || !isApproved"
+              [disabled]="selecting || !isApproved || isWinner(b)"
               (click)="selectWinner(b.id)"
             >
-              Award Bid
+              <i class="bi bi-trophy-fill"></i>
+              {{ isWinner(b) ? 'Already Awarded' : 'Award Bid' }}
             </button>
           </div>
         </div>
-        <div class="chip" *ngIf="isWinner(b)">Winner</div>
       </div>
-      <div class="muted" *ngIf="bids.length === 0">No bids yet</div>
+
+      <!-- No Bids State -->
+      <div class="muted" style="text-align: center; padding: 3rem;" *ngIf="bids.length === 0">
+        <i class="bi bi-inbox" style="font-size: 3rem; color: var(--color-border);"></i>
+        <p style="margin-top: 1rem;">No bids have been submitted yet.</p>
+        <p class="muted">Check back later or consider promoting your request.</p>
+      </div>
     </div>
 
-    <div class="toast success" *ngIf="success">Winner selected</div>
-    <div class="toast warning" *ngIf="warning">{{ warning }}</div>
+    <!-- Success/Warning Toasts -->
+    <div class="toast success" *ngIf="success">
+      <i class="bi bi-check-circle-fill"></i> Winner selected successfully! Escrow has been created.
+    </div>
+    
+    <div class="toast warning" *ngIf="warning">
+      <i class="bi bi-exclamation-triangle-fill"></i> {{ warning }}
+    </div>
 
-    <section class="card" *ngIf="escrow as e">
-      <h3>Escrow Payment</h3>
+    <!-- Escrow Section (if awarded) -->
+    <section class="card" *ngIf="escrow as e" style="margin-top: 24px; padding: 1.5rem;">
+      <h3><i class="bi bi-shield-lock"></i> Escrow Payment</h3>
+      
       <div class="escrow">
         <div class="row">
-          <div>Total Amount</div>
+          <div><i class="bi bi-cash-stack" style="color: var(--color-primary);"></i> Total Amount</div>
           <div>R{{ e.gross.toLocaleString() }}</div>
         </div>
         <div class="row">
-          <div>Platform Fee (7%)</div>
+          <div><i class="bi bi-percent" style="color: var(--color-success);"></i> Platform Fee (7%)</div>
           <div>R{{ e.fee.toLocaleString() }}</div>
         </div>
         <div class="row">
-          <div>Escrow Amount</div>
+          <div><i class="bi bi-wallet2" style="color: var(--color-primary);"></i> Escrow Amount</div>
           <div>R{{ e.net.toLocaleString() }}</div>
         </div>
         <div class="row">
-          <div>Status</div>
-          <div class="chip">{{ e.status }}</div>
+          <div><i class="bi bi-flag" style="color: var(--color-muted);"></i> Status</div>
+          <div><span class="chip">{{ e.status }}</span></div>
         </div>
+
+        <!-- Escrow Actions -->
         <div class="actions">
           <button
             type="button"
-            [disabled]="funding || !isApproved"
+            [disabled]="funding || !isApproved || e.status !== 'pending'"
             (click)="fundEscrow()"
           >
-            Fund Escrow
+            <i class="bi bi-cash"></i> {{ funding ? 'Processing...' : 'Fund Escrow' }}
           </button>
           <button
             type="button"
-            [disabled]="releasing || !isApproved"
+            [disabled]="releasing || !isApproved || e.status !== 'funded'"
             (click)="releaseEscrow()"
           >
-            Release Escrow
+            <i class="bi bi-send"></i> {{ releasing ? 'Processing...' : 'Release Escrow' }}
           </button>
         </div>
-        <p class="muted" style="margin-top: 8px;">
+
+        <p class="muted">
+          <i class="bi bi-info-circle"></i>
           Payment options: EFT or card (simulated for demo purposes).
         </p>
       </div>
     </section>
   </ng-container>
 
+  <!-- Job Missing / Not Found -->
   <ng-template #jobMissing>
     <h1>Bid Comparison</h1>
-    <p class="muted">This job is no longer available or could not be found.</p>
-    <p class="muted">It may have been removed, completed, or the link may be outdated.</p>
-    <div class="actions" style="margin-top: 12px; display: flex; gap: 8px;">
-      <a class="btn" routerLink="/member/requests">Back to My Jobs</a>
-      <a class="btn primary" routerLink="/member/requests/new">Post a New Job</a>
+    <div style="text-align: center; padding: 3rem;">
+      <i class="bi bi-exclamation-triangle" style="font-size: 4rem; color: #f59e0b;"></i>
+      <p class="muted" style="font-size: 1.2rem; margin: 1rem 0;">This job is no longer available</p>
+      <p class="muted">It may have been removed, completed, or the link may be outdated.</p>
+      
+      <div class="actions" style="margin-top: 24px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+        <a class="btn" routerLink="/member/requests">
+          <i class="bi bi-arrow-left"></i> Back to My Jobs
+        </a>
+        <a class="btn primary" routerLink="/member/requests/new">
+          <i class="bi bi-plus-circle"></i> Post a New Job
+        </a>
+      </div>
     </div>
   </ng-template>
 </section>

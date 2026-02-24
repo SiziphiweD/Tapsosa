@@ -15,7 +15,7 @@
         <label>Contact Phone <input [(ngModel)]="general.contactPhone" /></label>
         <label>Business Hours <input [(ngModel)]="general.businessHours" /></label>
         <label><input type="checkbox" [(ngModel)]="general.maintenance" /> Maintenance Mode</label>
-        <button type="button" (click)="saveGeneral()">Save</button>
+        <button type="button" class="btn" (click)="saveGeneral()">Save</button>
       </div>
     </div>
     <div class="card">
@@ -26,7 +26,7 @@
         <label>Secret Key <input [(ngModel)]="payment.secretKey" type="password" /></label>
         <label><input type="checkbox" [(ngModel)]="payment.testMode" /> Test Mode</label>
         <label>Transaction Limit <input [(ngModel)]="payment.txLimit" type="number" /></label>
-        <button type="button" (click)="savePayment()">Save</button>
+        <button type="button" class="btn" (click)="savePayment()">Save</button>
       </div>
     </div>
   </section>
@@ -44,7 +44,7 @@
         <h4>Transaction</h4>
         <label>Subject <input [(ngModel)]="email.transaction.subject" /></label>
         <label>Body <textarea [(ngModel)]="email.transaction.body"></textarea></label>
-        <button type="button" (click)="saveEmail()">Save</button>
+        <button type="button" class="btn" (click)="saveEmail()">Save</button>
       </div>
     </div>
     <div class="card">
@@ -54,7 +54,7 @@
         <label>API Key <input [(ngModel)]="sms.apiKey" /></label>
         <label>Default Template <textarea [(ngModel)]="sms.templates.default"></textarea></label>
         <label>OTP Template <textarea [(ngModel)]="sms.templates.otp"></textarea></label>
-        <button type="button" (click)="saveSms()">Save</button>
+        <button type="button" class="btn" (click)="saveSms()">Save</button>
       </div>
     </div>
   </section>
@@ -65,7 +65,7 @@
       <label><input type="checkbox" [(ngModel)]="flags.enableFeatures" /> Enable/Disable Features</label>
       <label><input type="checkbox" [(ngModel)]="flags.betaFeatures" /> Beta Features</label>
       <label><input type="checkbox" [(ngModel)]="flags.abTesting" /> A/B Testing</label>
-      <button type="button" (click)="saveFlags()">Save</button>
+      <button type="button" class="btn" (click)="saveFlags()">Save</button>
     </div>
   </section>
 </div>

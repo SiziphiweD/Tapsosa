@@ -1,35 +1,49 @@
-<section class="card">
+<section class="card members-page">
   <h1>Members</h1>
-  <div class="actions">
+  <div class="subtabs">
+    <a routerLink="/admin/users/members" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Members</a>
+    <a routerLink="/admin/users/suppliers" routerLinkActive="active">Suppliers</a>
+    <a routerLink="/admin/users/admins" routerLinkActive="active">Admins</a>
+  </div>
+  
+  <div class="filters">
     <input type="text" [(ngModel)]="query" placeholder="Search by name or email" />
     <div class="muted">{{ filtered.length }} results</div>
   </div>
+  
   <div class="table">
     <div class="row head">
-      <div>Name</div><div>Email</div><div>Joined</div><div>Status</div><div></div>
+      <div>Name</div>
+      <div>Email</div>
+      <div>Joined</div>
+      <div>Status</div>
+      <div></div>
     </div>
     <div class="row" *ngFor="let r of filtered">
-      <div>{{ r.name }}</div>
-      <div>{{ r.email }}</div>
-      <div>{{ r.createdAt | date: 'mediumDate' }}</div>
-      <div>
-        <span class="status-badge" [ngClass]="statusClass(r.status)">{{ r.status || 'Pending' }}</span>
+      <div [attr.data-label]="'Name'">{{ r.name }}</div>
+      <div [attr.data-label]="'Email'">{{ r.email }}</div>
+      <div [attr.data-label]="'Joined'">{{ r.createdAt | date: 'mediumDate' }}</div>
+      <div [attr.data-label]="'Status'">
+        <span class="badge" [ngClass]="statusClass(r.status)">{{ r.status || 'Pending' }}</span>
       </div>
-      <div class="user-actions">
-        <button type="button" class="icon-btn accept" (click)="setStatus(r.id, 'Approved')">
-          <i class="bi bi-check-lg"></i>
-        </button>
-        <button type="button" class="icon-btn reject" (click)="openReject(r.id)">
-          <i class="bi bi-x-lg"></i>
-        </button>
-        <button type="button" class="icon-btn view" (click)="view(r.id)">
-          <i class="bi bi-eye"></i>
-        </button>
+      <div [attr.data-label]="'Actions'">
+        <div class="user-actions">
+          <button type="button" class="icon-btn accept" (click)="setStatus(r.id, 'Approved')" title="Approve">
+            <i class="bi bi-check-lg"></i>
+          </button>
+          <button type="button" class="icon-btn reject" (click)="openReject(r.id)" title="Reject">
+            <i class="bi bi-x-lg"></i>
+          </button>
+          <button type="button" class="icon-btn view" (click)="view(r.id)" title="View Details">
+            <i class="bi bi-eye"></i>
+          </button>
+        </div>
       </div>
     </div>
     <div class="muted" *ngIf="filtered.length===0">No members found</div>
   </div>
 
+  <!-- Rejection Modal -->
   <div class="modal-backdrop" *ngIf="rejectingId">
     <div class="modal">
       <h3>Reject Member</h3>

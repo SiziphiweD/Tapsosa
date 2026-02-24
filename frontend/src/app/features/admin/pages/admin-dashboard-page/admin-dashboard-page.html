@@ -1,9 +1,11 @@
 <div class="grid">
+  <!-- Header -->
   <section class="card">
     <h1>Admin Dashboard</h1>
     <p>Platform overview, health metrics, and latest activity.</p>
   </section>
 
+  <!-- Stats Grid - 6 cards in 3-column layout -->
   <section class="grid cols-3">
     <div class="card stat">
       <div class="label">Total Members</div>
@@ -31,13 +33,35 @@
     </div>
   </section>
 
+  <!-- Platform Health & Recent Activity -->
   <section class="grid cols-2">
     <div class="card">
       <h3>Platform Health</h3>
       <div class="rows">
-        <div class="row"><div>Completion Rate</div><div>{{ completionRate }}%</div></div>
-        <div class="row"><div>Dispute Rate</div><div>0%</div></div>
-        <div class="row"><div>Verified Suppliers</div><div>N/A</div></div>
+        <div class="row">
+          <div>Completion Rate</div>
+          <div>{{ completionRate }}%</div>
+        </div>
+        <div class="row">
+          <div>Dispute Rate</div>
+          <div>{{ disputeRate }}%</div>
+        </div>
+        <div class="row">
+          <div>Verified Members</div>
+          <div>{{ verifiedMembers }} / {{ membersCount }} ({{ getVerificationRate('members') }}%)</div>
+        </div>
+        <div class="row">
+          <div>Verified Suppliers</div>
+          <div>{{ verifiedSuppliers }} / {{ suppliersCount }} ({{ getVerificationRate('suppliers') }}%)</div>
+        </div>
+        <div class="row">
+          <div>Active Escrows</div>
+          <div>{{ activeEscrows }}</div>
+        </div>
+        <div class="row">
+          <div>Pending Verifications</div>
+          <div>{{ pendingVerifications }}</div>
+        </div>
       </div>
     </div>
     <div class="card">
@@ -54,17 +78,18 @@
     </div>
   </section>
 
+  <!-- Quick Action Cards -->
   <section class="grid cols-3">
     <a class="card link" routerLink="/admin/users/members">
-      <h3>User Management</h3>
+      <h3>👥 User Management</h3>
       <p>Members, Suppliers, Admins, and Verifications</p>
     </a>
     <a class="card link" routerLink="/admin/jobs">
-      <h3>Job Management</h3>
+      <h3>💼 Job Management</h3>
       <p>Jobs, Categories, Flags, Analytics</p>
     </a>
     <a class="card link" routerLink="/admin/finance/revenue">
-      <h3>Financial Management</h3>
+      <h3>💰 Financial Management</h3>
       <p>Revenue, Transactions, Escrow, Payouts</p>
     </a>
   </section>

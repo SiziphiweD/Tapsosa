@@ -23,6 +23,7 @@ export class SupplierDashboardPage {
 
   status: string = 'Pending';
   isApproved = false;
+  rejectionReason = '';
 
   private api = inject(MockApiService);
   private auth = inject(AuthService);
@@ -32,6 +33,7 @@ export class SupplierDashboardPage {
     if (current) {
       this.status = current.status || 'Pending';
       this.isApproved = (this.status || '').toLowerCase() === 'approved';
+      this.rejectionReason = current.statusReason || '';
     }
 
     const api = this.api;

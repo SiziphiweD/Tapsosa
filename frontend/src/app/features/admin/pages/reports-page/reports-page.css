@@ -1,5 +1,141 @@
- .card{
-  border-radius:18px;
-  box-shadow:0 18px 40px rgba(15,23,42,0.06);
+/* Main grid layout */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
 }
-.card h3{font-weight:800}
+
+/* Three column grid for report cards */
+.grid.cols-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+/* Card styling - matching admin jobs */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+/* Remove extra margin from cards in grids */
+.grid .card {
+  margin: 0;
+}
+
+/* Hover effect for report cards */
+.grid.cols-3 .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 30px -10px rgba(15, 23, 42, 0.12);
+  border-color: var(--color-primary);
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+}
+
+h1::before {
+  content: '';
+  width: 6px;
+  height: 32px;
+  background: var(--color-success);
+  border-radius: 20px;
+  margin-right: 1rem;
+}
+
+h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0 0 0.75rem 0;
+  color: var(--color-text);
+  letter-spacing: -0.01em;
+}
+
+/* Header description */
+.card p {
+  color: var(--color-muted);
+  margin: 0.5rem 0 0 0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+/* Different accent colors for each report card */
+.grid.cols-3 .card:first-child {
+  border-top: 4px solid #0ea5e9;  /* Blue for Adoption */
+}
+
+.grid.cols-3 .card:nth-child(2) {
+  border-top: 4px solid #10b981;  /* Green for Compliance */
+}
+
+.grid.cols-3 .card:last-child {
+  border-top: 4px solid #8b5cf6;  /* Purple for Transactions */
+}
+
+/* Optional: Add subtle icons or indicators */
+.grid.cols-3 .card {
+  position: relative;
+  overflow: hidden;
+}
+
+.grid.cols-3 .card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 80px;
+  height: 80px;
+  background: radial-gradient(circle at top right, rgba(255,255,255,0.8), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  pointer-events: none;
+}
+
+.grid.cols-3 .card:hover::after {
+  opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .grid.cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .card {
+    padding: 1.5rem;
+  }
+  
+  .grid.cols-3 {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h1::before {
+    height: 28px;
+  }
+  
+  h3 {
+    font-size: 1.25rem;
+  }
+}

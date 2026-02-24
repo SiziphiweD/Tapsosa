@@ -2,7 +2,7 @@
   <h1>Supplier Verification</h1>
   <p>Review uploaded documents and manage verification status.</p>
 
-  <div class="actions">
+  <div class="filters">
     <input
       type="text"
       [(ngModel)]="query"
@@ -28,7 +28,7 @@
       </div>
       <div>{{ r.company || '—' }}</div>
       <div>
-        <span class="status-badge" [ngClass]="statusClass(r.status)">{{ r.status || 'Pending' }}</span>
+        <span class="badge" [ngClass]="statusClass(r.status)">{{ r.status || 'Pending' }}</span>
       </div>
       <div>
         <div class="doc-pill" *ngFor="let d of r.documents">
@@ -41,8 +41,8 @@
       </div>
       <div>{{ r.createdAt | date: 'mediumDate' }}</div>
       <div class="actions-cell">
-        <button type="button" class="btn-approve" (click)="approve(r.id)">Approve</button>
-        <button type="button" class="btn-reject" (click)="openReject(r.id)">Reject</button>
+        <button type="button" class="btn btn-approve" (click)="approve(r.id)">Approve</button>
+        <button type="button" class="btn btn-reject" (click)="openReject(r.id)">Reject</button>
       </div>
     </div>
 

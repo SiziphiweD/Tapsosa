@@ -7,22 +7,42 @@
   <section class="card">
     <h3>Log Dispute</h3>
     <div class="form">
-      <label>Job ID <input [(ngModel)]="jobId" /></label>
-      <label>Reason <input [(ngModel)]="reason" /></label>
-      <button type="button" (click)="add()">Add</button>
+      <label>
+        Job ID
+        <input [(ngModel)]="jobId" placeholder="Enter job ID" />
+      </label>
+      <label>
+        Reason
+        <input [(ngModel)]="reason" placeholder="Enter dispute reason" />
+      </label>
+      <button type="button" class="btn" (click)="add()" [disabled]="!jobId.trim() || !reason.trim()">Add</button>
     </div>
   </section>
 
   <section class="card">
     <h3>All Disputes</h3>
     <div class="table">
-      <div class="row head"><div>Job</div><div>Reason</div><div>Filed</div><div>Status</div><div></div></div>
+      <div class="row head">
+        <div>Job</div>
+        <div>Reason</div>
+        <div>Filed</div>
+        <div>Status</div>
+        <div></div>
+      </div>
       <div class="row" *ngFor="let r of rows">
-        <div>{{ r.jobId }}</div>
-        <div>{{ r.reason }}</div>
-        <div>{{ r.createdAt | date:'medium' }}</div>
-        <div><span class="badge" [class.accepted]="!r.resolved">{{ r.resolved ? 'Resolved' : 'Open' }}</span></div>
-        <div><button type="button" (click)="toggle(r.id)">{{ r.resolved ? 'Reopen' : 'Resolve' }}</button></div>
+        <div [attr.data-label]="'Job'">{{ r.jobId }}</div>
+        <div [attr.data-label]="'Reason'">{{ r.reason }}</div>
+        <div [attr.data-label]="'Filed'">{{ r.createdAt | date:'medium' }}</div>
+        <div [attr.data-label]="'Status'">
+          <span class="badge" [class.accepted]="r.resolved">
+            {{ r.resolved ? 'Resolved' : 'Open' }}
+          </span>
+        </div>
+        <div [attr.data-label]="'Action'">
+          <button type="button" class="btn" (click)="toggle(r.id)">
+            {{ r.resolved ? 'Reopen' : 'Resolve' }}
+          </button>
+        </div>
       </div>
       <div class="muted" *ngIf="rows.length===0">No disputes</div>
     </div>

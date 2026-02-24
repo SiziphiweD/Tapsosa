@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, NavigationEnd, RouterLink, RouterLinkActive, Event } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService, User } from '../../services/auth.service';
 
@@ -17,22 +17,17 @@ export class Sidebar {
   user: User | null = null;
   year = new Date().getFullYear();
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
-    const router = this.router;
-    const auth = this.auth;
-
-    this.setRole(router.url);
-    router.events.subscribe((e) => {
+    this.setRole(this.router.url);
+    
+    this.router.events.subscribe((e: Event) => {
       if (e instanceof NavigationEnd) {
         this.setRole(e.urlAfterRedirects);
       }
     });
-    auth.currentUser$.subscribe((u) => {
+    
+    this.auth.currentUser$.subscribe((u: User | null) => {
       this.user = u;
-      // Keep role derived from current route to ensure consistent theming
     });
   }
 
@@ -49,9 +44,11 @@ export class Sidebar {
   }
 
   roleIcon() {
+    // Different icons for each role
     if (this.role === 'admin') return 'bi-shield-lock';
-    if (this.role === 'supplier') return 'bi-briefcase';
-    return 'bi-person-circle';
+    if (this.role === 'supplier') return 'bi-briefcase-fill';
+    if (this.role === 'member') return 'bi-building';
+    return 'bi-shield';
   }
 
   isMemberBidsActive() {

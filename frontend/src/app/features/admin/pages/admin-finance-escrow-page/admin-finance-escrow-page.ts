@@ -16,14 +16,23 @@ export class AdminFinanceEscrowPage {
   funded: Job[] = [];
   released: Job[] = [];
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
     this.api.listJobs().subscribe((jobs) => {
       this.pending = jobs.filter((j) => j.escrow?.status === 'pending');
       this.funded = jobs.filter((j) => j.escrow?.status === 'funded');
       this.released = jobs.filter((j) => j.escrow?.status === 'released');
     });
+  }
+
+  getPendingTotal(): number {
+    return this.pending.reduce((sum, job) => sum + (job.escrow?.gross || 0), 0);
+  }
+
+  getFundedTotal(): number {
+    return this.funded.reduce((sum, job) => sum + (job.escrow?.gross || 0), 0);
+  }
+
+  getReleasedTotal(): number {
+    return this.released.reduce((sum, job) => sum + (job.escrow?.net || 0), 0);
   }
 }

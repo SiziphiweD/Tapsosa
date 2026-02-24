@@ -1,0 +1,354 @@
+/* Card styling - consistent with admin theme */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Header section */
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 2rem;
+}
+
+.header .back {
+  text-decoration: none;
+  color: var(--color-text);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: white;
+  transition: all 0.2s ease;
+ 
+}
+
+.header .back:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.header .back i {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+}
+
+h1::before {
+  content: '';
+  width: 6px;
+  height: 32px;
+  background: var(--color-success);
+  border-radius: 20px;
+  margin-right: 1rem;
+}
+
+/* Two column grid */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+/* Info section */
+.info {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+
+.info .line {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.info .line:last-child {
+  border-bottom: none;
+}
+
+.info .label {
+  color: var(--color-muted);
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.info .label + span {
+  font-weight: 500;
+  color: var(--color-text);
+  text-align: right;
+  max-width: 60%;
+  word-break: break-word;
+}
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  min-width: 85px;
+  text-align: center;
+}
+
+.badge.pending {
+  background: #fff3cd;
+  color: #856404;
+  border-color: #ffe69c;
+}
+
+.badge.approved {
+  background: #ecfdf3;
+  color: #166534;
+  border-color: #b7e3b9;
+}
+
+.badge.rejected {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-color: #fecaca;
+}
+
+/* Documents section */
+.docs {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.5rem;
+}
+
+.docs h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem 0;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+}
+
+.docs h3::before {
+  content: '📄';
+  margin-right: 0.75rem;
+  font-size: 1.2rem;
+}
+
+/* Document item */
+.doc {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1rem 1.25rem;
+  margin-bottom: 12px;
+  background: var(--color-surface);
+  transition: all 0.2s ease;
+}
+
+.doc:last-child {
+  margin-bottom: 0;
+}
+
+.doc:hover {
+  border-color: var(--color-primary);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+  transform: translateY(-1px);
+}
+
+.doc-name {
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+}
+
+.doc-meta {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+}
+
+/* Document status badge */
+.doc-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  background: #eef1f4;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.doc-status.uploaded {
+  background: #ecfdf3;
+  color: #166534;
+}
+
+/* View button */
+.view-link {
+  margin-left: 4px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: white;
+  color: var(--color-primary);
+  font-weight: 600;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.view-link:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+  border-color: var(--color-primary);
+  background: #f8fafc;
+}
+
+.view-link:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  background: #f1f5f9;
+}
+
+.view-link.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* Spacer */
+.meta-spacer {
+  flex: 1 1 auto;
+}
+
+/* File name and time */
+.doc-meta .file {
+  font-family: 'Inter', monospace;
+  font-size: 0.8rem;
+  color: var(--color-primary);
+  max-width: 150px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.doc-meta .time {
+  color: var(--color-muted);
+  font-size: 0.75rem;
+}
+
+/* Not found state */
+.muted {
+  color: var(--color-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  margin: 1rem 0;
+}
+
+/* Back button in not found */
+.muted + .back.btn {
+  margin-top: 1rem;
+  display: inline-flex;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .card {
+    padding: 1.5rem;
+  }
+  
+  .grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h1::before {
+    height: 28px;
+  }
+  
+  .header {
+    flex-wrap: wrap;
+  }
+}
+
+@media (max-width: 600px) {
+  .info .line {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+  }
+  
+  .info .label + span {
+    text-align: left;
+    max-width: 100%;
+    width: 100%;
+  }
+  
+  .doc-meta {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .view-link {
+    margin-left: 0;
+    width: 100%;
+  }
+  
+  .meta-spacer {
+    display: none;
+  }
+  
+  .doc-meta .file {
+    max-width: 100%;
+    width: 100%;
+  }
+}

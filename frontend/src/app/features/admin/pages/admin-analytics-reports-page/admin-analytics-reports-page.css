@@ -1,3 +1,454 @@
- .stat .label{color:#666;font-size:.9rem}
- .stat .value{font-size:1.6rem;font-weight:700;margin-top:.5rem}
- .form label{display:block;margin-bottom:.5rem}
+/* Main grid layout */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Two column grid */
+.grid.cols-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  width: 100%;
+}
+
+/* Four column grid for stat cards */
+.grid.cols-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+/* Card styling - consistent with admin jobs */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  width: 100%;
+}
+
+/* Remove extra margin from cards in grids */
+.grid .card {
+  margin: 0;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+}
+
+h1::before {
+  content: '';
+  width: 6px;
+  height: 32px;
+  background: var(--color-success);
+  border-radius: 20px;
+  margin-right: 1rem;
+}
+
+h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem 0;
+  color: var(--color-text);
+}
+
+/* Header description */
+.card p {
+  color: var(--color-muted);
+  margin: 0.5rem 0 0 0;
+  font-size: 0.95rem;
+}
+
+/* Stat cards */
+.stat {
+  text-align: left;
+  padding: 1.5rem 2rem;
+}
+
+.stat .label {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.stat .value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  line-height: 1.2;
+}
+
+/* Different colors for stat cards */
+.grid.cols-4 .stat:first-child .value {
+  color: #0ea5e9;  /* Blue for Users */
+}
+
+.grid.cols-4 .stat:nth-child(2) .value {
+  color: #f59e0b;  /* Amber for Suppliers */
+}
+
+.grid.cols-4 .stat:nth-child(3) .value {
+  color: #10b981;  /* Green for Members */
+}
+
+.grid.cols-4 .stat:last-child .value {
+  color: #8b5cf6;  /* Purple for Jobs */
+}
+
+/* Transaction rows */
+.rows {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rows .row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px dashed var(--color-border);
+}
+
+.rows .row:last-child {
+  border-bottom: none;
+}
+
+.rows .row div:first-child {
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.rows .row div:last-child {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-family: 'Inter', monospace;
+}
+
+/* Activity list */
+.activity {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.activity li {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1.5fr;
+  gap: 12px;
+  align-items: center;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid var(--color-border);
+  font-size: 0.9rem;
+}
+
+.activity li:last-child {
+  border-bottom: none;
+}
+
+.activity li .time {
+  color: var(--color-muted);
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+.activity li.muted {
+  color: var(--color-muted);
+  font-style: italic;
+  text-align: center;
+  display: block;
+  padding: 1rem;
+}
+
+/* Form styles */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 2rem;
+  max-width: 500px;
+}
+
+.form label {
+  display: block;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 0;
+}
+
+.form input,
+.form select {
+  width: 100%;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.75rem 1.2rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.form input:focus,
+.form select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(44, 74, 98, 0.08);
+}
+
+.form input:disabled {
+  background: #f1f5f9;
+  cursor: not-allowed;
+}
+
+/* Button styles - consistent across the page */
+.card .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: white;
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.card .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.12);
+  border-color: var(--color-primary);
+}
+
+/* Save Report button - primary style */
+.form .btn {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  width: fit-content;
+  min-width: 120px;
+  margin-top: 8px;
+}
+
+.form .btn:hover {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+.form .btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #94a3b8;
+  border-color: #94a3b8;
+  transform: none;
+  box-shadow: none;
+}
+
+/* Delete button in table */
+.table .btn {
+  height: 34px;
+  padding: 0 1rem;
+  font-size: 0.8rem;
+  background: white;
+}
+
+.table .btn:hover {
+  border-color: #ef4444;
+  color: #b91c1c;
+  background: #fef2f2;
+}
+
+/* Table styles - matching admin jobs */
+.table {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: white;
+  margin-top: 1rem;
+}
+
+.table .row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr 0.8fr;  /* For saved reports: Name | Dataset | Created | Action */
+  gap: 16px;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.2s ease;
+}
+
+/* For category and location tables (2 columns) */
+.card .table .row:not(.head):has(div:first-child):has(div:nth-child(2):last-child) {
+  grid-template-columns: 3fr 1fr;
+}
+
+.table .row:last-child {
+  border-bottom: none;
+}
+
+.table .row:hover:not(.head) {
+  background-color: #fafbfc;
+}
+
+.table .row.head {
+  font-weight: 600;
+  color: var(--color-primary);
+  background: #f2f7fc;
+  border-bottom: 2px solid var(--color-border);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  padding: 0.85rem 1.5rem;
+}
+
+/* Table cell alignment */
+.table .row > div {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.95rem;
+}
+
+/* Right-align numeric columns */
+.table .row > div:nth-child(2):last-child {
+  text-align: right;
+  font-weight: 500;
+}
+
+/* For category/location tables */
+.card .table .row:not(.head) > div:last-child {
+  text-align: right;
+  font-weight: 600;
+  color: var(--color-primary);
+}
+
+/* Date column in saved reports */
+.table .row > div:nth-child(3) {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Empty state */
+.table .muted {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: white;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .grid.cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .grid.cols-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat .value {
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 900px) {
+  .card {
+    padding: 1.5rem;
+  }
+  
+  .activity li {
+    grid-template-columns: 1fr 1fr 1fr 1.2fr;
+    gap: 8px;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .grid.cols-4 {
+    grid-template-columns: 1fr;
+  }
+  
+  .table .row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .table .row.head {
+    display: none;
+  }
+  
+  .table .row > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .table .row > div:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-muted);
+    margin-right: 1rem;
+    min-width: 100px;
+  }
+  
+  .table .row > div:nth-child(2):last-child {
+    text-align: left;
+  }
+  
+  .card .table .row:not(.head) > div:last-child {
+    text-align: left;
+  }
+  
+  .activity li {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 0.75rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    margin-bottom: 8px;
+  }
+  
+  .activity li span {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .activity li .time {
+    text-align: left;
+  }
+  
+  .form {
+    max-width: 100%;
+  }
+  
+  .form .btn {
+    width: 100%;
+  }
+}

@@ -1,123 +1,195 @@
 <section class="card">
-  <h1>Compliance Documents</h1>
+  <h1>
+    <i class="bi bi-shield-check"></i>
+    Compliance Documents
+  </h1>
+  
   <p class="muted">
+    <i class="bi bi-info-circle" style="color: var(--color-primary);"></i>
     Upload the required compliance documents as PDF files and provide their expiry dates before
-    submitting for review.
+    submitting for review. All documents will be verified by our compliance team.
   </p>
+
+  <!-- Progress Indicator -->
+  <div class="progress-indicator">
+    <div class="progress-step" [class.completed]="areAllUploaded()" [class.active]="!areAllUploaded()">
+      <div class="step-icon">
+        <i class="bi bi-cloud-upload"></i>
+      </div>
+      <span class="step-label">Upload</span>
+    </div>
+    <div class="progress-step" [class.active]="areAllUploaded() && !submitted">
+      <div class="step-icon">
+        <i class="bi bi-clock-history"></i>
+      </div>
+      <span class="step-label">Review</span>
+    </div>
+    <div class="progress-step">
+      <div class="step-icon">
+        <i class="bi bi-check-circle"></i>
+      </div>
+      <span class="step-label">Complete</span>
+    </div>
+  </div>
 
   <form class="form" (ngSubmit)="submitForReview()">
     <div class="grid cols-2">
+      <!-- Business Registration -->
       <label>
-        Business registration certificate (PDF)
+        <span><i class="bi bi-building"></i> Business registration certificate (PDF)</span>
         <input
           type="file"
           accept="application/pdf"
           (change)="onFileSelected($event, 'businessRegistrationCertificate')"
         />
-        <span class="upload-status">
-          {{ businessRegistrationCertificate ? ('Uploaded: ' + businessRegistrationCertificate.name) : 'Not uploaded' }}
+        <span class="upload-status" [class.uploaded]="businessRegistrationCertificate">
+          <i class="bi" [ngClass]="businessRegistrationCertificate ? 'bi-check-circle-fill' : 'bi-exclamation-circle'"></i>
+          {{ businessRegistrationCertificate ? ('Uploaded: ' + businessRegistrationCertificate.name) : 'No file selected' }}
         </span>
       </label>
       <label>
-        Expiry date
+        <span><i class="bi bi-calendar"></i> Expiry date</span>
         <input
           type="date"
           [(ngModel)]="businessRegistrationCertificateExpiry"
           name="businessRegistrationCertificateExpiry"
+          [min]="today"
         />
       </label>
 
+      <!-- Tax Clearance -->
       <label>
-        Tax clearance certificate (PDF)
+        <span><i class="bi bi-file-text"></i> Tax clearance certificate (PDF)</span>
         <input
           type="file"
           accept="application/pdf"
           (change)="onFileSelected($event, 'taxClearanceCertificate')"
         />
-        <span class="upload-status">
-          {{ taxClearanceCertificate ? ('Uploaded: ' + taxClearanceCertificate.name) : 'Not uploaded' }}
+        <span class="upload-status" [class.uploaded]="taxClearanceCertificate">
+          <i class="bi" [ngClass]="taxClearanceCertificate ? 'bi-check-circle-fill' : 'bi-exclamation-circle'"></i>
+          {{ taxClearanceCertificate ? ('Uploaded: ' + taxClearanceCertificate.name) : 'No file selected' }}
         </span>
       </label>
       <label>
-        Expiry date
+        <span><i class="bi bi-calendar"></i> Expiry date</span>
         <input
           type="date"
           [(ngModel)]="taxClearanceCertificateExpiry"
           name="taxClearanceCertificateExpiry"
+          [min]="today"
         />
       </label>
 
+      <!-- Industry Compliance -->
       <label>
-        Industry compliance certificate (PDF)
+        <span><i class="bi bi-award"></i> Industry compliance certificate (PDF)</span>
         <input
           type="file"
           accept="application/pdf"
           (change)="onFileSelected($event, 'industryComplianceCertificate')"
         />
-        <span class="upload-status">
-          {{ industryComplianceCertificate ? ('Uploaded: ' + industryComplianceCertificate.name) : 'Not uploaded' }}
+        <span class="upload-status" [class.uploaded]="industryComplianceCertificate">
+          <i class="bi" [ngClass]="industryComplianceCertificate ? 'bi-check-circle-fill' : 'bi-exclamation-circle'"></i>
+          {{ industryComplianceCertificate ? ('Uploaded: ' + industryComplianceCertificate.name) : 'No file selected' }}
         </span>
       </label>
       <label>
-        Expiry date
+        <span><i class="bi bi-calendar"></i> Expiry date</span>
         <input
           type="date"
           [(ngModel)]="industryComplianceCertificateExpiry"
           name="industryComplianceCertificateExpiry"
+          [min]="today"
         />
       </label>
 
+      <!-- Director ID -->
       <label>
-        Director ID copy (PDF)
+        <span><i class="bi bi-person-badge"></i> Director ID copy (PDF)</span>
         <input
           type="file"
           accept="application/pdf"
           (change)="onFileSelected($event, 'directorIdCopy')"
         />
-        <span class="upload-status">
-          {{ directorIdCopy ? ('Uploaded: ' + directorIdCopy.name) : 'Not uploaded' }}
+        <span class="upload-status" [class.uploaded]="directorIdCopy">
+          <i class="bi" [ngClass]="directorIdCopy ? 'bi-check-circle-fill' : 'bi-exclamation-circle'"></i>
+          {{ directorIdCopy ? ('Uploaded: ' + directorIdCopy.name) : 'No file selected' }}
         </span>
       </label>
       <label>
-        Expiry date
+        <span><i class="bi bi-calendar"></i> Expiry date</span>
         <input
           type="date"
           [(ngModel)]="directorIdCopyExpiry"
           name="directorIdCopyExpiry"
+          [min]="today"
         />
       </label>
 
+      <!-- Proof of Address -->
       <label>
-        Proof of address (PDF)
+        <span><i class="bi bi-geo-alt"></i> Proof of address (PDF)</span>
         <input
           type="file"
           accept="application/pdf"
           (change)="onFileSelected($event, 'proofOfAddress')"
         />
-        <span class="upload-status">
-          {{ proofOfAddress ? ('Uploaded: ' + proofOfAddress.name) : 'Not uploaded' }}
+        <span class="upload-status" [class.uploaded]="proofOfAddress">
+          <i class="bi" [ngClass]="proofOfAddress ? 'bi-check-circle-fill' : 'bi-exclamation-circle'"></i>
+          {{ proofOfAddress ? ('Uploaded: ' + proofOfAddress.name) : 'No file selected' }}
         </span>
       </label>
       <label>
-        Expiry date
+        <span><i class="bi bi-calendar"></i> Expiry date</span>
         <input
           type="date"
           [(ngModel)]="proofOfAddressExpiry"
           name="proofOfAddressExpiry"
+          [min]="today"
         />
       </label>
     </div>
 
+    <!-- Upload Summary -->
+    <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin: 8px 0;">
+      <span class="doc-badge" [class.uploaded]="businessRegistrationCertificate">
+        <i class="bi" [ngClass]="businessRegistrationCertificate ? 'bi-check-circle' : 'bi-circle'"></i>
+        Business Reg
+      </span>
+      <span class="doc-badge" [class.uploaded]="taxClearanceCertificate">
+        <i class="bi" [ngClass]="taxClearanceCertificate ? 'bi-check-circle' : 'bi-circle'"></i>
+        Tax Clearance
+      </span>
+      <span class="doc-badge" [class.uploaded]="industryComplianceCertificate">
+        <i class="bi" [ngClass]="industryComplianceCertificate ? 'bi-check-circle' : 'bi-circle'"></i>
+        Industry Compliance
+      </span>
+      <span class="doc-badge" [class.uploaded]="directorIdCopy">
+        <i class="bi" [ngClass]="directorIdCopy ? 'bi-check-circle' : 'bi-circle'"></i>
+        Director ID
+      </span>
+      <span class="doc-badge" [class.uploaded]="proofOfAddress">
+        <i class="bi" [ngClass]="proofOfAddress ? 'bi-check-circle' : 'bi-circle'"></i>
+        Proof of Address
+      </span>
+    </div>
+
+    <!-- Error Toast -->
     <div *ngIf="error" class="toast error">
+      <i class="bi bi-exclamation-triangle-fill"></i>
       {{ error }}
     </div>
 
+    <!-- Success Toast -->
     <div *ngIf="successMessage" class="toast success">
+      <i class="bi bi-check-circle-fill"></i>
       {{ successMessage }}
     </div>
 
+    <!-- Submit Button -->
     <button type="submit" class="btn primary" [disabled]="loading">
-      {{ loading ? 'Submitting…' : 'Submit for review' }}
+      <i class="bi" [ngClass]="loading ? 'bi-hourglass-split' : 'bi-send'"></i>
+      {{ loading ? 'Submitting...' : 'Submit for Review' }}
     </button>
   </form>
 </section>

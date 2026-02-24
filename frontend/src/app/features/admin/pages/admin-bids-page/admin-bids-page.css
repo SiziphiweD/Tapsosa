@@ -1,0 +1,85 @@
+/* Card + Heading (match Admin Jobs) */
+.card{
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.02);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+h1{
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+}
+h1::before{
+  content:'';
+  width:6px;height:32px;
+  background: var(--color-success);
+  border-radius:20px;
+  margin-right:1rem;
+}
+
+/* Filters (match Admin Jobs) */
+.filters{
+  display:flex;
+  gap:1rem;
+  align-items:center;
+  flex-wrap:wrap;
+  margin-bottom:2rem;
+  background: var(--color-bg);
+  padding: .75rem 1.5rem;
+  border-radius: 999px;
+  border:1px solid var(--color-border);
+}
+.filters input[type="text"]{
+  width:280px;
+  max-width:45%;
+  background:#fff;
+  border:1px solid var(--color-border);
+  border-radius:999px;
+  padding:.6rem 1.2rem;
+  font-size:.95rem;
+  outline:none;
+  transition:all .2s ease;
+}
+.filters select{
+  background:#fff;
+  border:1px solid var(--color-border);
+  border-radius:999px;
+  padding:.6rem 2rem .6rem 1.2rem;
+  font-size:.95rem;
+  outline:none;
+  transition:all .2s ease;
+  cursor:pointer;
+  appearance:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat:no-repeat;
+  background-position:right .8rem center;
+  background-size:1rem;
+}
+.filters input:focus,
+.filters select:focus{
+  border-color: var(--color-primary);
+  box-shadow:0 0 0 3px rgba(44,74,98,.08);
+}
+.filters .muted{
+  margin-left:auto;
+  background:#fff;
+  padding:.4rem 1.2rem;
+  border-radius:999px;
+  border:1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size:.9rem;
+  font-weight:500;
+}
+.table .row { display: grid; grid-template-columns: 2fr 1.5fr 1fr 0.8fr 1.5fr 1fr; gap: 8px; padding: 8px 0; align-items: center; }
+.table .row.head { font-weight: 600; border-bottom: 1px solid #eee; }
+.badge { padding: 2px 8px; border-radius: 999px; background: #f1f5f9; font-size: 12px; font-weight: 600; }
+.badge.accepted { background: #ecfdf3; color: #166534; border: 1px solid #b7e3b9; }
+.muted { color: #6b7280; font-size: 12px; }

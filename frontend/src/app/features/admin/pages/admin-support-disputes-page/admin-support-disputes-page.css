@@ -1,2 +1,285 @@
- .form label{display:block;margin-bottom:.5rem}
- .form input{width:100%}
+/* Main grid layout */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Card styling - consistent with admin jobs */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  width: 100%;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+}
+
+h1::before {
+  content: '';
+  width: 6px;
+  height: 32px;
+  background: var(--color-success);
+  border-radius: 20px;
+  margin-right: 1rem;
+}
+
+h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem 0;
+  color: var(--color-text);
+}
+
+/* Header description */
+.card p {
+  color: var(--color-muted);
+  margin: 0.5rem 0 0 0;
+  font-size: 1rem;
+  font-weight: 500;
+}
+
+/* Form styles */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 500px;
+}
+
+.form label {
+  display: block;
+  font-weight: 500;
+  color: var(--color-text);
+  margin-bottom: 0;
+}
+
+.form input {
+  width: 100%;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.75rem 1.2rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+  margin-top: 0.5rem;
+}
+
+.form input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(44, 74, 98, 0.08);
+}
+
+/* Button styles - consistent across the page */
+.card .btn,
+.form .btn,
+.table .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: white;
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.card .btn:hover,
+.form .btn:hover,
+.table .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.12);
+  border-color: var(--color-primary);
+}
+
+/* Add button - primary style */
+.form .btn {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  width: fit-content;
+  min-width: 100px;
+  margin-top: 8px;
+}
+
+.form .btn:hover {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+/* Table styles - matching admin jobs */
+.table {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: white;
+  margin-top: 1rem;
+}
+
+.table .row {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr 1.5fr 0.8fr 0.8fr;  /* Job | Reason | Filed | Status | Action */
+  gap: 16px;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.2s ease;
+}
+
+.table .row:last-child {
+  border-bottom: none;
+}
+
+.table .row:hover:not(.head) {
+  background-color: #fafbfc;
+}
+
+.table .row.head {
+  font-weight: 600;
+  color: var(--color-primary);
+  background: #f2f7fc;
+  border-bottom: 2px solid var(--color-border);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  padding: 0.85rem 1.5rem;
+}
+
+/* Table cell alignment */
+.table .row > div {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.95rem;
+}
+
+/* Date column */
+.table .row > div:nth-child(3) {
+  font-size: 0.85rem;
+  color: var(--color-muted);
+}
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  text-align: center;
+  min-width: 65px;
+}
+
+/* Open status */
+.badge:not(.accepted) {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffe69c;
+}
+
+/* Resolved status */
+.badge.accepted {
+  background: #ecfdf3;
+  color: #166534;
+  border: 1px solid #b7e3b9;
+}
+
+/* Action buttons in table */
+.table .btn {
+  height: 34px;
+  padding: 0 1rem;
+  font-size: 0.8rem;
+  width: 100%;
+  min-width: 70px;
+  background: white;
+}
+
+/* Resolve button - subtle green on hover */
+.table .btn:not(:hover) {
+  border-color: var(--color-border);
+}
+
+.table .btn:hover {
+  border-color: var(--color-primary);
+  background: #f8fafc;
+}
+
+/* Empty state */
+.table .muted {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: white;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .table .row {
+    grid-template-columns: 1fr 1.2fr 1.2fr 0.8fr 0.8fr;
+    gap: 12px;
+    padding: 0.9rem 1rem;
+  }
+}
+
+@media (max-width: 800px) {
+  .card {
+    padding: 1.5rem;
+  }
+  
+  .form {
+    max-width: 100%;
+  }
+  
+  .table .row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  
+  .table .row.head {
+    display: none;
+  }
+  
+  .table .row > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .table .row > div:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-muted);
+    margin-right: 1rem;
+    min-width: 80px;
+  }
+  
+  .table .btn {
+    width: auto;
+    max-width: 100px;
+  }
+}

@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink, RouterLinkActive, Router } from '@angular/router';
+import { AuthService } from '../../../../shared/services/auth.service';
 
 type UserRow = {
   id: string;
@@ -14,11 +16,13 @@ type UserRow = {
 @Component({
   selector: 'app-admin-users-members-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink, RouterLinkActive],
   templateUrl: './admin-users-members-page.html',
   styleUrl: './admin-users-members-page.css',
 })
 export class AdminUsersMembersPage {
+  private router = inject(Router);
+  private auth = inject(AuthService);
   query = '';
   rows: UserRow[] = [];
   rejectingId: string | null = null;
@@ -55,11 +59,19 @@ export class AdminUsersMembersPage {
 
   setStatus(id: string, status: 'Pending' | 'Approved' | 'Rejected', statusReason?: string) {
     this.rows = this.rows.map((r) => (r.id === id ? { ...r, status, statusReason } : r));
+    this.auth.updateUserById(id, { status, statusReason });
     try {
-      const raw = localStorage.getItem('tapsosa.users');
-      const users: any[] = raw ? JSON.parse(raw) : [];
-      const updated = users.map((u) => (u.id === id ? { ...u, status, statusReason } : u));
-      localStorage.setItem('tapsosa.users', JSON.stringify(updated));
+      const raw = localStorage.getItem('tapsosa.verifications');
+      const verifs: Array<{ supplierId?: string; memberId?: string; type: string; status: 'pending' | 'approved' | 'rejected'; updatedAt: string }> =
+        raw ? JSON.parse(raw) : [];
+      const filtered = verifs.filter((v) => (v as any).memberId !== id || v.type !== 'member');
+      filtered.push({
+        memberId: id,
+        type: 'member',
+        status: status.toLowerCase() as 'pending' | 'approved' | 'rejected',
+        updatedAt: new Date().toISOString(),
+      } as any);
+      localStorage.setItem('tapsosa.verifications', JSON.stringify(filtered));
     } catch {}
   }
 
@@ -71,9 +83,7 @@ export class AdminUsersMembersPage {
   }
 
   view(id: string) {
-    try {
-      console.log('View member', id);
-    } catch {}
+    this.router.navigateByUrl(`/admin/users/members/${id}`);
   }
 
   openReject(id: string) {

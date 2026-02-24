@@ -1,2 +1,299 @@
- .form label{display:block;margin-bottom:.75rem}
- .form input{width:100%}
+/* Card styling - consistent with admin theme */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  max-width: 1400px;
+  margin: 0 auto 24px auto;
+}
+
+.card:last-child {
+  margin-bottom: 0;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+}
+
+h1::before {
+  content: '';
+  width: 6px;
+  height: 32px;
+  background: var(--color-success);
+  border-radius: 20px;
+  margin-right: 1rem;
+}
+
+h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem 0;
+  color: var(--color-text);
+}
+
+/* Subtabs navigation */
+.subtabs {
+  display: flex;
+  gap: 0.5rem;
+  margin: 0.25rem 0 1.5rem;
+  flex-wrap: wrap;
+}
+
+.subtabs a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 1.2rem;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  text-decoration: none;
+  color: var(--color-text);
+  background: var(--color-surface);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+
+.subtabs a:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border-color: var(--color-primary);
+}
+
+.subtabs a.active {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+/* Table styles - neatly aligned */
+.table {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: white;
+  margin-bottom: 1rem;
+}
+
+.table .row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 2fr;  /* Name | Email | Added */
+  gap: 16px;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.2s ease;
+}
+
+.table .row:last-child {
+  border-bottom: none;
+}
+
+.table .row:hover:not(.head) {
+  background-color: #fafbfc;
+}
+
+.table .row.head {
+  font-weight: 600;
+  color: var(--color-primary);
+  background: #f2f7fc;
+  border-bottom: 2px solid var(--color-border);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  padding: 0.85rem 1.5rem;
+}
+
+.table .row > div {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 0.95rem;
+}
+
+/* Form styling - with life! */
+.form {
+  background: linear-gradient(to bottom right, #f8fafc, #ffffff);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 1.75rem;
+  margin-bottom: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.02);
+}
+
+.form label {
+  display: block;
+  margin-bottom: 1.25rem;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.form label span {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  color: var(--color-muted);
+}
+
+.form input {
+  width: 100%;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.75rem 1.2rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+  font-family: inherit;
+}
+
+.form input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(44, 74, 98, 0.08);
+}
+
+.form input.ng-invalid.ng-touched {
+  border-color: #ef4444;
+}
+
+/* Button styles - consistent */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 42px;
+  padding: 0 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: white;
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.12);
+  border-color: var(--color-primary);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f1f5f9;
+}
+
+/* Add Admin button - primary style */
+.form .btn {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  width: 100%;
+  margin-top: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.form .btn:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+/* Toast notification */
+.toast {
+  padding: 0.75rem 1rem;
+  border-radius: 999px;
+  margin-top: 1rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+  animation: slideIn 0.3s ease;
+}
+
+.toast.success {
+  background: #ecfdf3;
+  color: #166534;
+  border: 1px solid #b7e3b9;
+  text-align: center;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Muted text */
+.muted {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-top: 0.75rem;
+}
+
+/* Empty state */
+.table .muted {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: white;
+  color: var(--color-muted);
+  font-style: italic;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .card {
+    padding: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h1::before {
+    height: 28px;
+  }
+  
+  .table .row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .table .row.head {
+    display: none;
+  }
+  
+  .table .row > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .table .row > div:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-muted);
+    margin-right: 1rem;
+  }
+}

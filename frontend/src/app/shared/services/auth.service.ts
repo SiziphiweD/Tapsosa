@@ -78,7 +78,9 @@ export class AuthService {
 
   async signIn(email: string, password: string) {
     const hash = await this.hashPassword(password);
-    const found = this.users$.value.find(
+    const latest = this.loadUsers();
+    this.users$.next(latest);
+    const found = latest.find(
       (u) => u.email === email.trim().toLowerCase() && u.passwordHash === hash
     );
     if (!found) {
@@ -143,5 +145,17 @@ export class AuthService {
 
   private saveCurrentUser(user: User) {
     localStorage.setItem('tapsosa.currentUser', JSON.stringify(user));
+  }
+
+  updateUserById(id: string, patch: Partial<User>) {
+    const users = this.users$.value.map((u) => (u.id === id ? { ...u, ...patch } : u));
+    this.users$.next(users);
+    this.saveUsers(users);
+    const current = this.currentUser$.value;
+    if (current && current.id === id) {
+      const updated = { ...current, ...patch };
+      this.currentUser$.next(updated);
+      this.saveCurrentUser(updated);
+    }
   }
 }

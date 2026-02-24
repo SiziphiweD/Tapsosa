@@ -1,6 +1,12 @@
 <header class="nav" [class.member]="role === 'member'" [class.supplier]="role === 'supplier'" [class.admin]="role === 'admin'">
+  
+  <!-- Brand - consistent for all roles -->
+  <a class="brand" routerLink="/">
+    <i class="bi bi-shield-shaded"></i>
+    <span>UKHUSELO</span>
+  </a>
 
-
+  <!-- Navigation Links -->
   <nav class="links">
     <ng-container *ngIf="!user; else authed">
       <a routerLink="/about" routerLinkActive="active">About</a>
@@ -11,36 +17,74 @@
       <a routerLink="/suppliers" routerLinkActive="active">Suppliers</a>
       <a class="nav-signin" routerLink="/auth/sign-in" routerLinkActive="active">Sign In</a>
     </ng-container>
+    
     <ng-template #authed>
       <div class="user-controls">
-        <button class="icon-btn bell" type="button">
+        <!-- Notification Bell - consistent for all roles -->
+        <button class="icon-btn bell" type="button" title="Notifications">
           <i class="bi bi-bell"></i>
           <span class="badge" *ngIf="notificationsCount > 0">{{ notificationsCount }}</span>
         </button>
 
+        <!-- Account Dropdown - consistent for all roles -->
         <div class="account" [class.open]="menuOpen">
           <button class="pill" type="button" (click)="toggleMenu()">
             <i class="bi" [ngClass]="roleIcon()"></i>
             <div class="meta">
-              <div class="name">{{ user?.name }}</div>
+              <div class="name">{{ user?.name || 'User' }}</div>
               <div class="role">{{ roleLabel }}</div>
             </div>
-            <i class="bi bi-caret-down-fill caret"></i>
+            <i class="bi bi-chevron-down caret"></i>
           </button>
 
-          <div class="menu card" *ngIf="menuOpen">
+          <!-- Dropdown Menu -->
+          <div class="menu" *ngIf="menuOpen" (clickOutside)="closeMenu()">
+            <!-- User Info Header -->
             <div class="header">
-              <div class="avatar"><i class="bi" [ngClass]="roleIcon()"></i></div>
-              <div>
+              <div class="avatar">
+                <i class="bi" [ngClass]="roleIcon()"></i>
+              </div>
+              <div class="info">
                 <div class="name">{{ user?.name }}</div>
                 <div class="email">{{ user?.email }}</div>
               </div>
             </div>
-            <a class="item" [routerLink]="profileLink()" (click)="closeMenu()"><i class="bi bi-person"></i><span>My Profile</span></a>
-            <a class="item" [routerLink]="settingsLink()" (click)="closeMenu()"><i class="bi bi-gear"></i><span>Settings</span></a>
-            <a class="item" [routerLink]="helpLink()" (click)="closeMenu()"><i class="bi bi-question-circle"></i><span>Help Center</span></a>
+
+            <!-- Menu Items - Role specific -->
+            <ng-container *ngIf="role === 'admin'">
+              <a class="item" [routerLink]="profileLink()" (click)="closeMenu()">
+                <i class="bi bi-person"></i><span>My Profile</span>
+              </a>
+              <a class="item" [routerLink]="settingsLink()" (click)="closeMenu()">
+                <i class="bi bi-gear"></i><span>System Settings</span>
+              </a>
+              <a class="item" [routerLink]="helpLink()" (click)="closeMenu()">
+                <i class="bi bi-question-circle"></i><span>Help Center</span>
+              </a>
+            </ng-container>
+
+            <ng-container *ngIf="role === 'member'">
+              <a class="item" [routerLink]="profileLink()" (click)="closeMenu()">
+                <i class="bi bi-person"></i><span>My Profile</span>
+              </a>
+              <!-- No Settings or Help Center for members -->
+            </ng-container>
+
+            <ng-container *ngIf="role === 'supplier'">
+              <a class="item" [routerLink]="profileLink()" (click)="closeMenu()">
+                <i class="bi bi-person"></i><span>My Profile</span>
+              </a>
+              <!-- No Settings or Help Center for suppliers -->
+            </ng-container>
+
+            <!-- Divider -->
             <div class="divider"></div>
-            <button class="item signout" type="button" (click)="signOut()"><i class="bi bi-box-arrow-right"></i><span>Sign Out</span></button>
+
+            <!-- Sign Out - consistent for all roles -->
+            <button class="item signout" type="button" (click)="signOut()">
+              <i class="bi bi-box-arrow-right"></i>
+              <span>Sign Out</span>
+            </button>
           </div>
         </div>
       </div>

@@ -1,28 +1,70 @@
 <div class="grid">
+  <!-- Header Section -->
   <section class="card">
     <h1>Revenue</h1>
     <p>Total value processed and TAPSOSA fee (7%).</p>
+    <div class="actions">
+      <button type="button" class="btn" (click)="exportCsv()">Export CSV</button>
+    </div>
   </section>
 
+  <!-- Stats Cards - First -->
   <section class="grid cols-4">
-    <div class="card stat"><div class="label">Total Gross</div><div class="value">R{{ totalGross.toLocaleString() }}</div></div>
-    <div class="card stat"><div class="label">TAPSOSA Revenue</div><div class="value">R{{ totalFee.toLocaleString() }}</div></div>
-    <div class="card stat"><div class="label">Supplier Net</div><div class="value">R{{ totalNet.toLocaleString() }}</div></div>
-    <div class="card stat"><div class="label">Funded Gross</div><div class="value">R{{ fundedGross.toLocaleString() }}</div></div>
+    <div class="card stat">
+      <div class="label">Total Gross</div>
+      <div class="value">R{{ totalGross.toLocaleString() }}</div>
+    </div>
+    <div class="card stat">
+      <div class="label">TAPSOSA Revenue</div>
+      <div class="value">R{{ totalFee.toLocaleString() }}</div>
+    </div>
+    <div class="card stat">
+      <div class="label">Supplier Net</div>
+      <div class="value">R{{ totalNet.toLocaleString() }}</div>
+    </div>
+    <div class="card stat">
+      <div class="label">Funded Gross</div>
+      <div class="value">R{{ fundedGross.toLocaleString() }}</div>
+    </div>
   </section>
 
+  <!-- Escrow Summary Table - Second -->
   <section class="card">
     <h3>Escrow Summary</h3>
     <div class="table">
-      <div class="row head"><div>Job</div><div>Status</div><div>Gross</div><div>Fee</div><div>Net</div></div>
+      <div class="row head">
+        <div>Job</div>
+        <div>Status</div>
+        <div>Gross</div>
+        <div>Fee</div>
+        <div>Net</div>
+      </div>
       <div class="row" *ngFor="let r of rows">
-        <div>{{ r.title }}</div>
-        <div>{{ r.status }}</div>
-        <div>R{{ r.gross.toLocaleString() }}</div>
-        <div>R{{ r.fee.toLocaleString() }}</div>
-        <div>R{{ r.net.toLocaleString() }}</div>
+        <div [attr.data-label]="'Job'">{{ r.title }}</div>
+        <div [attr.data-label]="'Status'">
+          <span class="badge" [class.pending]="r.status === 'pending'"
+                [class.funded]="r.status === 'funded'"
+                [class.released]="r.status === 'released'">
+            {{ r.status }}
+          </span>
+        </div>
+        <div [attr.data-label]="'Gross'">R{{ r.gross.toLocaleString() }}</div>
+        <div [attr.data-label]="'Fee'">R{{ r.fee.toLocaleString() }}</div>
+        <div [attr.data-label]="'Net'">R{{ r.net.toLocaleString() }}</div>
       </div>
       <div class="muted" *ngIf="rows.length===0">No escrow data</div>
+    </div>
+  </section>
+
+  <!-- Charts - Third (side by side) -->
+  <section class="grid cols-2">
+    <div class="card">
+      <h3>Totals</h3>
+      <div class="chart"><canvas id="revenueTotalsChart"></canvas></div>
+    </div>
+    <div class="card">
+      <h3>Escrow Status Distribution</h3>
+      <div class="chart"><canvas id="revenueStatusChart"></canvas></div>
     </div>
   </section>
 </div>

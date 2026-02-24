@@ -1,13 +1,15 @@
 <section class="card">
   <h1>Job Categories</h1>
-  <div class="actions">
+  <div class="filters">
     <input type="text" [(ngModel)]="input" placeholder="New category name" />
-    <button type="button" (click)="add()" [disabled]="!input.trim()">Add</button>
+    <button type="button" class="btn" (click)="add()" [disabled]="!input.trim()">Add</button>
+    <button type="button" class="btn" (click)="exportCsv()">Export CSV</button>
   </div>
-  <div class="list">
-    <div class="item" *ngFor="let c of categories; let i = index">
-      <span>{{ c }}</span>
-      <button type="button" (click)="remove(i)">Remove</button>
+  <div class="table">
+    <div class="row head"><div>Category</div><div></div></div>
+    <div class="row" *ngFor="let c of categories; let i = index">
+      <div>{{ c }}</div>
+      <div><button type="button" class="btn" (click)="remove(i)">Remove</button></div>
     </div>
     <div class="muted" *ngIf="categories.length===0">No categories</div>
   </div>

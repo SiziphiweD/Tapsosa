@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
 type AdminRow = { id: string; name: string; email: string; createdAt: string };
 
 @Component({
   selector: 'app-admin-users-admins-page',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink, RouterLinkActive],
   templateUrl: './admin-users-admins-page.html',
   styleUrl: './admin-users-admins-page.css',
 })

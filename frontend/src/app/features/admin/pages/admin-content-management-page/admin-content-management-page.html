@@ -22,7 +22,7 @@
         </div>
         <label>Title <input [(ngModel)]="pages[currentPageKey].title" /></label>
         <label>Content <textarea [(ngModel)]="pages[currentPageKey].content" rows="6"></textarea></label>
-        <button type="button" (click)="savePage()">Save Page</button>
+        <button type="button" class="btn" (click)="savePage()">Save Page</button>
       </div>
     </div>
 
@@ -32,7 +32,7 @@
         <label>Title <input [(ngModel)]="newAnnouncement.title" /></label>
         <label>Message <textarea [(ngModel)]="newAnnouncement.message" rows="3"></textarea></label>
         <label>Schedule At <input type="datetime-local" [(ngModel)]="newAnnouncement.scheduledAt" /></label>
-        <button type="button" (click)="addAnnouncement()">Create</button>
+        <button type="button" class="btn" (click)="addAnnouncement()">Create</button>
       </div>
       <div class="table">
         <div class="row head"><div>Title</div><div>When</div></div>
@@ -58,14 +58,14 @@
           </label>
           <label>Content <textarea [(ngModel)]="newPost.content" rows="5"></textarea></label>
           <label><input type="checkbox" [(ngModel)]="newPost.published" /> Publish</label>
-          <button type="button" (click)="addPost()">Add Post</button>
+          <button type="button" class="btn" (click)="addPost()">Add Post</button>
         </div>
       </div>
       <div>
         <div class="rows">
           <div class="row">
             <input #cat type="text" placeholder="New category" />
-            <button type="button" (click)="addCategory(cat.value); cat.value=''">Add Category</button>
+            <button type="button" class="btn" (click)="addCategory(cat.value); cat.value=''">Add Category</button>
           </div>
         </div>
         <div class="table">
@@ -75,8 +75,8 @@
             <div>{{ p.category }}</div>
             <div><span class="badge" [class.accepted]="p.published">{{ p.published ? 'Yes' : 'No' }}</span></div>
             <div>
-              <button type="button" (click)="togglePublish(p.id)">{{ p.published ? 'Unpublish' : 'Publish' }}</button>
-              <button type="button" (click)="removePost(p.id)">Delete</button>
+              <button type="button" class="btn" (click)="togglePublish(p.id)">{{ p.published ? 'Unpublish' : 'Publish' }}</button>
+              <button type="button" class="btn" (click)="removePost(p.id)">Delete</button>
             </div>
           </div>
           <div class="muted" *ngIf="posts.length===0">No posts</div>

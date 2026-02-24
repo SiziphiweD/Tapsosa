@@ -13,57 +13,74 @@ import { MockApiService, Job } from '../../../../shared/services/mock-api.servic
 export class BrowseJobsPage {
   private api = inject(MockApiService);
 
-
   filters = {
-    category: 'All',
+    category: 'All Categories',
     location: '',
     minBudget: null as number | null,
     maxBudget: null as number | null,
     deadline: '',
     search: '',
-    sortBy: 'Urgency' as 'Urgency' | 'Budget (High→Low)' | 'Budget (Low→High)' | 'Title (A–Z)',
+    sortBy: 'Urgency (Soonest First)' as 
+      'Urgency (Soonest First)' | 
+      'Budget (High → Low)' | 
+      'Budget (Low → High)' | 
+      'Title (A–Z)',
   };
 
   jobs: Job[] = [];
   savedIds = new Set<string>();
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
-    const api = this.api;
-
     this.savedIds = this.loadSaved();
-    api.listJobs().subscribe((list: Job[]) => {
+    this.api.listJobs().subscribe((list: Job[]) => {
       this.jobs = list;
     });
   }
 
   get filtered() {
     const list = this.jobs.filter((j) => {
-      const byCategory = this.filters.category === 'All' || j.category === this.filters.category;
-      const byLocation = this.filters.location.trim() === '' || j.location.toLowerCase().includes(this.filters.location.trim().toLowerCase());
-      const byMin = this.filters.minBudget === null || j.minBudget >= this.filters.minBudget;
-      const byMax = this.filters.maxBudget === null || j.maxBudget <= this.filters.maxBudget!;
-      const byDeadline = this.filters.deadline === '' || this.daysLeft(j.bidDeadline) <= this.daysUntil(this.filters.deadline);
-      const bySearch =
-        this.filters.search.trim() === '' ||
-        j.title.toLowerCase().includes(this.filters.search.trim().toLowerCase()) ||
-        j.category.toLowerCase().includes(this.filters.search.trim().toLowerCase()) ||
-        j.location.toLowerCase().includes(this.filters.search.trim().toLowerCase()) ||
-        (j.requirements || '').toLowerCase().includes(this.filters.search.trim().toLowerCase());
+      // Category filter
+      const byCategory = this.filters.category === 'All Categories' || 
+                        j.category === this.filters.category;
+      
+      // Location filter
+      const byLocation = this.filters.location.trim() === '' || 
+                        j.location.toLowerCase().includes(this.filters.location.trim().toLowerCase());
+      
+      // Budget filters
+      const byMin = this.filters.minBudget === null || 
+                   j.minBudget >= this.filters.minBudget;
+      const byMax = this.filters.maxBudget === null || 
+                   j.maxBudget <= this.filters.maxBudget;
+      
+      // Deadline filter
+      const byDeadline = this.filters.deadline === '' || 
+                        this.daysLeft(j.bidDeadline) <= this.daysUntil(this.filters.deadline);
+      
+      // Search filter
+      const searchTerm = this.filters.search.trim().toLowerCase();
+      const bySearch = searchTerm === '' ||
+        j.title.toLowerCase().includes(searchTerm) ||
+        j.category.toLowerCase().includes(searchTerm) ||
+        j.location.toLowerCase().includes(searchTerm) ||
+        (j.requirements || '').toLowerCase().includes(searchTerm);
+      
       return byCategory && byLocation && byMin && byMax && byDeadline && bySearch;
     });
-    if (this.filters.sortBy === 'Urgency') {
-      return [...list].sort((a, b) => this.daysLeft(a.bidDeadline) - this.daysLeft(b.bidDeadline));
+
+    // Sort
+    switch (this.filters.sortBy) {
+      case 'Urgency (Soonest First)':
+        return [...list].sort((a, b) => this.daysLeft(a.bidDeadline) - this.daysLeft(b.bidDeadline));
+      case 'Budget (High → Low)':
+        return [...list].sort((a, b) => b.maxBudget - a.maxBudget);
+      case 'Budget (Low → High)':
+        return [...list].sort((a, b) => a.maxBudget - b.maxBudget);
+      case 'Title (A–Z)':
+        return [...list].sort((a, b) => a.title.localeCompare(b.title));
+      default:
+        return list;
     }
-    if (this.filters.sortBy === 'Budget (High→Low)') {
-      return [...list].sort((a, b) => b.maxBudget - a.maxBudget);
-    }
-    if (this.filters.sortBy === 'Budget (Low→High)') {
-      return [...list].sort((a, b) => a.maxBudget - b.maxBudget);
-    }
-    return [...list].sort((a, b) => a.title.localeCompare(b.title));
   }
 
   daysUntil(dateStr: string) {
@@ -72,19 +89,20 @@ export class BrowseJobsPage {
     const diff = Math.ceil((d.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
     return diff < 0 ? 0 : diff;
   }
+
   daysLeft(dateStr: string) {
     return this.daysUntil(dateStr);
   }
 
   resetFilters() {
     this.filters = {
-      category: 'All',
+      category: 'All Categories',
       location: '',
       minBudget: null,
       maxBudget: null,
       deadline: '',
       search: '',
-      sortBy: 'Urgency',
+      sortBy: 'Urgency (Soonest First)',
     };
   }
 

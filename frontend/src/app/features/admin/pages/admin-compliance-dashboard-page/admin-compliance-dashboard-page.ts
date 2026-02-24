@@ -17,18 +17,27 @@ export class AdminComplianceDashboardPage {
   rejected = 0;
 
   constructor() {
-    const data = this.load();
-    this.pending = data.filter((d) => d.status === 'pending').length;
-    this.approved = data.filter((d) => d.status === 'approved').length;
-    this.rejected = data.filter((d) => d.status === 'rejected').length;
+    const { pending, approved, rejected } = this.computeFromUsers();
+    this.pending = pending;
+    this.approved = approved;
+    this.rejected = rejected;
   }
 
-  private load(): Verif[] {
+  private computeFromUsers() {
     try {
-      const raw = localStorage.getItem('tapsosa.verifications');
-      return raw ? JSON.parse(raw) : [];
+      const raw = localStorage.getItem('tapsosa.users');
+      const users: any[] = raw ? JSON.parse(raw) : [];
+      const relevant = users.filter((u) => u.role === 'supplier' || u.role === 'member');
+      let pending = 0, approved = 0, rejected = 0;
+      relevant.forEach((u) => {
+        const s = String(u.status || 'Pending').toLowerCase();
+        if (s === 'approved') approved++;
+        else if (s === 'rejected') rejected++;
+        else pending++;
+      });
+      return { pending, approved, rejected };
     } catch {
-      return [];
+      return { pending: 0, approved: 0, rejected: 0 };
     }
   }
 }

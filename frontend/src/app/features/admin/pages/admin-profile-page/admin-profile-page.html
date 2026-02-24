@@ -3,6 +3,7 @@
   <p class="muted">Update your display name and contact email.</p>
 
   <div *ngIf="user as u; else noUser" class="profile-layout">
+    <!-- Profile Summary Card -->
     <div class="profile-summary">
       <div class="avatar">
         <span>{{ initial }}</span>
@@ -14,27 +15,43 @@
       </div>
     </div>
 
+    <!-- Edit Profile Form -->
     <form class="profile-form" autocomplete="on">
       <div class="grid cols-2">
         <label>
           Display name
-          <input name="name" type="text" [(ngModel)]="model.name" />
+          <input 
+            name="name" 
+            type="text" 
+            [(ngModel)]="model.name" 
+            placeholder="Your full name"
+            required />
         </label>
       </div>
 
       <label>
         Contact email
-        <input name="email" type="email" [(ngModel)]="model.email" />
+        <input 
+          name="email" 
+          type="email" 
+          [(ngModel)]="model.email" 
+          placeholder="your.email@example.com"
+          required />
       </label>
 
       <div class="actions">
-        <button type="button" (click)="save()" [disabled]="!model.name || !model.email">Save Profile</button>
-        <span class="toast success" *ngIf="saved">Saved</span>
+        <button 
+          type="button" 
+          (click)="save()" 
+          [disabled]="!model.name.trim() || !model.email.includes('@')">
+          Save Changes
+        </button>
+        <span class="toast success" *ngIf="saved">✓ Profile updated successfully</span>
       </div>
     </form>
   </div>
 
   <ng-template #noUser>
-    <p class="muted">You must be signed in as an admin to view or edit your profile.</p>
+    <p class="muted">⚠️ You must be signed in as an admin to view or edit your profile.</p>
   </ng-template>
 </section>

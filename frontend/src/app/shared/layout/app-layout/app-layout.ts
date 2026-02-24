@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
+import { Router, NavigationEnd, RouterOutlet, Event } from '@angular/router';
 
 import { Navbar } from '../../components/navbar/navbar';
 import { Sidebar } from '../../components/sidebar/sidebar';
@@ -26,12 +26,12 @@ export class AppLayout {
     const auth = this.auth;
 
     this.setRole(router.url);
-    router.events.subscribe((e) => {
+    router.events.subscribe((e: Event) => {
       if (e instanceof NavigationEnd) {
         this.setRole(e.urlAfterRedirects);
       }
     });
-    auth.currentUser$.subscribe((u) => {
+    auth.currentUser$.subscribe((u: User | null) => {
       this.user = u;
       if (u?.role) {
         this.role =

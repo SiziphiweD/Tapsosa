@@ -1,52 +1,120 @@
 <section class="card fade-in">
   <h1>Member Transactions</h1>
-  <p class="muted">All escrow-backed payments and related activity.</p>
+  <p class="muted">
+    <i class="bi bi-info-circle" style="color: var(--color-primary);"></i>
+    All escrow-backed payments and related activity
+  </p>
 
+  <!-- Metrics Cards -->
   <div class="metrics">
     <div class="metric">
       <div class="value">{{ totalCount }}</div>
-      <div class="label">Transactions</div>
+      <div class="label">
+        <i class="bi bi-receipt"></i> Total Transactions
+      </div>
     </div>
     <div class="metric">
       <div class="value">R{{ totalGross.toLocaleString() }}</div>
-      <div class="label">Total Funded</div>
+      <div class="label">
+        <i class="bi bi-cash-stack"></i> Total Funded
+      </div>
     </div>
     <div class="metric">
       <div class="value">R{{ totalNet.toLocaleString() }}</div>
-      <div class="label">Net Released</div>
+      <div class="label">
+        <i class="bi bi-wallet2"></i> Net Released
+      </div>
     </div>
   </div>
 
+  <!-- Transactions Table -->
   <div class="table">
+    <!-- Table Header -->
     <div class="row head">
-      <div>Job</div><div>Status</div><div>Gross</div><div>Net</div><div>Last Update</div><div>Supplier</div><div></div>
+      <div><i class="bi bi-briefcase"></i> Job</div>
+      <div><i class="bi bi-flag"></i> Status</div>
+      <div><i class="bi bi-cash"></i> Gross</div>
+      <div><i class="bi bi-wallet"></i> Net</div>
+      <div><i class="bi bi-clock"></i> Last Update</div>
+      <div><i class="bi bi-person"></i> Supplier</div>
+      <div><i class="bi bi-gear"></i></div>
     </div>
+
+    <!-- Table Rows -->
     <div class="row" *ngFor="let r of rows">
-      <div class="job">{{ r.jobTitle }}</div>
-      <div>
-        <span class="badge" [ngClass]="{ accepted: r.status === 'released' }">{{ r.statusLabel }}</span>
+      <!-- Job Title -->
+      <div class="job" [attr.data-label]="'Job'">
+        <i class="bi bi-briefcase-fill" style="color: var(--color-primary); margin-right: 6px;"></i>
+        {{ r.jobTitle }}
       </div>
-      <div>R{{ r.gross.toLocaleString() }}</div>
-      <div>R{{ r.net.toLocaleString() }}</div>
-      <div>{{ r.lastWhen || '—' }}</div>
-      <div class="supplier-cell">
-        <div class="supplier-name" *ngIf="r.supplierName; else noSupplier">
-          {{ r.supplierName }}
-        </div>
-        <ng-template #noSupplier>
-          <span class="muted">No supplier</span>
+
+      <!-- Status -->
+      <div [attr.data-label]="'Status'">
+        <span class="badge" [ngClass]="{ 'accepted': r.status === 'released' }">
+          <i class="bi" [ngClass]="{
+            'bi-hourglass-split': r.status === 'pending',
+            'bi-shield-lock': r.status === 'funded',
+            'bi-check-circle-fill': r.status === 'released'
+          }"></i>
+          {{ r.statusLabel }}
+        </span>
+      </div>
+
+      <!-- Gross Amount -->
+      <div [attr.data-label]="'Gross'">
+        <span style="font-weight: 600;">R{{ r.gross.toLocaleString() }}</span>
+      </div>
+
+      <!-- Net Amount -->
+      <div [attr.data-label]="'Net'">
+        <span style="font-weight: 600;">R{{ r.net.toLocaleString() }}</span>
+      </div>
+
+      <!-- Last Update -->
+      <div [attr.data-label]="'Last Update'">
+        <span *ngIf="r.lastWhen; else noUpdate">
+          <i class="bi bi-calendar-event" style="color: var(--color-muted); margin-right: 4px;"></i>
+          {{ r.lastWhen | date:'shortDate' }}
+        </span>
+        <ng-template #noUpdate>
+          <span class="muted" style="padding: 0; border: none;">—</span>
         </ng-template>
-        <div class="supplier-meta" *ngIf="r.supplierStatus || r.complianceLabel">
-          <span class="chip chip-status" *ngIf="r.supplierStatus">
-            {{ r.supplierStatus }}
-          </span>
-          <span class="chip chip-compliance" *ngIf="r.complianceLabel">
-            {{ r.complianceLabel }}
-          </span>
-        </div>
       </div>
-      <div><a class="link" [routerLink]="['/member/transactions', r.id]">View</a></div>
+
+      <!-- Supplier Info -->
+      <div class="supplier-cell" [attr.data-label]="'Supplier'">
+        <ng-container *ngIf="r.supplierName; else noSupplier">
+          <div class="supplier-name">
+            <i class="bi bi-building" style="color: var(--color-success); margin-right: 4px;"></i>
+            {{ r.supplierName }}
+          </div>
+          <div class="supplier-meta">
+            <span class="chip chip-status" *ngIf="r.supplierStatus">
+              <i class="bi bi-person-badge"></i> {{ r.supplierStatus }}
+            </span>
+            <span class="chip chip-compliance" *ngIf="r.complianceLabel">
+              <i class="bi bi-shield-check"></i> {{ r.complianceLabel }}
+            </span>
+          </div>
+        </ng-container>
+        <ng-template #noSupplier>
+          <span class="muted">No supplier assigned</span>
+        </ng-template>
+      </div>
+
+      <!-- View Link -->
+      <div [attr.data-label]="'Action'">
+        <a class="link" [routerLink]="['/member/transactions', r.id]">
+          View <i class="bi bi-arrow-right-short"></i>
+        </a>
+      </div>
     </div>
-    <div class="muted" *ngIf="rows.length === 0">No transactions yet</div>
+
+    <!-- Empty State -->
+    <div class="muted" *ngIf="rows.length === 0">
+      <i class="bi bi-inbox"></i>
+      <p>No transactions yet</p>
+      <p class="muted" style="border: none; padding: 0;">When you award jobs and process payments, they'll appear here.</p>
+    </div>
   </div>
 </section>

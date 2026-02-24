@@ -1,1 +1,367 @@
- .filters{display:flex;gap:1rem;align-items:center;margin-bottom:1rem}
+/* Card styling */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem 2rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+}
+
+h1::before {
+  content: '';
+  width: 6px;
+  height: 32px;
+  background: var(--color-success);
+  border-radius: 20px;
+  margin-right: 1rem;
+}
+
+/* Actions row */
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-bottom: 1.5rem;
+}
+
+.actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  white-space: nowrap;
+  min-width: fit-content;
+}
+
+/* View All Bids specific styling */
+.actions a.btn {
+  background: var(--color-admin-bg);
+  color: var(--color-admin-dark);
+  border-color: #cbd5e1;
+}
+
+/* Export CSV button */
+.actions button.btn {
+  background: var(--color-surface);
+}
+
+.actions .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.12);
+  border-color: var(--color-primary);
+}
+
+.actions a.btn:hover {
+  background: #d9f0f0;
+  border-color: var(--color-admin-dark);
+}
+
+.actions button.btn:hover {
+  border-color: var(--color-success);
+  color: var(--color-success-dark);
+}
+
+
+/* Force buttons to be compact */
+.card .actions .btn {
+  padding: 8px 16px !important;  /* Slightly more horizontal padding but controlled */
+  min-width: 120px !important;   /* Set a consistent minimum width */
+  max-width: 150px !important;   /* Prevent them from stretching too wide */
+  width: auto !important;
+  white-space: nowrap !important;
+  font-size: 13px !important;    /* Slightly smaller text */
+}
+
+/* Make the buttons equal width */
+.card .actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Optional: Make them both exactly the same width */
+.card .actions .btn {
+  flex: 0 1 auto;  /* They can shrink but not grow */
+  min-width: 130px; /* Both buttons will be at least 130px */
+}
+
+/* If you want them exactly the same width, use this instead: */
+.card .actions .btn {
+  width: 130px !important;  /* Fixed equal width */
+}
+
+
+
+/* View All Bids specific styling */
+.actions a.btn {
+  background: var(--color-admin-bg);
+  color: var(--color-admin-dark);
+  border-color: #cbd5e1;
+}
+
+.actions a.btn:hover {
+  background: #d9f0f0;
+  border-color: var(--color-admin-dark);
+}
+
+/* Export CSV button */
+.actions button.btn:hover {
+  border-color: var(--color-success);
+  color: var(--color-success-dark);
+}
+
+/* Filters bar */
+.filters {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+  background: var(--color-bg);
+  padding: 0.75rem 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+}
+
+.filters input[type="text"] {
+  width: 280px;
+  max-width: 45%;
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.filters select {
+  background: white;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.6rem 2rem 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  outline: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23475569' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.8rem center;
+  background-size: 1rem;
+}
+
+.filters input:focus,
+.filters select:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(44, 74, 98, 0.08);
+}
+
+.filters .muted {
+  margin-left: auto;
+  background: white;
+  padding: 0.4rem 1.2rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  color: var(--color-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* Table styles */
+.table {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: white;
+}
+
+.table .row {
+  display: grid;
+  grid-template-columns: 2fr 1.8fr 1fr 1.2fr 0.9fr;
+  gap: 8px 16px;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.2s ease;
+}
+
+.table .row:last-child {
+  border-bottom: none;
+}
+
+.table .row:hover:not(.head) {
+  background-color: #fafbfc;
+}
+
+.table .row.head {
+  font-weight: 600;
+  color: var(--color-primary);
+  background: #f2f7fc;
+  border-bottom: 2px solid var(--color-border);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  padding: 0.85rem 1.5rem;
+}
+
+.table .row > div {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Member column */
+.member {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.4;
+}
+
+.member .name {
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+.member .meta {
+  font-size: 0.8rem;
+  color: #64748b;
+  word-break: break-word;
+}
+
+/* Budget column */
+.row div:nth-child(4) {
+  font-weight: 500;
+  color: var(--color-primary);
+  letter-spacing: 0.01em;
+}
+
+/* Status badges - FULLY COLORED */
+.badge {
+  display: inline-block;
+  padding: 0.35rem 0.9rem;
+  border-radius: 999px;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: capitalize;
+  letter-spacing: 0.01em;
+  border: 1px solid transparent;
+  transition: all 0.1s ease;
+  min-width: 85px;
+  text-align: center;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+/* Unawarded - gray */
+.badge.unawarded {
+  background: #f1f3f5;
+  color: #2c3e50;
+  border-color: #dee2e6;
+}
+
+/* Pending - amber/gold */
+.badge.pending {
+  background: #fff3cd;
+  color: #856404;
+  border-color: #ffe69c;
+}
+
+/* Funded - green */
+.badge.funded {
+  background: #ecfdf3;
+  color: #166534;
+  border-color: #b7e3b9;
+}
+
+/* Released - blue */
+.badge.released {
+  background: #e0f2fe;
+  color: #0369a1;
+  border-color: #b8e1ff;
+}
+
+/* Empty state */
+.table .muted {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: white;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* Responsive adjustments */
+@media (max-width: 1100px) {
+  .card {
+    padding: 1.5rem;
+  }
+  
+  .table .row {
+    grid-template-columns: 1.8fr 1.6fr 1fr 1.2fr 0.9fr;
+    padding: 0.9rem 1rem;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 900px) {
+  .filters {
+    border-radius: 30px;
+    padding: 0.75rem 1.2rem;
+  }
+  
+  .filters input[type="text"] {
+    width: 100%;
+    max-width: 100%;
+  }
+  
+  .filters .muted {
+    margin-left: 0;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .table .row {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+    padding: 1rem;
+  }
+  
+  .table .row.head {
+    display: none;
+  }
+  
+  .table .row > div {
+    padding: 0.25rem 0;
+    display: flex;
+  }
+  
+  .table .row > div:before {
+    content: attr(data-label);
+    font-weight: 600;
+    width: 120px;
+    color: var(--color-muted);
+  }
+}

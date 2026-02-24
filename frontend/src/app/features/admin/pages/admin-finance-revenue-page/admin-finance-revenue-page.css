@@ -1,2 +1,303 @@
- .stat .label{color:#666;font-size:.9rem}
- .stat .value{font-size:1.6rem;font-weight:700;margin-top:.5rem}
+/* Main grid layout */
+.grid {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Two column grid for charts - full width */
+.grid.cols-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  width: 100%;  /* Ensure full width */
+}
+
+/* Four column grid for stat cards - full width */
+.grid.cols-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  width: 100%;  /* Ensure full width */
+}
+
+/* Card styling */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 1.75rem 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  width: 100%;  /* Take full width of parent */
+}
+
+/* Remove extra margin from cards in grids */
+.grid .card {
+  margin: 0;
+}
+
+/* Header card - full width */
+.card:first-of-type {
+  width: 100%;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+}
+
+h1::before {
+  content: '';
+  width: 6px;
+  height: 32px;
+  background: var(--color-success);
+  border-radius: 20px;
+  margin-right: 1rem;
+}
+
+h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 1.25rem 0;
+  color: var(--color-text);
+}
+
+/* Header description */
+.card p {
+  color: var(--color-muted);
+  margin: 0 0 1.25rem 0;
+  font-size: 0.95rem;
+}
+
+/* Actions bar */
+.actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.actions .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  padding: 0 1.5rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: white;
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+  width: 10px;
+}
+
+.actions .btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.12);
+  border-color: var(--color-success);
+  color: var(--color-success-dark);
+}
+
+/* Stat cards */
+.stat {
+  text-align: left;
+  padding: 1.5rem 2rem;
+}
+
+.stat .label {
+  color: var(--color-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  margin-bottom: 0.5rem;
+}
+
+.stat .value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  line-height: 1.2;
+}
+
+/* Chart containers */
+.chart {
+  position: relative;
+  min-height: 280px;
+  width: 100%;
+  margin-top: 0.5rem;
+}
+
+.chart canvas {
+  max-width: 100%;
+  height: auto !important;
+  width: 100% !important;  /* Force canvas to take full width */
+}
+
+/* Table styles */
+.table {
+  width: 100%;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  background: white;
+  margin-top: 1rem;
+}
+
+.table .row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 16px;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color 0.2s ease;
+}
+
+.table .row:last-child {
+  border-bottom: none;
+}
+
+.table .row:hover:not(.head) {
+  background-color: #fafbfc;
+}
+
+.table .row.head {
+  font-weight: 600;
+  color: var(--color-primary);
+  background: #f2f7fc;
+  border-bottom: 2px solid var(--color-border);
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
+  padding: 0.85rem 1.5rem;
+}
+
+/* Table cell alignment */
+.table .row > div {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Right-align monetary columns */
+.table .row > div:nth-child(3),
+.table .row > div:nth-child(4),
+.table .row > div:nth-child(5) {
+  text-align: right;
+  font-family: 'Inter', monospace;
+  font-weight: 500;
+}
+
+/* Status badges */
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  text-align: center;
+  min-width: 70px;
+}
+
+.badge.pending {
+  background: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffe69c;
+}
+
+.badge.funded {
+  background: #ecfdf3;
+  color: #166534;
+  border: 1px solid #b7e3b9;
+}
+
+.badge.released {
+  background: #e0f2fe;
+  color: #0369a1;
+  border: 1px solid #b8e1ff;
+}
+
+/* Empty state */
+.table .muted {
+  padding: 2.5rem 1.5rem;
+  text-align: center;
+  background: white;
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .grid.cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 900px) {
+  .grid.cols-2 {
+    grid-template-columns: 1fr;
+  }
+  
+  .stat .value {
+    font-size: 2rem;
+  }
+  
+  .table .row {
+    grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+    gap: 12px;
+    padding: 0.9rem 1rem;
+  }
+}
+
+@media (max-width: 700px) {
+  .card {
+    padding: 1.5rem;
+  }
+  
+  .grid.cols-4 {
+    grid-template-columns: 1fr;
+  }
+  
+  .table .row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  
+  .table .row.head {
+    display: none;
+  }
+  
+  .table .row > div {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .table .row > div:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-muted);
+    margin-right: 1rem;
+  }
+  
+  .table .row > div:nth-child(3),
+  .table .row > div:nth-child(4),
+  .table .row > div:nth-child(5) {
+    text-align: left;
+  }
+}

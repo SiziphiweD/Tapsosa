@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { Router, NavigationEnd, RouterOutlet } from '@angular/router';
+import { Router, NavigationEnd, RouterOutlet, Event } from '@angular/router';
 import { NgIf } from '@angular/common';
 
 import { Navbar } from '../../components/navbar/navbar';
@@ -22,7 +22,7 @@ export class PublicLayout {
     const router = this.router;
 
     this.showNavbar = this.router.url === '/';
-    router.events.subscribe((e) => {
+    router.events.subscribe((e: Event) => {
       if (e instanceof NavigationEnd) {
         this.showNavbar = e.urlAfterRedirects === '/';
       }

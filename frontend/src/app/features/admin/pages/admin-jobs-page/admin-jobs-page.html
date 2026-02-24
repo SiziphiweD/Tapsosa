@@ -1,5 +1,9 @@
 <section class="card">
   <h1>All Jobs</h1>
+  <div class="actions">
+    <a class="btn" routerLink="/admin/jobs/bids">View All Bids</a>
+    <button type="button" class="btn" (click)="exportJobsCsv()">Export CSV</button>
+  </div>
   <div class="filters">
     <input type="text" [(ngModel)]="query" placeholder="Search by title or category" />
     <select [(ngModel)]="status">
@@ -13,19 +17,31 @@
   </div>
   <div class="table">
     <div class="row head">
-      <div>Title</div><div>Category</div><div>Budget Range</div><div>Status</div>
+      <div>Title</div>
+      <div>Requesting Member</div>
+      <div>Category</div>
+      <div>Budget Range</div>
+      <div>Status</div>
     </div>
     <div class="row" *ngFor="let j of filtered">
       <div>{{ j.title }}</div>
+      <div class="member">
+        <div class="name">{{ memberName(j) }}</div>
+        <div class="meta" *ngIf="memberCompany(j)">{{ memberCompany(j) }}</div>
+        <div class="meta" *ngIf="memberEmail(j)">{{ memberEmail(j) }}</div>
+      </div>
       <div>{{ j.category }}</div>
       <div>R{{ j.minBudget.toLocaleString() }} - R{{ j.maxBudget.toLocaleString() }}</div>
       <div>
-        <span class="badge" *ngIf="!j.chosenBidId">Unawarded</span>
-        <span class="badge" *ngIf="j.escrow?.status==='pending'">Pending</span>
-        <span class="badge accepted" *ngIf="j.escrow?.status==='funded'">Funded</span>
-        <span class="badge" *ngIf="j.escrow?.status==='released'">Released</span>
+        <span class="badge" 
+              [class.unawarded]="getJobStatus(j) === 'Unawarded'"
+              [class.pending]="getJobStatus(j) === 'Pending'"
+              [class.funded]="getJobStatus(j) === 'Funded'"
+              [class.released]="getJobStatus(j) === 'Released'">
+          {{ getJobStatus(j) }}
+        </span>
       </div>
     </div>
-    <div class="muted" *ngIf="filtered.length===0">No jobs</div>
+    <div class="muted" *ngIf="filtered.length === 0">No jobs</div>
   </div>
 </section>

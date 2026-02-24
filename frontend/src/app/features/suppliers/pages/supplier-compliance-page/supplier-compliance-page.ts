@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService, User } from '../../../../shared/services/auth.service';
+import { DocStorageService } from '../../../../shared/services/doc-storage.service';
 
 type ComplianceKey =
   | 'psira'
@@ -20,6 +21,8 @@ type ComplianceDoc = {
   status: ComplianceStatus;
   fileName?: string;
   uploadedAt?: string;
+  fileUrl?: string;
+  fileRefId?: string;
 };
 
 @Component({
@@ -30,9 +33,22 @@ type ComplianceDoc = {
 })
 export class SupplierCompliancePage {
   private auth = inject(AuthService);
+  private docStore = inject(DocStorageService);
 
   user: User | null = null;
   docs: ComplianceDoc[] = [];
+  status = 'Pending';
+  rejectionReason = '';
+  
+  openDoc(doc: ComplianceDoc) {
+    if (doc.fileUrl) {
+      window.open(doc.fileUrl, '_blank');
+      return;
+    }
+    if (doc.fileRefId) {
+      this.docStore.open(doc.fileRefId);
+    }
+  }
 
   constructor(...args: unknown[]);
 
@@ -40,21 +56,24 @@ export class SupplierCompliancePage {
     this.auth.currentUser$.subscribe((u) => {
       this.user = u;
       this.docs = this.loadDocs(u?.id);
+      this.status = u?.status || 'Pending';
+      this.rejectionReason = u?.statusReason || '';
     });
   }
 
-  onFileSelected(key: ComplianceKey, event: Event) {
+  async onFileSelected(key: ComplianceKey, event: Event) {
     if (!this.user) return;
     const input = event.target as HTMLInputElement;
     const file = input.files && input.files[0];
     if (!file) return;
     const now = new Date().toISOString();
+    const refId = await this.docStore.save(file.name, file);
     this.docs = this.docs.map((d) =>
       d.key === key
-        ? { ...d, status: 'Uploaded', fileName: file.name, uploadedAt: now }
+        ? { ...d, status: 'Uploaded', fileName: file.name, uploadedAt: now, fileRefId: refId }
         : d
     );
-    this.saveDocs(this.user.id, this.docs);
+    this.saveDocs(this.user!.id, this.docs);
     input.value = '';
   }
 
@@ -87,6 +106,8 @@ export class SupplierCompliancePage {
 
   private saveDocs(userId: string, docs: ComplianceDoc[]) {
     const key = `tapsosa.compliance.${userId}`;
+    // Remove old large entry (if any) before writing new, smaller metadata to avoid quota spikes
+    localStorage.removeItem(key);
     localStorage.setItem(key, JSON.stringify(docs));
   }
 }

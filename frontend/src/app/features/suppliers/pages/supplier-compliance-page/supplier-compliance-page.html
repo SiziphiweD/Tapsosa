@@ -1,26 +1,93 @@
-<section class="card">
+<div class="verification-pending-container" *ngIf="user; else noUser">
+  <div class="verification-pending-card">
+    <div class="card-header">
+      <ng-container *ngIf="status.toLowerCase() === 'rejected'; else notRejectedHeader">
+        <h2>Verification Rejected</h2>
+        <p>Your submission did not meet the verification requirements.</p>
+      </ng-container>
+      <ng-template #notRejectedHeader>
+        <ng-container *ngIf="status.toLowerCase() === 'approved'; else pendingHeader">
+          <h2>Verification Approved</h2>
+          <p>Your profile is approved.</p>
+        </ng-container>
+        <ng-template #pendingHeader>
+          <h2>Verification Pending</h2>
+          <p>Your account is currently under review.</p>
+        </ng-template>
+      </ng-template>
+    </div>
+
+    <div class="status-badge approved" *ngIf="status.toLowerCase() === 'approved'">
+      <i class="bi bi-patch-check"></i>
+      <span>Verified</span>
+    </div>
+    <div class="status-badge pending" *ngIf="status.toLowerCase() === 'pending' || status.toLowerCase() === 'under review'">
+      <i class="bi bi-hourglass-split"></i>
+      <span>Pending Approval</span>
+    </div>
+
+    <div *ngIf="status.toLowerCase() === 'rejected'" class="toast error">
+      <strong>Previous submission was rejected:</strong>
+      <div>{{ rejectionReason || '—' }}</div>
+    </div>
+
+    <div class="documents-list">
+      <h3>Uploaded Documents:</h3>
+      <ul>
+        <li *ngFor="let d of docs">
+          <i class="bi" [ngClass]="d.fileName ? 'bi-check-circle' : 'bi-circle'"></i>
+          {{ d.name }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="message">
+      <ng-container *ngIf="status.toLowerCase() === 'rejected'; else notRejectedMsg">
+        <p>Your account is not approved. You cannot bid or browse jobs until a new submission is reviewed and approved.</p>
+      </ng-container>
+      <ng-template #notRejectedMsg>
+        <ng-container *ngIf="status.toLowerCase() === 'approved'; else pendingMsg">
+          <p>Your account is approved. You can browse jobs and submit bids. You may also replace any compliance document at any time if details change or expire.</p>
+        </ng-container>
+        <ng-template #pendingMsg>
+          <p>Upload all required documents below to complete verification.</p>
+        </ng-template>
+      </ng-template>
+    </div>
+
+    <div class="actions">
+      <a class="btn" *ngIf="status.toLowerCase() === 'approved'" routerLink="/supplier/jobs">Browse Jobs</a>
+      <a class="btn" *ngIf="status.toLowerCase() !== 'approved'" routerLink="/supplier/dashboard">Back to Dashboard</a>
+    </div>
+  </div>
+</div>
+
+<section class="card" *ngIf="user">
   <h1>Compliance Documents</h1>
   <p class="muted">
     Upload core regulatory and onboarding documents (PSiRA, tax, B-BBEE, insurance, CIPC, bank letter, IDs,
     certifications) for verification.
   </p>
-
-  <div *ngIf="user; else noUser" class="grid cols-3 compliance-grid">
+  <div class="grid cols-3 compliance-grid">
     <div class="card compliance-card" *ngFor="let d of docs">
       <h3>{{ d.name }}</h3>
       <p class="muted">Status: {{ d.status }}</p>
-      <p class="muted" *ngIf="d.fileName">
-        {{ d.fileName }} • {{ d.uploadedAt | date: 'mediumDate' }}
-      </p>
-
+      <div class="muted" *ngIf="d.fileName">
+        <div>{{ d.fileName }} • {{ d.uploadedAt | date: 'mediumDate' }}</div>
+        <button type="button" class="link-btn" [disabled]="!d.fileUrl && !d.fileRefId" (click)="openDoc(d)">
+          View document
+        </button>
+      </div>
       <label class="upload-btn">
         <input type="file" (change)="onFileSelected(d.key, $event)" />
-        <span>{{ d.status === 'Pending' ? 'Upload' : 'Replace' }}</span>
+        <span>{{ (d.fileRefId || d.fileUrl || d.fileName) ? 'Replace' : 'Upload' }}</span>
       </label>
     </div>
   </div>
-
-  <ng-template #noUser>
-    <p class="muted">Sign in as a supplier to manage compliance documents.</p>
-  </ng-template>
 </section>
+
+<ng-template #noUser>
+  <section class="card">
+    <p class="muted">Sign in as a supplier to manage compliance documents.</p>
+  </section>
+</ng-template>

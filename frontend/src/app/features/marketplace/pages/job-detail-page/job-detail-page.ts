@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, RouterLink } from '@angular/router';
@@ -15,8 +15,10 @@ export class JobDetailPage {
   private route = inject(ActivatedRoute);
   private api = inject(MockApiService);
   private auth = inject(AuthService);
+  private cdr = inject(ChangeDetectorRef);
 
   job: Job | undefined;
+  jobLoadFailed = false;
   bids: Bid[] = [];
   winningBid: Bid | undefined;
   saved = false;
@@ -35,23 +37,44 @@ export class JobDetailPage {
   termsAccepted = false;
   validityDays: number | null = null;
   submitted = false;
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
+  startDate: string | null = null;
+  paymentStructure = '';
+  experience = '';
+  guarantees = '';
+  uploadedFileNames: string[] = [];
 
   constructor() {
-    const route = this.route;
-    const api = this.api;
+    const id = this.route.snapshot.paramMap.get('jobId')!;
+    if (!id) {
+      this.jobLoadFailed = true;
+      return;
+    }
 
-    const id = route.snapshot.paramMap.get('jobId')!;
-    api.getJob(id).subscribe((j) => {
+    const focus = this.route.snapshot.queryParamMap.get('focus');
+    
+    this.api.getJob(id).subscribe((j) => {
       this.job = j;
+      if (!j) {
+        this.jobLoadFailed = true;
+        this.cdr.detectChanges();
+        return;
+      }
       this.winningBid = j?.chosenBidId ? this.bids.find((b) => b.id === j.chosenBidId) : undefined;
-      this.saved = this.isSaved(j?.id || '');
+      this.saved = this.isSaved(j.id);
+      
+      if (focus === 'bid') {
+        setTimeout(() => {
+          const el = document.getElementById('bid');
+          if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 0);
+      }
+      this.cdr.detectChanges();
     });
-    api.listBids(id).subscribe((b) => {
+
+    this.api.listBids(id).subscribe((b) => {
       this.bids = b;
       this.winningBid = this.job?.chosenBidId ? b.find((x) => x.id === this.job!.chosenBidId) : undefined;
+      this.cdr.detectChanges();
     });
 
     this.auth.currentUser$.subscribe((u) => {
@@ -59,7 +82,19 @@ export class JobDetailPage {
       if (u && u.role === 'supplier' && this.supplierName.trim() === '') {
         this.supplierName = u.company || u.name;
       }
+      this.cdr.detectChanges();
     });
+
+    setTimeout(() => {
+      if (!this.job) this.jobLoadFailed = true;
+      this.cdr.detectChanges();
+    }, 1500);
+  }
+
+  get minBidDate() {
+    const d = new Date();
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().slice(0, 10);
   }
 
   get isValid() {
@@ -69,7 +104,16 @@ export class JobDetailPage {
       !!this.days &&
       this.price! > 0 &&
       this.days! > 0 &&
+      this.startDate !== null &&
+      this.startDate.length > 0 &&
       this.message.trim().length > 0 &&
+      this.message.trim().length <= 200 &&
+      this.approach.trim().length > 0 &&
+      this.timeline.trim().length > 0 &&
+      this.team.trim().length > 0 &&
+      this.paymentStructure.trim().length > 0 &&
+      !!this.validityDays &&
+      this.validityDays! > 0 &&
       this.termsAccepted === true
     );
   }
@@ -82,18 +126,23 @@ export class JobDetailPage {
     if (!this.job) return 'Job not found';
     if (!this.user) return 'Sign in as a supplier to submit a bid.';
     if (this.user.role !== 'supplier') return 'You must be signed in as a supplier to submit bids.';
+    
     const status = (this.user.status || 'Pending').toLowerCase();
     if (status !== 'approved') {
       return 'Your supplier account is pending approval. You may review opportunities but cannot submit bids yet.';
     }
+    
     if (this.job.escrow) return 'This job has already been awarded and is in escrow.';
     if (this.daysLeft(this.job.bidDeadline) <= 0) return 'Bidding deadline has passed.';
+    
     return null;
   }
 
   submitBid() {
     if (!this.job || !this.isValid || !this.canBid) return;
+    
     const supplierId = this.user?.id || 'unknown';
+    
     this.api
       .createBid({
         jobId: this.job.id,
@@ -105,7 +154,9 @@ export class JobDetailPage {
       })
       .subscribe(() => {
         this.submitted = true;
-        this.supplierName = '';
+        
+        // Reset form
+        this.supplierName = this.user?.company || this.user?.name || '';
         this.price = null;
         this.days = null;
         this.message = '';
@@ -116,21 +167,35 @@ export class JobDetailPage {
         this.pricingBreakdown = '';
         this.termsAccepted = false;
         this.validityDays = null;
-        setTimeout(() => (this.submitted = false), 3000);
+        this.startDate = null;
+        this.paymentStructure = '';
+        this.experience = '';
+        this.guarantees = '';
+        this.uploadedFileNames = [];
+        
+        this.cdr.detectChanges();
+        
+        setTimeout(() => {
+          this.submitted = false;
+          this.cdr.detectChanges();
+        }, 3000);
       });
   }
 
   saveDraft() {
     if (!this.job) return;
+    
     const key = 'tapsosa.draft-bids';
     const raw = localStorage.getItem(key);
     let arr: any[] = [];
     if (raw) {
       try { arr = JSON.parse(raw); } catch {}
     }
+    
     const draft = {
       id: 'draft-' + Date.now(),
       jobId: this.job.id,
+      jobTitle: this.job.title,
       supplierName: this.supplierName,
       price: this.price,
       days: this.days,
@@ -142,20 +207,31 @@ export class JobDetailPage {
       pricingBreakdown: this.pricingBreakdown,
       termsAccepted: this.termsAccepted,
       validityDays: this.validityDays,
+      startDate: this.startDate,
+      paymentStructure: this.paymentStructure,
+      experience: this.experience,
+      guarantees: this.guarantees,
+      files: this.uploadedFileNames,
       createdAt: new Date().toISOString(),
     };
+    
     arr.unshift(draft);
     localStorage.setItem(key, JSON.stringify(arr));
+    
+    // Show a quick notification
+    alert('Draft saved successfully!');
   }
 
   toggleSave() {
     if (!this.job) return;
+    
     const key = 'tapsosa.saved.jobs';
     const raw = localStorage.getItem(key);
     let arr: string[] = [];
     if (raw) {
       try { arr = JSON.parse(raw); } catch {}
     }
+    
     const idx = arr.indexOf(this.job.id);
     if (idx >= 0) {
       arr.splice(idx, 1);
@@ -165,6 +241,7 @@ export class JobDetailPage {
       arr = Array.from(new Set(arr));
       this.saved = true;
     }
+    
     localStorage.setItem(key, JSON.stringify(arr));
   }
 
@@ -176,9 +253,20 @@ export class JobDetailPage {
     return diff < 0 ? 0 : diff;
   }
 
+  onFilesSelected(e: Event) {
+    const input = e.target as HTMLInputElement;
+    const files = Array.from(input.files || []);
+    this.uploadedFileNames = files.map((f) => f.name);
+  }
+
   private isSaved(id: string) {
     const raw = localStorage.getItem('tapsosa.saved.jobs');
     if (!raw) return false;
-    try { const arr: string[] = JSON.parse(raw); return arr.includes(id); } catch { return false; }
+    try { 
+      const arr: string[] = JSON.parse(raw); 
+      return arr.includes(id); 
+    } catch { 
+      return false; 
+    }
   }
 }

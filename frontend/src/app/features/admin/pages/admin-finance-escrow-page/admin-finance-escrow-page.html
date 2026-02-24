@@ -5,37 +5,63 @@
   </section>
 
   <section class="grid cols-3">
+    <!-- Pending Column -->
     <div class="card">
       <h3>Pending</h3>
       <div class="table">
-        <div class="row head"><div>Job</div><div>Gross</div></div>
-        <div class="row" *ngFor="let j of pending">
-          <div>{{ j.title }}</div>
-          <div>R{{ j.escrow?.gross | number }}</div>
+        <div class="row head">
+          <div>Job</div>
+          <div>Gross</div>
         </div>
-        <div class="muted" *ngIf="pending.length===0">None</div>
+        <div class="row" *ngFor="let j of pending">
+          <div [attr.data-label]="'Job'">{{ j.title }}</div>
+          <div [attr.data-label]="'Gross'">R{{ j.escrow?.gross | number:'1.0-0' }}</div>
+        </div>
+        <div class="muted" *ngIf="pending.length===0">No pending escrows</div>
+      </div>
+      <div class="total-row" *ngIf="pending.length > 0">
+        <span>Total</span>
+        <span>R{{ getPendingTotal() | number:'1.0-0' }}</span>
       </div>
     </div>
+
+    <!-- Funded Column -->
     <div class="card">
       <h3>Funded</h3>
       <div class="table">
-        <div class="row head"><div>Job</div><div>Gross</div></div>
-        <div class="row" *ngFor="let j of funded">
-          <div>{{ j.title }}</div>
-          <div>R{{ j.escrow?.gross | number }}</div>
+        <div class="row head">
+          <div>Job</div>
+          <div>Gross</div>
         </div>
-        <div class="muted" *ngIf="funded.length===0">None</div>
+        <div class="row" *ngFor="let j of funded">
+          <div [attr.data-label]="'Job'">{{ j.title }}</div>
+          <div [attr.data-label]="'Gross'">R{{ j.escrow?.gross | number:'1.0-0' }}</div>
+        </div>
+        <div class="muted" *ngIf="funded.length===0">No funded escrows</div>
+      </div>
+      <div class="total-row" *ngIf="funded.length > 0">
+        <span>Total</span>
+        <span>R{{ getFundedTotal() | number:'1.0-0' }}</span>
       </div>
     </div>
+
+    <!-- Released Column -->
     <div class="card">
       <h3>Released</h3>
       <div class="table">
-        <div class="row head"><div>Job</div><div>Net</div></div>
-        <div class="row" *ngFor="let j of released">
-          <div>{{ j.title }}</div>
-          <div>R{{ j.escrow?.net | number }}</div>
+        <div class="row head">
+          <div>Job</div>
+          <div>Net</div>
         </div>
-        <div class="muted" *ngIf="released.length===0">None</div>
+        <div class="row" *ngFor="let j of released">
+          <div [attr.data-label]="'Job'">{{ j.title }}</div>
+          <div [attr.data-label]="'Net'">R{{ j.escrow?.net | number:'1.0-0' }}</div>
+        </div>
+        <div class="muted" *ngIf="released.length===0">No released escrows</div>
+      </div>
+      <div class="total-row" *ngIf="released.length > 0">
+        <span>Total</span>
+        <span>R{{ getReleasedTotal() | number:'1.0-0' }}</span>
       </div>
     </div>
   </section>

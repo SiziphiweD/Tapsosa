@@ -17,6 +17,9 @@ export interface Job {
   startDate?: string;
   endDate?: string;
   durationDays?: number | null;
+  createdById?: string;
+  createdByName?: string;
+  createdByEmail?: string;
   verified: boolean;
   chosenBidId?: string | null;
   escrow?: Escrow | null;
@@ -295,6 +298,7 @@ export interface Attachment {
   size: number;
   type: string;
   dataUrl?: string;
+  refId?: string;
 }
 
 export interface Escrow {

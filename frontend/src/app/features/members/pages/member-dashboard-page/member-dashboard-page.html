@@ -1,73 +1,113 @@
 <div class="grid">
+  <!-- Header with Status -->
   <section class="card fade-in">
-    <h1>Member Dashboard</h1>
+    <h1>
+      Member Dashboard
+      <span class="status-badge" [class.approved]="isApproved">
+        {{ status }}
+      </span>
+    </h1>
     <p *ngIf="isApproved; else pendingCopy">
-      Enterprise overview of requests, bids, revenue, and compliance.
+      <i class="bi bi-check-circle-fill" style="color: #10b981;"></i>
+      Welcome back! Track your requests, bids, revenue, and compliance.
     </p>
     <ng-template #pendingCopy>
-      <p>Your account is pending approval. You may browse but cannot submit requests yet.</p>
+      <p>
+        <i class="bi bi-hourglass-split" style="color: #f59e0b;"></i>
+        Your account is pending approval. You can browse but cannot submit requests yet.
+      </p>
     </ng-template>
   </section>
 
+  <!-- Action Cards -->
   <section class="grid cols-3">
     <div class="card">
-      <h3>Post Request</h3>
-      <p>Create a listing for verified suppliers to bid on.</p>
+      <h3><i class="bi bi-plus-square"></i> Post Request</h3>
+      <p>Create a new procurement request for verified suppliers to bid on.</p>
       <ng-container *ngIf="isApproved; else createDisabled">
-        <a class="btn primary" routerLink="/member/requests/new">Publish</a>
+        <a class="btn primary" routerLink="/member/requests/new">
+          <i class="bi bi-send"></i> Publish Request
+        </a>
       </ng-container>
       <ng-template #createDisabled>
-        <button class="btn primary" disabled>Publish (Pending Approval)</button>
+        <button class="btn primary" disabled>
+          <i class="bi bi-lock"></i> Pending Approval
+        </button>
       </ng-template>
     </div>
+    
     <div class="card">
-      <h3>Bids</h3>
-      <p>Compare supplier proposals and select a winner.</p>
-      <a class="btn" routerLink="/member/requests">Open</a>
+      <h3><i class="bi bi-tags"></i> Bids</h3>
+      <p>Review and compare supplier proposals for your active requests.</p>
+      <a class="btn" routerLink="/member/requests">
+        <i class="bi bi-eye"></i> View Bids ({{ bidsCount }})
+      </a>
     </div>
+    
     <div class="card">
-      <h3>Transactions</h3>
-      <p>Manage secure payouts via TAPSOSA escrow.</p>
-      <a class="btn" routerLink="/member/transactions">View</a>
+      <h3><i class="bi bi-cash-coin"></i> Transactions</h3>
+      <p>Manage escrow payments and track released funds.</p>
+      <a class="btn" routerLink="/member/transactions">
+        <i class="bi bi-arrow-right-circle"></i> View Finance
+      </a>
     </div>
   </section>
 
+  <!-- Metrics Cards -->
   <section class="grid cols-4">
     <div class="card fade-in">
-      <h3>Active Requests</h3>
+      <h3><i class="bi bi-briefcase"></i> Active Requests</h3>
       <p class="metric-big">{{ activeJobs }}</p>
-      <a class="link" routerLink="/member/requests">View Requests</a>
+      <a class="link" routerLink="/member/requests">
+        View All Requests <i class="bi bi-arrow-right"></i>
+      </a>
     </div>
+    
     <div class="card fade-in">
-      <h3>Pending Bids</h3>
+      <h3><i class="bi bi-chat"></i> Pending Bids</h3>
       <p class="metric-big">{{ bidsCount }}</p>
-      <a class="link" routerLink="/member/requests">Review Bids</a>
+      <a class="link" routerLink="/member/requests">
+        Review Bids <i class="bi bi-arrow-right"></i>
+      </a>
     </div>
+    
     <div class="card fade-in">
-      <h3>Revenue Summary</h3>
+      <h3><i class="bi bi-wallet2"></i> Revenue Summary</h3>
       <p class="metric-big">R{{ releasedNet.toLocaleString() }}</p>
-      <a class="link" routerLink="/member/transactions">View Finance</a>
+      <a class="link" routerLink="/member/transactions">
+        View Transactions <i class="bi bi-arrow-right"></i>
+      </a>
     </div>
+    
     <div class="card fade-in">
-      <h3>Compliance Alerts</h3>
+      <h3><i class="bi bi-shield-check"></i> Compliance Alerts</h3>
       <p class="metric-big">{{ complianceAlerts }}</p>
-      <a class="link" routerLink="/member/reports">View Compliance</a>
+      <a class="link" routerLink="/member/reports">
+        View Compliance <i class="bi bi-arrow-right"></i>
+      </a>
     </div>
   </section>
 
+  <!-- Escrow Overview -->
   <section class="card">
-    <h3>Escrow Overview</h3>
+    <h3><i class="bi bi-shield-lock"></i> Escrow Overview</h3>
     <div class="escrows">
       <div class="row">
-        <div>Pending Escrows ({{ pendingCount }})</div>
+        <div>
+          ⏳ Pending Escrows <span>({{ pendingCount }})</span>
+        </div>
         <div>R{{ pendingGross.toLocaleString() }}</div>
       </div>
       <div class="row">
-        <div>Funded Escrows ({{ fundedCount }})</div>
+        <div>
+          💰 Funded Escrows <span>({{ fundedCount }})</span>
+        </div>
         <div>R{{ fundedGross.toLocaleString() }}</div>
       </div>
       <div class="row">
-        <div>Released Payouts ({{ releasedCount }})</div>
+        <div>
+          ✅ Released Payouts <span>({{ releasedCount }})</span>
+        </div>
         <div>R{{ releasedNet.toLocaleString() }}</div>
       </div>
     </div>

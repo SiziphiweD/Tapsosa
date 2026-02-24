@@ -1,49 +1,133 @@
 <aside class="sidebar" [class.member]="role === 'member'" [class.supplier]="role === 'supplier'" [class.admin]="role === 'admin'">
+  
+  <!-- Brand Block - Role Specific -->
   <div class="brand-block">
-    <div class="logo"><i class="bi" [ngClass]="roleIcon()"></i></div>
-    <div class="org">{{ user?.name || 'UKHUSELO SUPPLIER PORTAL User' }}</div>
+    <div class="logo">
+      <i class="bi" [ngClass]="roleIcon()"></i>
+    </div>
+    
+    <!-- Admin sees Ukhuselo branding -->
+    <ng-container *ngIf="role === 'admin'">
+      <div class="org">UKHUSELO PTY</div>
+      <div class="org-sub">ADMIN PORTAL</div>
+    </ng-container>
+    
+    <!-- Member sees their company name -->
+    <ng-container *ngIf="role === 'member'">
+      <div class="org">{{ user?.company || user?.name || 'Member' }}</div>
+      <div class="org-sub">MEMBER ACCOUNT</div>
+    </ng-container>
+    
+    <!-- Supplier sees their company name -->
+    <ng-container *ngIf="role === 'supplier'">
+      <div class="org">{{ user?.company || user?.name || 'Supplier' }}</div>
+      <div class="org-sub">SUPPLIER PORTAL</div>
+    </ng-container>
   </div>
-  <div class="rule"></div>
 
+  <!-- Consistent Separator for all roles -->
+  <div class="separator"></div>
+
+  <!-- Member Navigation -->
   <ng-container *ngIf="role === 'member'">
-    <a class="item" routerLink="/member/dashboard" routerLinkActive="active"><i class="bi bi-grid-1x2"></i><span>Dashboard</span></a>
-    <a class="item" routerLink="/member/requests/new" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="bi bi-plus-square"></i><span>Post Request</span></a>
-    <a class="item" routerLink="/member/requests" [class.active]="isMemberBidsActive()"><i class="bi bi-tags"></i><span>Bids</span></a>
-    <a class="item" routerLink="/member/transactions" routerLinkActive="active"><i class="bi bi-cash-coin"></i><span>Transactions</span></a>
-    <a class="item" routerLink="/member/reports" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"><i class="bi bi-shield-check"></i><span>Compliance</span></a>
-    <a class="item" routerLink="/member/reports/spending" routerLinkActive="active"><i class="bi bi-bar-chart"></i><span>Reports</span></a>
+    <div class="caption">MEMBER MENU</div>
+    <a class="item" routerLink="/member/dashboard" routerLinkActive="active">
+      <i class="bi bi-grid-1x2"></i><span>Dashboard</span>
+    </a>
+    <a class="item" routerLink="/member/requests/new" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <i class="bi bi-plus-square"></i><span>Post Request</span>
+    </a>
+    <a class="item" routerLink="/member/requests" [class.active]="isMemberBidsActive()">
+      <i class="bi bi-tags"></i><span>Bids</span>
+    </a>
+    <a class="item" routerLink="/member/transactions" routerLinkActive="active">
+      <i class="bi bi-cash-coin"></i><span>Transactions</span>
+    </a>
+    <a class="item" routerLink="/member/upload-documents" routerLinkActive="active">
+      <i class="bi bi-shield-check"></i><span>Verification</span>
+    </a>
+    <a class="item" routerLink="/member/reports/spending" routerLinkActive="active">
+      <i class="bi bi-bar-chart"></i><span>Reports</span>
+    </a>
   </ng-container>
 
+  <!-- Supplier Navigation -->
   <ng-container *ngIf="role === 'supplier'">
-    <a class="item" routerLink="/supplier/dashboard" routerLinkActive="active"><i class="bi bi-grid-1x2"></i><span>Dashboard</span></a>
-    <a class="item" routerLink="/supplier/profile" routerLinkActive="active"><i class="bi bi-person"></i><span>My Profile</span></a>
-    <a class="item" routerLink="/supplier/compliance" routerLinkActive="active"><i class="bi bi-shield-check"></i><span>Compliance</span></a>
-    <a class="item" routerLink="/supplier/jobs" routerLinkActive="active"><i class="bi bi-briefcase"></i><span>Browse Jobs</span></a>
-    <a class="item" routerLink="/supplier/bids" routerLinkActive="active"><i class="bi bi-tags"></i><span>My Bids</span></a>
-    <a class="item" routerLink="/supplier/contracts" routerLinkActive="active"><i class="bi bi-file-earmark-text"></i><span>Active Contracts</span></a>
-    <a class="item" routerLink="/supplier/completed" routerLinkActive="active"><i class="bi bi-check2-circle"></i><span>Completed Jobs</span></a>
-    <a class="item" routerLink="/supplier/transactions" routerLinkActive="active"><i class="bi bi-cash-coin"></i><span>Transactions</span></a>
-    <a class="item" routerLink="/supplier/earnings" routerLinkActive="active"><i class="bi bi-wallet2"></i><span>Earnings</span></a>
+    <div class="caption">SUPPLIER MENU</div>
+    <a class="item" routerLink="/supplier/dashboard" routerLinkActive="active">
+      <i class="bi bi-grid-1x2"></i><span>Dashboard</span>
+    </a>
+    <a class="item" routerLink="/supplier/profile" routerLinkActive="active">
+      <i class="bi bi-person"></i><span>My Profile</span>
+    </a>
+    <a class="item" routerLink="/supplier/compliance" routerLinkActive="active">
+      <i class="bi bi-shield-check"></i><span>Compliance</span>
+    </a>
+    <a class="item" routerLink="/supplier/jobs" routerLinkActive="active">
+      <i class="bi bi-briefcase"></i><span>Browse Jobs</span>
+    </a>
+    <a class="item" routerLink="/supplier/bids" routerLinkActive="active">
+      <i class="bi bi-tags"></i><span>My Bids</span>
+    </a>
+    <a class="item" routerLink="/supplier/contracts" routerLinkActive="active">
+      <i class="bi bi-file-earmark-text"></i><span>Active Contracts</span>
+    </a>
+    <a class="item" routerLink="/supplier/completed" routerLinkActive="active">
+      <i class="bi bi-check2-circle"></i><span>Completed Jobs</span>
+    </a>
+    <a class="item" routerLink="/supplier/transactions" routerLinkActive="active">
+      <i class="bi bi-cash-coin"></i><span>Transactions</span>
+    </a>
+    <a class="item" routerLink="/supplier/earnings" routerLinkActive="active">
+      <i class="bi bi-wallet2"></i><span>Earnings</span>
+    </a>
   </ng-container>
 
+  <!-- Admin Navigation -->
   <ng-container *ngIf="role === 'admin'">
-    <a class="item" routerLink="/admin/dashboard" routerLinkActive="active"><i class="bi bi-speedometer"></i><span>Dashboard</span></a>
-    <a class="item" routerLink="/admin/users/members" routerLinkActive="active"><i class="bi bi-people"></i><span>Users</span></a>
-    <a class="item" routerLink="/admin/jobs" routerLinkActive="active"><i class="bi bi-briefcase"></i><span>Jobs</span></a>
-    <a class="item" routerLink="/admin/jobs/categories" routerLinkActive="active"><i class="bi bi-list-ul"></i><span>Job Categories</span></a>
-    <a class="item" routerLink="/admin/finance/revenue" routerLinkActive="active"><i class="bi bi-graph-up-arrow"></i><span>Revenue</span></a>
-    <a class="item" routerLink="/admin/finance/transactions" routerLinkActive="active"><i class="bi bi-cash-coin"></i><span>Transactions</span></a>
-    <a class="item" routerLink="/admin/finance/escrow" routerLinkActive="active"><i class="bi bi-shield-lock"></i><span>Escrow</span></a>
-    <a class="item" routerLink="/admin/support/disputes" routerLinkActive="active"><i class="bi bi-exclamation-triangle"></i><span>Disputes</span></a>
-    <a class="item" routerLink="/admin/compliance/dashboard" routerLinkActive="active"><i class="bi bi-check2-square"></i><span>Compliance</span></a>
-    <a class="item" routerLink="/admin/suppliers/verification" routerLinkActive="active"><i class="bi bi-patch-check"></i><span>Verification</span></a>
-    <a class="item" routerLink="/admin/reports" routerLinkActive="active"><i class="bi bi-clipboard-data"></i><span>Reports</span></a>
+    <div class="caption">ADMIN MENU</div>
+    <a class="item" routerLink="/admin/dashboard" routerLinkActive="active">
+      <i class="bi bi-speedometer"></i><span>Dashboard</span>
+    </a>
+    <a class="item" routerLink="/admin/users/members" routerLinkActive="active">
+      <i class="bi bi-people"></i><span>Users</span>
+    </a>
+    <a class="item" routerLink="/admin/jobs" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+      <i class="bi bi-briefcase"></i><span>Jobs</span>
+    </a>
+    <a class="item" routerLink="/admin/jobs/categories" routerLinkActive="active">
+      <i class="bi bi-list-ul"></i><span>Job Categories</span>
+    </a>
+    <a class="item" routerLink="/admin/finance/revenue" routerLinkActive="active">
+      <i class="bi bi-graph-up-arrow"></i><span>Revenue</span>
+    </a>
+    <a class="item" routerLink="/admin/finance/transactions" routerLinkActive="active">
+      <i class="bi bi-cash-coin"></i><span>Transactions</span>
+    </a>
+    <a class="item" routerLink="/admin/finance/escrow" routerLinkActive="active">
+      <i class="bi bi-shield-lock"></i><span>Escrow</span>
+    </a>
+    <a class="item" routerLink="/admin/support/disputes" routerLinkActive="active">
+      <i class="bi bi-exclamation-triangle"></i><span>Disputes</span>
+    </a>
+    <a class="item" routerLink="/admin/compliance/dashboard" routerLinkActive="active">
+      <i class="bi bi-check2-square"></i><span>Compliance Dashboard</span>
+    </a>
+    <a class="item" routerLink="/admin/reports" routerLinkActive="active">
+      <i class="bi bi-clipboard-data"></i><span>Reports</span>
+    </a>
   </ng-container>
 
+  <!-- Spacer -->
   <div class="spacer"></div>
 
+  <!-- Footer - Consistent for all roles -->
   <div class="footer">
-    <button class="item signout" type="button" (click)="signOut()"><i class="bi bi-box-arrow-right"></i><span>Sign Out</span></button>
+    <button class="item signout" type="button" (click)="signOut()">
+      <i class="bi bi-box-arrow-right"></i>
+      <span>Sign Out</span>
+    </button>
+    
     <div class="fine-links">
       <a routerLink="/faqs">Privacy</a>
       <span>•</span>
@@ -51,6 +135,9 @@
       <span>•</span>
       <a routerLink="/contact">Support</a>
     </div>
-    <div class="copyright">© {{ year }} TAPSOSA</div>
+    
+    <div class="copyright">
+      © {{ year }} UKHUSELO PROCUREMENT
+    </div>
   </div>
 </aside>

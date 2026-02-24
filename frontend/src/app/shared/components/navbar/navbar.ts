@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { Router, NavigationEnd, RouterLink, RouterLinkActive } from '@angular/router';
+import { Router, NavigationEnd, RouterLink, RouterLinkActive, Event } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService, User } from '../../services/auth.service';
-import { MockApiService } from '../../services/mock-api.service';
+import { MockApiService, Activity } from '../../services/mock-api.service';
 
 @Component({
   selector: 'app-navbar',
@@ -20,24 +20,21 @@ export class Navbar {
   menuOpen = false;
   notificationsCount = 0;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
-    const router = this.router;
-    const auth = this.auth;
-
-    this.setRole(router.url);
-    router.events.subscribe((e) => {
+    this.setRole(this.router.url);
+    
+    this.router.events.subscribe((e: Event) => {
       if (e instanceof NavigationEnd) {
         this.setRole(e.urlAfterRedirects);
+        this.closeMenu(); // Close menu on navigation
       }
     });
-    auth.currentUser$.subscribe((u) => {
+    
+    this.auth.currentUser$.subscribe((u: User | null) => {
       this.user = u;
-      // Keep role derived from current route to ensure consistent theming
     });
-    this.api.listActivities().subscribe((acts) => {
+    
+    this.api.listActivities().subscribe((acts: Activity[]) => {
       this.notificationsCount = Math.min(acts.length, 9);
     });
   }
@@ -57,6 +54,7 @@ export class Navbar {
   roleIcon() {
     if (this.role === 'admin') return 'bi-shield-lock';
     if (this.role === 'supplier') return 'bi-briefcase';
+    if (this.role === 'member') return 'bi-building';
     return 'bi-person-circle';
   }
 
@@ -75,19 +73,19 @@ export class Navbar {
   }
 
   settingsLink() {
-    if (this.role === 'member') return '/member/settings/security';
-    if (this.role === 'supplier') return '/supplier/profile';
-    if (this.role === 'admin') return '/admin/system';
-    return '/';
+    // Only used for admin now
+    return '/admin/system';
   }
 
   helpLink() {
+    // Only used for admin now
     return '/faqs';
   }
 
   toggleMenu() {
     this.menuOpen = !this.menuOpen;
   }
+
   closeMenu() {
     this.menuOpen = false;
   }

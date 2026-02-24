@@ -1,108 +1,190 @@
 <section class="card">
   <h1>Create Procurement Request</h1>
-  <p>Submit a detailed procurement request so verified suppliers can bid.</p>
+  <p>Submit a detailed procurement request so verified suppliers can bid on your requirements.</p>
 
   <form class="form">
+    <!-- Title -->
     <label>
-      Category
+      <span>Request Title <small>*Required</small></span>
+      <input
+        name="title"
+        [(ngModel)]="title"
+        type="text"
+        placeholder="e.g. Guard Uniforms for Corporate Event"
+        [class.error]="title.trim().length === 0 && title.length > 0"
+      />
+    </label>
+
+    <!-- Category -->
+    <label>
+      <span>Category <small>*Required</small></span>
       <select name="category" [(ngModel)]="category">
-        <option>Uniforms &amp; PPE</option>
-        <option>SIM Cards &amp; Connectivity</option>
+        <option>Uniforms & PPE</option>
+        <option>SIM Cards & Connectivity</option>
         <option>Access Control Systems</option>
         <option>Patrol Monitoring Systems</option>
         <option>Two-Way Radios</option>
-        <option>Financial Assistance &amp; Asset Finance</option>
+        <option>Financial Assistance & Asset Finance</option>
         <option>Insurance Solutions</option>
       </select>
     </label>
 
+    <!-- Description -->
     <label>
-      Product / Service Description
+      <span>Product / Service Description <small>*Required</small></span>
       <textarea
         name="requirements"
         [(ngModel)]="requirements"
-        rows="4"
-        placeholder="Describe the product or service you need, scope, and key requirements."
+        rows="5"
+        placeholder="Describe the product or service you need, scope, deliverables, and key requirements..."
       ></textarea>
     </label>
 
-    <label>
-      Delivery Location
-      <input
-        name="location"
-        [(ngModel)]="location"
-        type="text"
-        placeholder="e.g. Johannesburg, Gauteng"
-      />
-    </label>
-
-    <label>
-      Required Certifications
-      <input name="requiredCerts" [(ngModel)]="requiredCertsText" type="text" placeholder="e.g. PSIRA, Firearm, First Aid" />
-      <small class="muted">Comma-separated list</small>
-    </label>
-
-    <div class="grid">
+    <!-- Location & Certifications (2 columns) -->
+    <div class="grid" style="grid-template-columns: 1fr 1fr;">
       <label>
-        Quantity
-        <input name="quantity" [(ngModel)]="quantity" type="number" placeholder="e.g. 50" />
+        <span>Delivery Location <small>*Required</small></span>
+        <input
+          name="location"
+          [(ngModel)]="location"
+          type="text"
+          placeholder="e.g. Johannesburg, Gauteng"
+        />
       </label>
+
       <label>
-        Min budget
-        <input name="minBudget" [(ngModel)]="minBudget" type="number" placeholder="e.g. 20000" />
-      </label>
-      <label>
-        Max budget
-        <input name="maxBudget" [(ngModel)]="maxBudget" type="number" placeholder="e.g. 40000" />
+        <span>Required Certifications</span>
+        <input 
+          name="requiredCerts" 
+          [(ngModel)]="requiredCertsText" 
+          type="text" 
+          placeholder="e.g. PSIRA, Firearm, First Aid"
+        />
+        <small>Comma-separated list (optional)</small>
       </label>
     </div>
 
-    <label>
-      Bid deadline
-      <input name="bidDeadline" [(ngModel)]="bidDeadline" type="date" />
-    </label>
-
+    <!-- Quantity & Budget (3 columns) -->
     <div class="grid">
       <label>
-        Start date
-        <input name="startDate" [(ngModel)]="startDate" type="date" />
+        <span>Quantity <small>*Required</small></span>
+        <input 
+          name="quantity" 
+          [(ngModel)]="quantity" 
+          type="number" 
+          placeholder="e.g. 50"
+          min="1"
+        />
       </label>
+      
       <label>
-        End date
-        <input name="endDate" [(ngModel)]="endDate" type="date" />
+        <span>Min Budget (R) <small>*Required</small></span>
+        <input 
+          name="minBudget" 
+          [(ngModel)]="minBudget" 
+          type="number" 
+          placeholder="e.g. 20000"
+          min="0"
+        />
       </label>
+      
       <label>
-        Duration (days)
-        <input
-          name="durationDays"
-          [(ngModel)]="durationDays"
-          type="number"
-          placeholder="e.g. 3"
+        <span>Max Budget (R) <small>*Required</small></span>
+        <input 
+          name="maxBudget" 
+          [(ngModel)]="maxBudget" 
+          type="number" 
+          placeholder="e.g. 40000"
+          min="0"
         />
       </label>
     </div>
 
-    <label>
-      Attachments
-      <input type="file" (change)="onFilesSelected($event.target.files)" multiple />
-    </label>
-
-    <div class="errors">
-      <div *ngIf="requirements.trim().length === 0">Description is required.</div>
-      <div *ngIf="location.trim().length === 0">Delivery location is required.</div>
-      <div *ngIf="!minBudget || !maxBudget">Budget range is required.</div>
-      <div *ngIf="minBudget && maxBudget && minBudget > maxBudget">Min budget must be less than or equal to max budget.</div>
-      <div *ngIf="!quantity || quantity <= 0">Quantity is required.</div>
-      <div *ngIf="!bidDeadline">Bid deadline is required.</div>
-      <div *ngIf="deadlineInPast">Bid deadline must be a future date.</div>
-      <div *ngIf="datesInvalid">Start date must be before end date.</div>
-      <div *ngIf="attachments.length === 0">At least one attachment is required.</div>
+    <!-- Dates (3 columns) -->
+    <div class="grid">
+      <label>
+        <span>Bid Deadline <small>*Required</small></span>
+        <input 
+          name="bidDeadline" 
+          [(ngModel)]="bidDeadline" 
+          type="date" 
+          [min]="minBidDate"
+        />
+      </label>
+      
+      <label>
+        <span>Start Date</span>
+        <input 
+          name="startDate" 
+          [(ngModel)]="startDate" 
+          type="date"
+          [min]="minBidDate"
+        />
+      </label>
+      
+      <label>
+        <span>End Date</span>
+        <input 
+          name="endDate" 
+          [(ngModel)]="endDate" 
+          type="date"
+          [min]="startDate || minBidDate"
+        />
+      </label>
     </div>
 
-    <button type="button" [disabled]="!isValid" (click)="publish()">Create Request</button>
+    <!-- Duration -->
+    <div class="grid" style="grid-template-columns: 1fr 2fr;">
+      <label>
+        <span>Duration (days)</span>
+        <input
+          name="durationDays"
+          [(ngModel)]="durationDays"
+          type="number"
+          placeholder="e.g. 30"
+          min="1"
+        />
+      </label>
+      <div></div> <!-- Empty for spacing -->
+    </div>
+
+    <!-- Attachments -->
+    <label>
+      <span>Attachments (Optional)</span>
+      <input type="file" (change)="onFilesSelected($any($event.target).files)" multiple />
+      <small>Upload any supporting documents (PDF, images, etc.)</small>
+    </label>
+
+    <!-- Attachments preview -->
+    <div *ngIf="attachments.length > 0" style="margin-top: 4px; padding-left: 8px;">
+      <small style="color: var(--color-primary); font-weight: 600;">
+        {{ attachments.length }} file(s) selected
+      </small>
+    </div>
+
+    <!-- Validation Errors -->
+    <div class="errors" *ngIf="!isValid && (title || requirements || location || minBudget || maxBudget)">
+      <div *ngIf="title.trim().length === 0">Title is required</div>
+      <div *ngIf="requirements.trim().length === 0">Description is required</div>
+      <div *ngIf="location.trim().length === 0">Delivery location is required</div>
+      <div *ngIf="!minBudget || !maxBudget">Budget range is required</div>
+      <div *ngIf="minBudget && maxBudget && minBudget > maxBudget">Min budget must be less than or equal to max budget</div>
+      <div *ngIf="minBudget && minBudget <= 0">Min budget must be greater than 0</div>
+      <div *ngIf="maxBudget && maxBudget <= 0">Max budget must be greater than 0</div>
+      <div *ngIf="!quantity || quantity <= 0">Quantity is required and must be greater than 0</div>
+      <div *ngIf="!bidDeadline">Bid deadline is required</div>
+      <div *ngIf="deadlineInPast">Bid deadline must be a future date</div>
+      <div *ngIf="datesInvalid">Start date must be before end date</div>
+    </div>
+
+    <!-- Submit Button -->
+    <button type="button" [disabled]="!isValid" (click)="publish()">
+      <i class="bi bi-send"></i> Create Request
+    </button>
   </form>
 
+  <!-- Success Toast -->
   <div class="toast success" *ngIf="submitted">
-    Request published successfully
+    <span>✓ Request published successfully! Redirecting...</span>
   </div>
 </section>

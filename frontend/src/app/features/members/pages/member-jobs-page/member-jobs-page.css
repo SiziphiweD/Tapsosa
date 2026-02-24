@@ -1,49 +1,374 @@
+/* Card styling */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+h1::before {
+  content: '';
+  width: 8px;
+  height: 36px;
+  background: linear-gradient(to bottom, var(--color-success), var(--color-primary));
+  border-radius: 20px;
+  margin-right: 1rem;
+}
+
+/* Jobs Table Container */
 .jobs-table {
   display: grid;
   border-radius: var(--radius-md);
   border: 1px solid var(--color-border);
-  background: var(--color-surface);
+  background: white;
   overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
 }
 
-.table-header,
+/* Table Header */
+.table-header {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1.5fr 1fr 1.5fr;
+  gap: 12px;
+  padding: 1rem 1.5rem;
+  align-items: center;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+  color: white;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.table-header div {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.table-header div i {
+  font-size: 1rem;
+  opacity: 0.9;
+}
+
+/* Table Rows */
 .table-row {
   display: grid;
   grid-template-columns: 2fr 2fr 1.5fr 1fr 1.5fr;
-  gap: 8px;
-  padding: 10px 12px;
+  gap: 12px;
+  padding: 1rem 1.5rem;
   align-items: center;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid var(--color-border);
 }
 
-.table-header {
-  background: #0f172a;
-  color: #e5e7eb;
-  font-weight: 700;
-  font-size: 13px;
-  text-transform: uppercase;
+.table-row:last-child {
+  border-bottom: none;
 }
 
-.table-row:nth-child(odd) {
-  background: rgba(15, 23, 42, 0.03);
+.table-row:hover {
+  background: #f8fafc;
+  transform: translateX(2px);
 }
 
 .table-row:nth-child(even) {
-  background: rgba(15, 23, 42, 0.06);
+  background: rgba(44, 74, 98, 0.02);
+}
+
+.table-row:nth-child(even):hover {
+  background: #f1f5f9;
 }
 
 .table-row > div {
-  font-size: 14px;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
+/* Job ID styling */
+.table-row > div:first-child {
+  font-weight: 600;
+  color: var(--color-primary);
+  font-family: 'Inter', monospace;
+  font-size: 0.9rem;
+}
+
+/* Category styling */
+.table-row > div:nth-child(2) {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.table-row > div:nth-child(2) i {
+  color: var(--color-success);
+  font-size: 1rem;
+}
+
+/* Status Badges */
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
+  width: fit-content;
+}
+
+.status-badge i {
+  font-size: 0.7rem;
+}
+
+.status-badge.open {
+  background: #ecfdf3;
+  color: #166534;
+  border-color: #b7e3b9;
+}
+
+.status-badge.awarded {
+  background: #fff3cd;
+  color: #856404;
+  border-color: #ffe69c;
+}
+
+.status-badge.closed {
+  background: #f1f3f5;
+  color: #495057;
+  border-color: #dee2e6;
+}
+
+/* Bids count */
+.table-row > div:nth-child(4) {
+  font-weight: 700;
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.table-row > div:nth-child(4) i {
+  color: var(--color-success);
+  font-size: 0.9rem;
+}
+
+/* Action Button */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 32px;
-  padding: 0 12px;
+  gap: 8px;
+  height: 38px;
+  padding: 0 20px;
   border: 1px solid var(--color-border);
   border-radius: 999px;
   text-decoration: none;
-  font-weight: 700;
-  font-size: 13px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  background: white;
+  color: var(--color-primary);
+  transition: all 0.2s ease;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px -6px rgba(0, 0, 0, 0.12);
+  border-color: var(--color-primary);
+  background: #f8fafc;
+}
+
+.btn i {
+  font-size: 0.9rem;
+}
+
+/* Empty State */
+.muted {
+  color: var(--color-muted);
+  font-style: italic;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  background: #f8fafc;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.muted i {
+  font-size: 3rem;
+  color: var(--color-border);
+  margin-bottom: 8px;
+}
+
+.muted .btn {
+  margin-top: 8px;
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+}
+
+.muted .btn:hover {
+  background: var(--color-primary-dark);
+  border-color: var(--color-primary-dark);
+}
+
+/* Loading State */
+.loading {
+  padding: 3rem;
+  text-align: center;
+  color: var(--color-muted);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .table-header,
+  .table-row {
+    grid-template-columns: 1.5fr 1.5fr 1.2fr 1fr 1.3fr;
+    padding: 0.9rem 1rem;
+    gap: 8px;
+  }
+}
+
+@media (max-width: 800px) {
+  .card {
+    padding: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h1::before {
+    height: 32px;
+  }
+  
+  .table-header {
+    display: none; /* Hide header on mobile */
+  }
+  
+  .table-row {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 1.25rem;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    margin-bottom: 12px;
+    background: white;
+  }
+  
+  .table-row:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
+  }
+  
+  .table-row > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    white-space: normal;
+  }
+  
+  .table-row > div:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-muted);
+    margin-right: 1rem;
+    min-width: 100px;
+  }
+  
+  .table-row > div:first-child:before {
+    content: "Request ID";
+  }
+  
+  .table-row > div:nth-child(2):before {
+    content: "Category";
+  }
+  
+  .table-row > div:nth-child(3):before {
+    content: "Status";
+  }
+  
+  .table-row > div:nth-child(4):before {
+    content: "Bids";
+  }
+  
+  .table-row > div:nth-child(5):before {
+    content: "Action";
+  }
+  
+  .table-row > div:last-child {
+    justify-content: flex-end;
+    margin-top: 8px;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 500px) {
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h1::before {
+    width: 6px;
+    height: 28px;
+  }
+  
+  .card {
+    padding: 1.25rem;
+  }
+  
+  .table-row {
+    padding: 1rem;
+  }
+  
+  .table-row > div:before {
+    min-width: 80px;
+    font-size: 0.8rem;
+  }
 }

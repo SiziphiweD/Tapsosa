@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { supplierApprovedGuard } from './core/guards/supplier.guard';
 
 import { AppLayout } from './shared/layout/app-layout/app-layout';
 import { PublicLayout } from './shared/layout/public-layout/public-layout';
@@ -269,35 +270,40 @@ export const routes: Routes = [
             loadComponent: () =>
               import('./features/marketplace/pages/browse-jobs-page/browse-jobs-page').then(
                 (m) => m.BrowseJobsPage
-              )
+              ),
+            canActivate: [supplierApprovedGuard]
           },
           {
             path: 'jobs/recommended',
             loadComponent: () =>
               import('./features/suppliers/pages/supplier-jobs-recommended-page/supplier-jobs-recommended-page').then(
                 (m) => m.SupplierJobsRecommendedPage
-              )
+              ),
+            canActivate: [supplierApprovedGuard]
           },
           {
             path: 'jobs/saved',
             loadComponent: () =>
               import('./features/suppliers/pages/supplier-jobs-saved-page/supplier-jobs-saved-page').then(
                 (m) => m.SupplierJobsSavedPage
-              )
+              ),
+            canActivate: [supplierApprovedGuard]
           },
           {
             path: 'jobs/alerts',
             loadComponent: () =>
               import('./features/suppliers/pages/supplier-job-alerts-page/supplier-job-alerts-page').then(
                 (m) => m.SupplierJobAlertsPage
-              )
+              ),
+            canActivate: [supplierApprovedGuard]
           },
           {
             path: 'jobs/:jobId',
             loadComponent: () =>
               import('./features/marketplace/pages/job-detail-page/job-detail-page').then(
                 (m) => m.JobDetailPage
-              )
+              ),
+            canActivate: [supplierApprovedGuard]
           },
           {
             path: 'transactions',
@@ -396,13 +402,7 @@ export const routes: Routes = [
                 (m) => m.AdminProfilePage
               )
           },
-          {
-            path: 'suppliers/verification',
-            loadComponent: () =>
-              import(
-                './features/admin/pages/supplier-verification-page/supplier-verification-page'
-              ).then((m) => m.SupplierVerificationPage)
-          },
+          
           {
             path: 'transactions',
             loadComponent: () =>
@@ -447,10 +447,24 @@ export const routes: Routes = [
             path: 'users',
             children: [
               {
+                path: 'members/:memberId',
+                loadComponent: () =>
+                  import('./features/admin/pages/admin-member-detail-page/admin-member-detail-page').then(
+                    (m) => m.AdminMemberDetailPage
+                  )
+              },
+              {
                 path: 'members',
                 loadComponent: () =>
                   import('./features/admin/pages/admin-users-members-page/admin-users-members-page').then(
                     (m) => m.AdminUsersMembersPage
+                  )
+              },
+              {
+                path: 'suppliers/:supplierId',
+                loadComponent: () =>
+                  import('./features/admin/pages/admin-supplier-detail-page/admin-supplier-detail-page').then(
+                    (m) => m.AdminSupplierDetailPage
                   )
               },
               {
@@ -478,6 +492,13 @@ export const routes: Routes = [
                 loadComponent: () =>
                   import('./features/admin/pages/admin-jobs-page/admin-jobs-page').then(
                     (m) => m.AdminJobsPage
+                  )
+              },
+              {
+                path: 'bids',
+                loadComponent: () =>
+                  import('./features/admin/pages/admin-bids-page/admin-bids-page').then(
+                    (m) => m.AdminBidsPage
                   )
               },
               {

@@ -1,11 +1,21 @@
 <section class="card">
   <h1>Admin Users</h1>
+  <div class="subtabs">
+    <a routerLink="/admin/users/members" routerLinkActive="active">Members</a>
+    <a routerLink="/admin/users/suppliers" routerLinkActive="active">Suppliers</a>
+    <a routerLink="/admin/users/admins" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Admins</a>
+  </div>
+  
   <div class="table">
-    <div class="row head"><div>Name</div><div>Email</div><div>Added</div></div>
+    <div class="row head">
+      <div>Name</div>
+      <div>Email</div>
+      <div>Added</div>
+    </div>
     <div class="row" *ngFor="let r of rows">
-      <div>{{ r.name }}</div>
-      <div>{{ r.email }}</div>
-      <div>{{ r.createdAt | date:'medium' }}</div>
+      <div [attr.data-label]="'Name'">{{ r.name }}</div>
+      <div [attr.data-label]="'Email'">{{ r.email }}</div>
+      <div [attr.data-label]="'Added'">{{ r.createdAt | date:'medium' }}</div>
     </div>
     <div class="muted" *ngIf="rows.length===0">No admin users yet</div>
   </div>
@@ -13,21 +23,21 @@
 
 <section class="card">
   <h3>Add New Admin</h3>
-  <form class="form">
+  <div class="form">
     <label>
-      Name
-      <input [(ngModel)]="name" name="name" type="text" />
+      <span>Full Name</span>
+      <input [(ngModel)]="name" name="name" type="text" placeholder="Enter admin name" />
     </label>
     <label>
-      Email
-      <input [(ngModel)]="email" name="email" type="email" />
+      <span>Email Address</span>
+      <input [(ngModel)]="email" name="email" type="email" placeholder="admin@example.com" />
     </label>
     <label>
-      Password
-      <input [(ngModel)]="password" name="password" type="password" />
+      <span>Password</span>
+      <input [(ngModel)]="password" name="password" type="password" placeholder="•••••••• (min. 6 characters)" />
     </label>
-    <button type="button" [disabled]="!canAdd" (click)="addAdmin()">Add Admin</button>
-    <div class="toast success" *ngIf="added">Admin added</div>
-  </form>
-  <p class="muted">Password is stored hashed (SHA-256) in local storage for demo purposes.</p>
+    <button type="button" class="btn" [disabled]="!canAdd" (click)="addAdmin()">Create Admin Account</button>
+    <div class="toast success" *ngIf="added">✓ Admin added successfully</div>
+  </div>
+  <p class="muted">🔒 Password is stored hashed (SHA-256) in local storage for demo purposes.</p>
 </section>

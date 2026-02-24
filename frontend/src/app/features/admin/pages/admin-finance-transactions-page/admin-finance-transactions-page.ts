@@ -27,4 +27,19 @@ export class AdminFinanceTransactionsPage {
     if (this.type === 'all') return this.rows;
     return this.rows.filter((r) => r.type === this.type);
   }
+
+  exportCsv() {
+    const header = ['Type', 'Job', 'Amount', 'Timestamp'];
+    const rows = this.filtered.map((r) => [r.type, r.jobId, r.amount ?? '', r.timestamp]);
+    const csv = [header, ...rows].map((r) => r.map((v) => String(v)).join(',')).join('\n');
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'transactions.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  // Charts removed per requirement; CSV export retained.
 }
