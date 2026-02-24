@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MockApiService, Job, Bid, Escrow } from '../../../../shared/services/mock-api.service';
 import { AuthService, User } from '../../../../shared/services/auth.service';
 
@@ -12,6 +12,7 @@ import { AuthService, User } from '../../../../shared/services/auth.service';
 })
 export class MemberViewBidsPage {
   private route = inject(ActivatedRoute);
+  private router = inject(Router);
   private api = inject(MockApiService);
   private auth = inject(AuthService);
 
@@ -24,6 +25,9 @@ export class MemberViewBidsPage {
   warning: string | null = null;
   funding = false;
   releasing = false;
+  confirmOpen = false;
+  confirmBid: Bid | null = null;
+  confirmWarning: string | null = null;
 
   isApproved = false;
   supplierStatusById: { [supplierId: string]: string } = {};
@@ -46,13 +50,21 @@ export class MemberViewBidsPage {
     }
 
     this.api.getJob(id).subscribe((j) => {
-      if (!j) {
-        this.job = undefined;
-        this.escrow = null;
-        return;
+      if (j) {
+        this.job = j;
+        this.escrow = j.escrow ?? null;
+      } else {
+        this.api.listJobs().subscribe((jobs) => {
+          const found = jobs.find((x) => String(x.id) === String(id));
+          if (found) {
+            this.job = found;
+            this.escrow = found.escrow ?? null;
+          } else {
+            this.job = undefined;
+            this.escrow = null;
+          }
+        });
       }
-      this.job = j;
-      this.escrow = j.escrow ?? null;
     });
 
     this.api.listBids(id).subscribe((b: Bid[]) => {
@@ -66,24 +78,35 @@ export class MemberViewBidsPage {
       return;
     }
     const bid = this.bids.find((b) => b.id === bidId);
-    if (bid) {
-      const status = this.getSupplierStatus(bid).toLowerCase();
-      const supplierId = bid.supplierId;
-      const complianceMeta = supplierId
-        ? this.complianceBySupplier[supplierId]
-        : undefined;
-      const isFullyCompliant =
-        status === 'approved' && complianceMeta?.label === 'Complete';
-      this.warning = isFullyCompliant
-        ? null
-        : 'Warning: Selected supplier is not fully compliant on file. Ensure internal checks before proceeding.';
-    } else {
+    if (!bid) {
       this.warning = null;
+      return;
     }
+    const status = this.getSupplierStatus(bid).toLowerCase();
+    const supplierId = bid.supplierId;
+    const complianceMeta = supplierId ? this.complianceBySupplier[supplierId] : undefined;
+    const isFullyCompliant = status === 'approved' && complianceMeta?.label === 'Complete';
+    this.confirmWarning = isFullyCompliant
+      ? null
+      : 'Warning: Selected supplier is not fully compliant on file. Ensure internal checks before proceeding.';
+    this.confirmBid = bid;
+    this.confirmOpen = true;
+  }
+  
+  cancelConfirm() {
+    this.confirmOpen = false;
+    this.confirmBid = null;
+    this.confirmWarning = null;
+  }
+  
+  confirmAward() {
+    if (!this.job || !this.confirmBid) return;
     this.selecting = true;
+    const bidId = this.confirmBid.id;
     this.api.selectWinningBid(this.job.id, bidId).subscribe((j) => {
       if (!j) {
         this.selecting = false;
+        this.cancelConfirm();
         return;
       }
       this.job = j;
@@ -91,9 +114,11 @@ export class MemberViewBidsPage {
       this.selectedBidId = bidId;
       this.success = true;
       this.escrow = j.escrow ?? null;
+      this.cancelConfirm();
       setTimeout(() => {
         this.success = false;
-      }, 3000);
+        this.router.navigateByUrl('/member/transactions');
+      }, 200);
     });
   }
 

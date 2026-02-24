@@ -1,81 +1,132 @@
+<!-- Main Card: Compliance Overview -->
 <section class="card">
-  <h1>Compliance Overview</h1>
+  <h1>
+    <i class="bi bi-shield-check" style="margin-right: 8px;"></i>
+    Compliance Overview
+  </h1>
+  
   <ng-container *ngIf="user; else noUser">
+    <!-- Status Row -->
     <div class="status-row">
-      <span class="status-badge" [ngClass]="complianceStatus.toLowerCase()">
+      <span class="status-badge" [ngClass]="complianceStatus.toLowerCase().replace(' ', '.')">
+        <i class="bi" [ngClass]="{
+          'bi-hourglass-split': complianceStatus === 'Pending',
+          'bi-clock-history': complianceStatus === 'Under Review',
+          'bi-check-circle-fill': complianceStatus === 'Approved',
+          'bi-exclamation-triangle-fill': complianceStatus === 'Rejected'
+        }"></i>
         {{ complianceStatus }}
       </span>
+      
       <div class="status-copy">
         <p class="muted" *ngIf="complianceStatus === 'Pending'">
+          <i class="bi bi-info-circle"></i>
           Your documents have not been submitted for review yet. Upload all required documents to start
           the verification process.
         </p>
         <p class="muted" *ngIf="complianceStatus === 'Under Review'">
+          <i class="bi bi-clock-history"></i>
           Your documents are under review. You may browse the platform but cannot submit requests until
           approved.
         </p>
         <p class="muted" *ngIf="complianceStatus === 'Approved'">
+          <i class="bi bi-check-circle"></i>
           Your account is compliant. You can create procurement requests and transact via escrow.
         </p>
         <p class="muted" *ngIf="complianceStatus === 'Rejected'">
+          <i class="bi bi-exclamation-triangle"></i>
           Your last submission was rejected. Review the feedback on the verification screen and submit
           updated documents.
         </p>
-        <p class="muted meta" *ngIf="lastSubmissionDate">
+        <p class="meta" *ngIf="lastSubmissionDate">
+          <i class="bi bi-calendar"></i>
           Last submission: {{ lastSubmissionDate | date: 'medium' }}
         </p>
       </div>
     </div>
+
+    <!-- Summary Metrics -->
     <div class="summary-metrics">
       <div class="metric-card">
-        <div class="label">Documents Uploaded</div>
+        <div class="label">
+          <i class="bi bi-file-earmark-text"></i>
+          Documents Uploaded
+        </div>
         <div class="value">{{ documentsUploaded }} / {{ totalRequiredDocs }}</div>
       </div>
       <div class="metric-card">
-        <div class="label">Expiring Soon</div>
+        <div class="label">
+          <i class="bi bi-hourglass-split"></i>
+          Expiring Soon
+        </div>
         <div class="value">{{ expiringSoonCount }}</div>
       </div>
       <div class="metric-card">
-        <div class="label">Expired</div>
+        <div class="label">
+          <i class="bi bi-exclamation-octagon"></i>
+          Expired
+        </div>
         <div class="value">{{ expiredCount }}</div>
       </div>
     </div>
   </ng-container>
+  
   <ng-template #noUser>
-    <p class="muted">Sign in as a member to view compliance status and documents.</p>
+    <p class="muted">
+      <i class="bi bi-person-x"></i>
+      Sign in as a member to view compliance status and documents.
+    </p>
   </ng-template>
 </section>
 
+<!-- Documents Table -->
 <section class="card" *ngIf="user">
-  <h3>Compliance Documents</h3>
+  <h3>
+    <i class="bi bi-files"></i>
+    Compliance Documents
+  </h3>
+  
   <div class="docs-table">
     <div class="table-header">
-      <div>Document</div>
-      <div>Status</div>
-      <div>Expiry Date</div>
-      <div>Last Updated</div>
+      <div><i class="bi bi-file-text"></i> Document</div>
+      <div><i class="bi bi-flag"></i> Status</div>
+      <div><i class="bi bi-calendar"></i> Expiry Date</div>
+      <div><i class="bi bi-clock"></i> Last Updated</div>
     </div>
-    <div class="table-row" *ngFor="let d of docs">
-      <div>{{ d.name }}</div>
-      <div>
-        <span
-          class="chip"
-          [ngClass]="{
-            'chip-ok': d.status === 'Uploaded' && !isExpired(d),
-            'chip-warn': d.status !== 'Uploaded' || isExpired(d)
-          }"
-        >
+    
+    <div class="table-row" *ngFor="let d of docs" [attr.data-label]="d.name">
+      <div data-label="Document">
+        <i class="bi" [ngClass]="{
+          'bi-file-earmark-pdf': d.name.includes('Certificate'),
+          'bi-file-earmark-person': d.name.includes('Director'),
+          'bi-geo-alt': d.name.includes('Address')
+        }"></i>
+        {{ d.name }}
+      </div>
+      
+      <div data-label="Status">
+        <span class="chip" [ngClass]="{
+          'chip-ok': d.status === 'Uploaded' && !isExpired(d),
+          'chip-warn': d.status !== 'Uploaded' || isExpired(d)
+        }">
+          <i class="bi" [ngClass]="{
+            'bi-check-circle': d.status === 'Uploaded' && !isExpired(d),
+            'bi-exclamation-triangle': d.status !== 'Uploaded' || isExpired(d)
+          }"></i>
           {{ d.status }}
         </span>
       </div>
-      <div>
+      
+      <div data-label="Expiry Date">
         <ng-container *ngIf="d.expiry; else noExpiry">
-          <span
-            [ngClass]="{
-              'text-danger': isExpired(d),
-              'text-warning': !isExpired(d) && isExpiringSoon(d)
-            }"
-          >
+          <span [ngClass]="{
+            'text-danger': isExpired(d),
+            'text-warning': !isExpired(d) && isExpiringSoon(d)
+          }">
+            <i class="bi" [ngClass]="{
+              'bi-exclamation-circle': isExpired(d),
+              'bi-exclamation-diamond': !isExpired(d) && isExpiringSoon(d)
+            }"></i>
             {{ d.expiry | date: 'mediumDate' }}
           </span>
         </ng-container>
@@ -83,8 +134,10 @@
           <span class="muted">Not set</span>
         </ng-template>
       </div>
-      <div>
+      
+      <div data-label="Last Updated">
         <ng-container *ngIf="d.uploadedAt; else neverUpdated">
+          <i class="bi bi-check-circle-fill" style="color: #10b981;"></i>
           {{ d.uploadedAt | date: 'mediumDate' }}
         </ng-container>
         <ng-template #neverUpdated>
@@ -95,18 +148,27 @@
   </div>
 </section>
 
+<!-- Compliance Alerts -->
 <section class="card" *ngIf="user">
-  <h3>Compliance Alerts</h3>
+  <h3>
+    <i class="bi bi-bell"></i>
+    Compliance Alerts
+  </h3>
+  
   <p class="muted" *ngIf="expiredCount === 0 && expiringSoonCount === 0">
+    <i class="bi bi-check-circle" style="color: #10b981;"></i>
     No compliance alerts right now. Keep your documents up to date to remain compliant.
   </p>
+  
   <ul class="alerts-list" *ngIf="expiredCount > 0 || expiringSoonCount > 0">
     <li *ngFor="let d of docs">
       <ng-container *ngIf="d.expiry">
         <span *ngIf="isExpired(d)">
+          <i class="bi bi-exclamation-triangle-fill text-danger"></i>
           <strong>{{ d.name }}</strong> has expired. Upload an updated document to restore compliance.
         </span>
         <span *ngIf="!isExpired(d) && isExpiringSoon(d)">
+          <i class="bi bi-exclamation-diamond-fill text-warning"></i>
           <strong>{{ d.name }}</strong> is expiring soon ({{ d.expiry | date: 'mediumDate' }}). Prepare a
           renewed document.
         </span>
@@ -115,10 +177,21 @@
   </ul>
 </section>
 
+<!-- Next Steps -->
 <section class="card" *ngIf="user">
-  <h3>Next Steps</h3>
+  <h3>
+    <i class="bi bi-compass"></i>
+    Next Steps
+  </h3>
+  
   <div class="actions-row">
-    <a class="btn primary" routerLink="/member/upload-documents">Update Documents</a>
-    <a class="link" routerLink="/member/verification-pending">View Verification Status</a>
+    <a class="btn primary" routerLink="/member/upload-documents">
+      <i class="bi bi-cloud-upload"></i>
+      Update Documents
+    </a>
+    <a class="link" routerLink="/member/verification-pending">
+      <i class="bi bi-arrow-right-circle"></i>
+      View Verification Status
+    </a>
   </div>
 </section>

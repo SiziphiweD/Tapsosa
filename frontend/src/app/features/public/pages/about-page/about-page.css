@@ -1,148 +1,409 @@
+/* Public page container - FULL WIDTH */
 .public-page {
     position: relative;
     z-index: 10;
-    padding-top: 120px;
-    padding-bottom: 80px;
+    width: 100%;
+    min-height: 100vh;
+    padding: 100px 5% 80px;
+    margin: 0;
+    box-sizing: border-box;
 }
 
-.about-card {
-  position: relative;
+/* Inner content container for readability */
+.page-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    width: 100%;
 }
 
-
+/* Back button */
 .back-arrow {
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    color: var(--color-success);
+    gap: 10px;
+    color: white;
     text-decoration: none;
     font-weight: 600;
-    font-size: 16px;
+    font-size: 1rem;
     transition: all 0.3s ease;
     margin-bottom: 40px;
-    padding: 10px 20px;
-    border: 2px solid rgba(76, 175, 80, 0.3);
-    border-radius: 8px;
-    background: rgba(76, 175, 80, 0.1);
+    padding: 12px 24px;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    width: fit-content;
 }
 
 .back-arrow:hover {
-    color: white;
     background: var(--color-success);
     border-color: var(--color-success);
     transform: translateX(-5px);
+    color: white;
 }
 
 .back-arrow i {
-  font-size: 20px;
+    font-size: 1.2rem;
 }
 
+/* Main heading */
 h1 {
-  font-size: 3em;
-  color: #fff;
-  text-align: center;
-  margin-bottom: 20px;
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4rem);
+    font-weight: 800;
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+    letter-spacing: -0.02em;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+    line-height: 1.2;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.public-page > p {
-  font-size: 1.2em;
-  color: #fff;
-  text-align: center;
-  max-width: 800px;
-  margin: 0 auto 50px auto;
+/* Subheading */
+.public-page  p {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: rgba(255, 255, 255, 0.9);
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto 60px auto;
+    line-height: 1.6;
+    font-weight: 400;
+    text-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    padding: 0 20px;
 }
 
+/* Grid layout */
 .grid {
-  display: grid;
-  gap: 20px;
+    display: grid;
+    gap: 30px;
+    width: 100%;
 }
 
 .cols-3 {
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
 }
 
 .about-grid {
-  margin-top: 40px;
-  margin-bottom: 60px;
+    margin-top: 20px;
+    margin-bottom: 60px;
+    width: 100%;
 }
 
+/* About cards - with dark background and light text */
 .about-card {
-  background-color: #fff;
-  border-radius: 15px;
-  padding: 30px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 24px;
+    padding: 35px 30px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    text-align: left;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    position: relative;
+    overflow: hidden;
+    height: 100%;
+}
+
+.about-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--color-success), var(--color-primary));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.about-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 30px 60px rgba(0, 0, 0, 0.35);
+    background: rgba(30, 40, 50, 0.9);
+}
+
+.about-card:hover::before {
+    opacity: 1;
+}
+
+/* Card icon */
+.about-icon {
+    font-size: 2.5rem;
+    color: var(--color-success);
+    margin-bottom: 20px;
+    background: rgba(76, 175, 80, 0.2);
+    width: 60px;
+    height: 60px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.about-card:hover .about-icon {
+    background: var(--color-success);
+    color: white;
+    transform: scale(1.1);
+    border-radius: 12px;
+}
+
+/* Card heading - light text */
+.about-card h2 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin: 0 0 15px 0;
+    line-height: 1.3;
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Card text - light text */
+.about-card p {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.9);
+    line-height: 1.7;
+    margin: 0 0 15px 0;
+}
+
+.about-card p:last-child {
+    margin-bottom: 0;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.95rem;
+}
+
+/* Role CTA Section */
+.role-cta {
+  text-align: center;
+  margin-top: 60px;
+  padding: 60px 40px;
+  background: linear-gradient(135deg, #1a2e3f, #0f1e2b);
+  border-radius: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+}
+
+.role-cta::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(76, 175, 80, 0.05) 0%, transparent 70%);
+  animation: rotate 30s linear infinite;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.role-cta h2 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 700;
+  margin: 0 0 40px 0;
+  color: white;
+  position: relative;
+  z-index: 2;
+  letter-spacing: -0.01em;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Role CTA Grid */
+.role-cta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 30px;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+
+/* Role Cards */
+.role-card {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(10px);
+  border-radius: 24px;
+  padding: 35px 30px;
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  justify-content: space-between;
+  height: 100%;
 }
 
-.about-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+.role-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(76, 175, 80, 0.3);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
 }
 
-.about-icon {
-  font-size: 3em;
-  color: var(--color-success);
-  margin-bottom: 20px;
-}
-
-.about-card h2 {
-  font-size: 1.8em;
-  color: var(--color-primary);
-  margin-bottom: 15px;
-}
-
-.about-card p {
-  font-size: 1em;
-  color: #666;
-  line-height: 1.6;
-}
-
-.about-cta {
-  text-align: center;
-  margin-top: 50px;
-  padding: 40px;
-  background-color: var(--color-primary);
-  border-radius: 15px;
-  color: #fff;
-}
-
-.about-cta h2 {
-  font-size: 2.5em;
-  margin-bottom: 25px;
-  color: #fff;
-}
-
-.about-cta-row {
+/* Role Icon */
+.role-icon {
+  width: 80px;
+  height: 80px;
+  background: rgba(76, 175, 80, 0.15);
+  border-radius: 50%;
   display: flex;
+  align-items: center;
   justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
+  margin-bottom: 20px;
+  border: 2px solid rgba(76, 175, 80, 0.3);
+  transition: all 0.3s ease;
 }
 
+.role-card:hover .role-icon {
+  background: var(--color-success);
+  border-color: white;
+  transform: scale(1.05);
+}
+
+.role-icon i {
+  font-size: 2.5rem;
+  color: white;
+}
+
+/* Role Card Text - All light */
+.role-card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: white;
+  margin: 0 0 15px 0;
+}
+
+.role-card p {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.6;
+  margin-bottom: 25px;
+  flex-grow: 1;
+}
+
+/* Buttons */
 .btn {
-  padding: 15px 30px;
-  border-radius: 8px;
-  font-size: 1.1em;
-  font-weight: bold;
-  text-decoration: none;
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
+    padding: 16px 32px;
+    border-radius: 999px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
 }
 
 .btn.primary {
-  background-color: var(--color-success);
-  color: #fff;
-  border: 2px solid var(--color-success);
+    background: linear-gradient(135deg, var(--color-success), var(--color-success-dark));
+    color: white;
+    box-shadow: 0 8px 20px rgba(76, 175, 80, 0.3);
 }
 
 .btn.primary:hover {
-  background-color: var(--color-success-dark);
-  transform: translateY(-3px);
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(76, 175, 80, 0.4);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.btn.primary i {
+    font-size: 1.2rem;
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    .cols-3 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .public-page {
+        padding: 80px 4% 60px;
+    }
+    
+    h1 {
+        font-size: 2.8rem;
+    }
+    
+    .public-page > p {
+        font-size: 1.1rem;
+        margin-bottom: 40px;
+    }
+    
+    .role-cta {
+        padding: 40px 20px;
+    }
+    
+    .role-cta h2 {
+        font-size: 2.2rem;
+        margin-bottom: 30px;
+    }
+}
+
+@media (max-width: 800px) {
+    .role-cta-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+    }
+}
+
+@media (max-width: 700px) {
+    .cols-3 {
+        grid-template-columns: 1fr;
+    }
+    
+    .about-card {
+        padding: 30px 25px;
+    }
+}
+
+@media (max-width: 600px) {
+    .public-page {
+        padding: 60px 20px 40px;
+    }
+    
+    h1 {
+        font-size: 2.2rem;
+    }
+    
+    .public-page > p {
+        font-size: 1rem;
+        margin-bottom: 30px;
+    }
+    
+    .about-card {
+        padding: 25px 20px;
+    }
+    
+    .about-card h2 {
+        font-size: 1.5rem;
+    }
+    
+    .role-cta h2 {
+        font-size: 1.8rem;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
 }

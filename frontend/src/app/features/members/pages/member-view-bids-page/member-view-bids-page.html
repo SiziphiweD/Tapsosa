@@ -91,6 +91,23 @@
       <i class="bi bi-exclamation-triangle-fill"></i> {{ warning }}
     </div>
 
+    <!-- Confirm Award Modal -->
+    <div class="modal-backdrop" *ngIf="confirmOpen">
+      <div class="modal">
+        <h3><i class="bi bi-trophy-fill"></i> Confirm Award</h3>
+        <p class="muted" *ngIf="confirmBid">
+          Award the job to <strong>{{ confirmBid.supplierName }}</strong> for
+          <strong>R{{ confirmBid.price.toLocaleString() }}</strong> with delivery in
+          <strong>{{ confirmBid.days }} days</strong>?
+        </p>
+        <p class="warning-note" *ngIf="confirmWarning">{{ confirmWarning }}</p>
+        <div class="modal-actions">
+          <button type="button" class="btn-secondary" (click)="cancelConfirm()">Cancel</button>
+          <button type="button" class="btn-primary" [disabled]="selecting" (click)="confirmAward()">Confirm Award</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Escrow Section (if awarded) -->
     <section class="card" *ngIf="escrow as e" style="margin-top: 24px; padding: 1.5rem;">
       <h3><i class="bi bi-shield-lock"></i> Escrow Payment</h3>

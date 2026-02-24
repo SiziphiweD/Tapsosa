@@ -162,20 +162,6 @@ export const routes: Routes = [
                     './features/members/pages/member-notifications-page/member-notifications-page'
                   ).then((m) => m.MemberNotificationsPage),
               },
-              {
-                path: 'unread',
-                loadComponent: () =>
-                  import(
-                    './features/members/pages/member-notifications-unread-page/member-notifications-unread-page'
-                  ).then((m) => m.MemberNotificationsUnreadPage),
-              },
-              {
-                path: 'settings',
-                loadComponent: () =>
-                  import(
-                    './features/members/pages/member-notification-settings-page/member-notification-settings-page'
-                  ).then((m) => m.MemberNotificationSettingsPage),
-              },
             ],
           },
           {
@@ -214,27 +200,7 @@ export const routes: Routes = [
                     './features/members/pages/member-settings-users-page/member-settings-users-page'
                   ).then((m) => m.MemberSettingsUsersPage),
               },
-              {
-                path: 'security',
-                loadComponent: () =>
-                  import(
-                    './features/members/pages/member-settings-security-page/member-settings-security-page'
-                  ).then((m) => m.MemberSettingsSecurityPage),
-              },
-              {
-                path: 'preferences',
-                loadComponent: () =>
-                  import(
-                    './features/members/pages/member-settings-preferences-page/member-settings-preferences-page'
-                  ).then((m) => m.MemberSettingsPreferencesPage),
-              },
-              {
-                path: 'billing',
-                loadComponent: () =>
-                  import(
-                    './features/members/pages/member-settings-billing-page/member-settings-billing-page'
-                  ).then((m) => m.MemberSettingsBillingPage),
-              },
+              
               { path: '', pathMatch: 'full', redirectTo: 'profile' },
             ],
           },

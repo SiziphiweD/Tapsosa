@@ -1,10 +1,188 @@
 <section class="card">
-  <h1>Profile Management</h1>
+  <h1>
+    <i class="bi bi-person-gear"></i>
+    Profile Management
+  </h1>
+
   <form class="form">
-    <label>Company Information <input [(ngModel)]="company" name="company" /></label>
-    <label>Contact Details <input [(ngModel)]="contact" name="contact" /></label>
-    <label>Industry/Category <input [(ngModel)]="industry" name="industry" /></label>
-    <label>Logo Upload <input type="file" /></label>
-    <label>Business Registration Documents <input type="file" multiple /></label>
+    <!-- Two Column Grid for Main Info -->
+    <div class="form-grid">
+      <!-- Left Column - Company Info -->
+      <div class="form-section">
+        <h3>
+          <i class="bi bi-building"></i>
+          Company Information
+        </h3>
+        
+        <label>
+          <span><i class="bi bi-briefcase"></i> Company Name</span>
+          <input 
+            type="text" 
+            [(ngModel)]="company" 
+            name="company" 
+            placeholder="e.g., ABC Security Services"
+          />
+          <span class="helper-text">
+            <i class="bi bi-info-circle"></i>
+            Your registered business name
+          </span>
+        </label>
+
+        <label>
+          <span><i class="bi bi-tag"></i> Industry/Category</span>
+          <select [(ngModel)]="industry" name="industry">
+            <option value="">Select industry...</option>
+            <option value="Security Services">Security Services</option>
+            <option value="IT & Telecommunications">IT & Telecommunications</option>
+            <option value="Cleaning Services">Cleaning Services</option>
+            <option value="Logistics & Transport">Logistics & Transport</option>
+            <option value="Construction">Construction</option>
+            <option value="Professional Services">Professional Services</option>
+          </select>
+        </label>
+
+        <label>
+          <span><i class="bi bi-file-text"></i> Business Registration Number</span>
+          <input 
+            type="text" 
+            [(ngModel)]="registrationNumber" 
+            name="registrationNumber" 
+            placeholder="e.g., 2023/123456/07"
+          />
+        </label>
+      </div>
+
+      <!-- Right Column - Contact Details -->
+      <div class="form-section">
+        <h3>
+          <i class="bi bi-envelope"></i>
+          Contact Details
+        </h3>
+
+        <label>
+          <span><i class="bi bi-telephone"></i> Phone Number</span>
+          <input 
+            type="tel" 
+            [(ngModel)]="contact" 
+            name="contact" 
+            placeholder="e.g., +27 11 123 4567"
+          />
+        </label>
+
+        <label>
+          <span><i class="bi bi-envelope"></i> Business Email</span>
+          <input 
+            type="email" 
+            [(ngModel)]="businessEmail" 
+            name="businessEmail" 
+            placeholder="info@yourcompany.co.za"
+          />
+        </label>
+
+        <label>
+          <span><i class="bi bi-geo-alt"></i> Physical Address</span>
+          <textarea 
+            [(ngModel)]="address" 
+            name="address" 
+            placeholder="Street address, city, province, postal code"
+            rows="3"
+          ></textarea>
+        </label>
+
+        <label>
+          <span><i class="bi bi-globe"></i> Website</span>
+          <input 
+            type="url" 
+            [(ngModel)]="website" 
+            name="website" 
+            placeholder="https://www.yourcompany.co.za"
+          />
+        </label>
+      </div>
+    </div>
+
+    <!-- Logo Upload Section -->
+    <div class="form-section">
+      <h3>
+        <i class="bi bi-image"></i>
+        Company Logo
+      </h3>
+      
+      <!-- Current Logo Preview -->
+      <div class="logo-preview" *ngIf="logoFile">
+        <div class="avatar">
+          <i class="bi bi-building"></i>
+        </div>
+        <div class="info">
+          <div class="filename">{{ logoFile.name }}</div>
+          <div class="filesize">{{ (logoFile.size / 1024).toFixed(1) }} KB</div>
+        </div>
+      </div>
+
+      <label>
+        <span><i class="bi bi-cloud-upload"></i> Upload New Logo</span>
+        <input 
+          type="file" 
+          (change)="onLogoSelected($event)" 
+          accept="image/png, image/jpeg, image/svg+xml"
+        />
+        <span class="helper-text">
+          <i class="bi bi-info-circle"></i>
+          Accepted formats: PNG, JPG, SVG. Max size: 2MB
+        </span>
+      </label>
+    </div>
+
+    <!-- Documents Section -->
+    <div class="form-section">
+      <h3>
+        <i class="bi bi-file-earmark-text"></i>
+        Business Registration Documents
+      </h3>
+
+      <!-- Document List -->
+      <div class="document-list">
+        <div class="document-item" *ngFor="let doc of documents">
+          <i class="bi bi-file-earmark-pdf"></i>
+          <div class="doc-info">
+            <div class="doc-name">{{ doc.name }}</div>
+            <div class="doc-meta">{{ doc.size }} • Uploaded {{ doc.uploadedAt | date:'shortDate' }}</div>
+          </div>
+          <span class="doc-status" [class.uploaded]="doc.status === 'Uploaded'">
+            {{ doc.status }}
+          </span>
+        </div>
+      </div>
+
+      <label>
+        <span><i class="bi bi-cloud-upload"></i> Upload Additional Documents</span>
+        <input 
+          type="file" 
+          (change)="onDocumentsSelected($event)" 
+          multiple 
+          accept=".pdf,.doc,.docx"
+        />
+        <span class="helper-text">
+          <i class="bi bi-info-circle"></i>
+          Accepted formats: PDF, DOC, DOCX. Max file size: 5MB each
+        </span>
+      </label>
+    </div>
+
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button type="button" class="btn primary" (click)="saveProfile()">
+        <i class="bi bi-check-circle"></i>
+        Save Changes
+      </button>
+      <button type="button" class="btn secondary" (click)="resetForm()">
+        <i class="bi bi-arrow-counterclockwise"></i>
+        Reset
+      </button>
+      <span class="toast success" *ngIf="saved">
+        <i class="bi bi-check-circle-fill"></i>
+        Profile updated successfully!
+      </span>
+    </div>
   </form>
 </section>

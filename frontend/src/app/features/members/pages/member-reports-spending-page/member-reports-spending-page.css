@@ -1,1 +1,264 @@
-.card p { color: var(--color-muted); }
+/* Card styling */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Header */
+h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: 2.25rem;
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  display: flex;
+  align-items: center;
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+h1::before {
+  content: '';
+  width: 8px;
+  height: 36px;
+  background: linear-gradient(to bottom, var(--color-success), var(--color-primary));
+  border-radius: 20px;
+  margin-right: 1rem;
+}
+
+/* Header description */
+.card > p {
+  color: var(--color-muted);
+  margin: 0 0 2rem 0;
+  font-size: 1rem;
+  padding-left: calc(1rem + 8px);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.card > p i {
+  color: var(--color-primary);
+  font-size: 1.2rem;
+}
+
+/* Three column grid */
+.grid.cols-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  width: 100%;
+}
+
+/* Report cards */
+.grid.cols-3 .card {
+  padding: 1.5rem;
+  transition: all 0.2s ease;
+  border-top: 4px solid transparent;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid.cols-3 .card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.12);
+}
+
+/* Card header */
+.grid.cols-3 .card h3 {
+  font-family: 'Syne', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin: 0 0 1.25rem 0;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px dashed var(--color-border);
+}
+
+.grid.cols-3 .card h3 i {
+  color: var(--color-primary);
+  font-size: 1.3rem;
+}
+
+/* Color-coded card headers */
+.grid.cols-3 .card:first-child h3 i {
+  color: #0ea5e9; /* Blue for Category */
+}
+
+.grid.cols-3 .card:nth-child(2) h3 i {
+  color: #10b981; /* Green for Supplier */
+}
+
+.grid.cols-3 .card:last-child h3 i {
+  color: #8b5cf6; /* Purple for Time Period */
+}
+
+/* Report items container */
+.grid.cols-3 .card > div:not(ng-template) {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+/* Individual report row */
+.grid.cols-3 .card > div > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 0;
+  border-bottom: 1px dashed var(--color-border);
+  transition: all 0.2s ease;
+}
+
+.grid.cols-3 .card > div > div:hover {
+  transform: translateX(4px);
+  background: #f8fafc;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-radius: var(--radius-sm);
+}
+
+.grid.cols-3 .card > div > div:last-child {
+  border-bottom: none;
+}
+
+/* Label styling */
+.grid.cols-3 .card strong {
+  font-weight: 600;
+  color: var(--color-text);
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* Value styling */
+.grid.cols-3 .card .muted {
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 1rem;
+  font-family: 'Inter', monospace;
+  background: #f1f5f9;
+  padding: 4px 12px;
+  border-radius: 999px;
+  transition: all 0.2s ease;
+}
+
+.grid.cols-3 .card > div > div:hover .muted {
+  background: #e2e8f0;
+  transform: scale(1.02);
+}
+
+/* Category-specific colors */
+.grid.cols-3 .card:first-child .muted {
+  color: #0ea5e9;
+  background: #e0f2fe;
+}
+
+.grid.cols-3 .card:nth-child(2) .muted {
+  color: #166534;
+  background: #ecfdf3;
+}
+
+.grid.cols-3 .card:last-child .muted {
+  color: #6d28d9;
+  background: #ede9fe;
+}
+
+/* Empty state */
+.ng-template + p.muted {
+  padding: 2rem;
+  text-align: center;
+  background: #f8fafc;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  margin: 1rem 0;
+  color: var(--color-muted);
+  font-style: italic;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.ng-template + p.muted i {
+  font-size: 2rem;
+  color: var(--color-border);
+}
+
+/* Total spend highlight */
+.card > p.muted:first-of-type {
+  font-size: 1.1rem;
+  background: #f1f5f9;
+  padding: 1rem 1.5rem;
+  border-radius: 999px;
+  display: inline-flex;
+  width: fit-content;
+  margin-bottom: 2rem;
+}
+
+.card > p.muted:first-of-type i {
+  color: var(--color-success);
+}
+
+/* Responsive */
+@media (max-width: 1000px) {
+  .grid.cols-3 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 800px) {
+  h1 {
+    font-size: 2rem;
+  }
+  
+  h1::before {
+    height: 32px;
+  }
+  
+  .grid.cols-3 {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid.cols-3 .card {
+    padding: 1.25rem;
+  }
+  
+  .card > p.muted:first-of-type {
+    font-size: 1rem;
+    padding: 0.75rem 1.25rem;
+  }
+}
+
+@media (max-width: 500px) {
+  .card {
+    padding: 1.5rem;
+  }
+  
+  h1 {
+    font-size: 1.75rem;
+  }
+  
+  h1::before {
+    width: 6px;
+    height: 28px;
+  }
+  
+  .grid.cols-3 .card > div > div {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  
+  .grid.cols-3 .card .muted {
+    align-self: flex-end;
+  }
+}

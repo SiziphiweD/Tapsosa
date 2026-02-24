@@ -443,6 +443,37 @@ ng-template + .card h1 {
   color: var(--color-muted);
 }
 
+/* Modal */
+.modal-backdrop{
+  position:fixed;inset:0;background:rgba(15,23,42,.55);
+  display:flex;align-items:center;justify-content:center;z-index:1000;
+}
+.modal{
+  width: min(560px, 92vw);
+  background:#fff;border:1px solid var(--color-border);border-radius:16px;
+  box-shadow:0 20px 60px rgba(0,0,0,0.25);
+  padding:20px 22px;
+}
+.modal h3{
+  display:flex;align-items:center;gap:10px;margin:0 0 10px 0;
+}
+.warning-note{
+  background:#fff7ed;color:#9a3412;border:1px solid #fdba74;border-radius:12px;
+  padding:10px 12px;margin-top:8px;font-weight:600;font-size:.9rem;
+}
+.modal-actions{
+  display:flex;gap:10px;justify-content:flex-end;margin-top:16px;
+}
+.btn-secondary{
+  height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--color-border);
+  background:#fff;font-weight:700;cursor:pointer;
+}
+.btn-primary{
+  height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--color-success);
+  background:linear-gradient(135deg, var(--color-success), #059669);color:#fff;font-weight:700;cursor:pointer;
+}
+.btn-primary[disabled]{opacity:.6;cursor:not-allowed}
+
 /* Responsive */
 @media (max-width: 900px) {
   .card {

@@ -1,90 +1,107 @@
-<section class="card public-page">
-  <a routerLink=".." class="back-arrow">
-    <i class="bi bi-arrow-left-circle"></i> Back
-  </a>
-  <h1>Contact Us</h1>
-  <p>
-    Reach out to the UKHUSELO SUPPLIER PORTAL team for platform support, onboarding questions, or partnership enquiries.
-  </p>
+<!-- Add orbs for background effect -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
 
-  <div class="grid cols-3 contact-grid">
-    <article class="contact-card">
-      <div class="contact-icon">
-        <i class="bi bi-envelope"></i>
+<section class="public-page">
+  <div class="page-content">
+    <!-- Back Button -->
+    <a routerLink=".." class="back-arrow">
+      <i class="bi bi-arrow-left"></i>
+      Back to Home
+    </a>
+
+    <!-- Header -->
+    <h1>Contact Us</h1>
+    <p>
+      Reach out to the UKHUSELO SUPPLIER PORTAL team for platform support, onboarding questions, or partnership enquiries.
+    </p>
+
+    <!-- Contact Cards -->
+    <div class="grid cols-3 contact-grid">
+      <!-- Email Support -->
+      <article class="contact-card">
+        <div class="contact-icon">
+          <i class="bi bi-envelope-fill"></i>
+        </div>
+        <h2>Email Support</h2>
+        <p>
+          For general queries, technical issues, or account assistance, email the support team and include
+          your organisation name and contact details.
+        </p>
+        <p><strong>support@ukhuselo.co.za</strong></p>
+      </article>
+
+      <!-- In-App Support -->
+      <article class="contact-card">
+        <div class="contact-icon">
+          <i class="bi bi-chat-dots-fill"></i>
+        </div>
+        <h2>In-App Support</h2>
+        <p>
+          Signed-in members and suppliers can log support requests directly from within the platform, with
+          full context of jobs, bids, and transactions.
+        </p>
+        <p>
+          This helps the team respond faster with relevant information and a complete audit trail.
+        </p>
+      </article>
+
+      <!-- Partnership & Sales -->
+      <article class="contact-card">
+        <div class="contact-icon">
+          <i class="bi bi-people-fill"></i>
+        </div>
+        <h2>Partnership & Sales</h2>
+        <p>
+          For partnership discussions, enterprise onboarding, or commercial queries, contact the UKHUSELO SUPPLIER PORTAL
+          business team.
+        </p>
+        <p><strong>partnerships@ukhuselo.co.za</strong></p>
+      </article>
+
+      <!-- Compliance & Governance -->
+      <article class="contact-card">
+        <div class="contact-icon">
+          <i class="bi bi-shield-check"></i>
+        </div>
+        <h2>Compliance & Governance</h2>
+        <p>
+          Use this channel for questions about verification standards, regulatory documentation, or dispute
+          resolution processes.
+        </p>
+        <p><strong>compliance@tapsosa.co.za</strong></p>
+      </article>
+
+      <!-- Office Information -->
+      <article class="contact-card">
+        <div class="contact-icon">
+          <i class="bi bi-geo-alt-fill"></i>
+        </div>
+        <h2>Office Information</h2>
+        <p>
+          UKHUSELO SUPPLIER PORTAL operates as a digital-first platform. Meeting details and office information are provided
+          on request for scheduled sessions.
+        </p>
+      </article>
+    </div>
+
+    <!-- CTA Section - Matching other pages -->
+    <div class="contact-cta">
+      <h2>Access In-App Support</h2>
+      <div class="contact-cta-row">
+        <a class="btn primary" routerLink="/auth/sign-in">
+          <i class="bi bi-box-arrow-in-right"></i>
+          Sign In
+        </a>
+        <a class="btn primary" routerLink="/auth/register-member">
+          <i class="bi bi-person-badge"></i>
+          Member Portal
+        </a>
+        <a class="btn primary" routerLink="/auth/register-supplier">
+          <i class="bi bi-briefcase"></i>
+          Supplier Portal
+        </a>
       </div>
-      <h2>Email Support</h2>
-      <p>
-        For general queries, technical issues, or account assistance, email the support team and include
-        your organisation name and contact details.
-      </p>
-      <p><strong>Email:</strong> support@ukhuselo.co.za</p>
-    </article>
-
-    <article class="contact-card">
-      <div class="contact-icon">
-        <i class="bi bi-chat-dots"></i>
-      </div>
-      <h2>In-App Support</h2>
-      <p>
-        Signed-in members and suppliers can log support requests directly from within the platform, with
-        full context of jobs, bids, and transactions.
-      </p>
-      <p>
-        This helps the team respond faster with relevant information and a complete audit trail.
-      </p>
-    </article>
-
-    <article class="contact-card">
-      <div class="contact-icon">
-        <i class="bi bi-people"></i>
-      </div>
-      <h2>Partnership & Sales</h2>
-      <p>
-        For partnership discussions, enterprise onboarding, or commercial queries, contact the UKHUSELO SUPPLIER PORTAL
-        business team.
-      </p>
-      <p><strong>Email:</strong> partnerships@ukhuselo.co.za</p>
-    </article>
-
-    <article class="contact-card">
-      <div class="contact-icon">
-        <i class="bi bi-shield-check"></i>
-      </div>
-      <h2>Compliance & Governance</h2>
-      <p>
-        Use this channel for questions about verification standards, regulatory documentation, or dispute
-        resolution processes.
-      </p>
-      <p><strong>Email:</strong> compliance@tapsosa.co.za</p>
-    </article>
-
-    <article class="contact-card">
-      <div class="contact-icon">
-        <i class="bi bi-geo-alt"></i>
-      </div>
-      <h2>Office Information</h2>
-      <p>
-        UKHUSELO SUPPLIER PORTAL operates as a digital-first platform. Meeting details and office information are provided
-        on request for scheduled sessions.
-      </p>
-    </article>
-  </div>
-
-  <div class="contact-cta">
-    <h2>Access In-App Support</h2>
-    <div class="contact-cta-row">
-      <a class="btn primary" routerLink="/auth/sign-in">
-        <i class="bi bi-box-arrow-in-right"></i>
-        Sign In
-      </a>
-      <a class="btn primary" routerLink="/auth/register-member">
-        <i class="bi bi-person-badge"></i>
-        Register as Member
-      </a>
-      <a class="btn primary" routerLink="/auth/register-supplier">
-        <i class="bi bi-briefcase"></i>
-        Register as Supplier
-      </a>
     </div>
   </div>
 </section>

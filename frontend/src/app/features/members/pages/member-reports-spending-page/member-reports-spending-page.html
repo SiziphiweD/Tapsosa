@@ -1,42 +1,93 @@
 <section class="card">
-  <h1>Spending Reports</h1>
-  <p class="muted" *ngIf="totalNet > 0">Total net spend through escrow: R{{ totalNet.toLocaleString() }}</p>
-  <p class="muted" *ngIf="totalNet === 0">No completed, paid jobs recorded yet.</p>
+  <h1>
+    <i class="bi bi-bar-chart-fill" style="margin-right: 8px;"></i>
+    Spending Reports
+  </h1>
+  
+  <!-- Total Spend Summary -->
+  <p class="muted" *ngIf="totalNet > 0">
+    <i class="bi bi-wallet2"></i>
+    Total net spend through escrow: <strong style="color: var(--color-primary); font-size: 1.2rem;">R{{ totalNet.toLocaleString() }}</strong>
+  </p>
+  <p class="muted" *ngIf="totalNet === 0">
+    <i class="bi bi-info-circle"></i>
+    No completed, paid jobs recorded yet. Once you award jobs and payments are released, your spending data will appear here.
+  </p>
+
+  <!-- Three Column Reports -->
   <div class="grid cols-3">
+    <!-- By Category Card -->
     <div class="card">
-      <h3>By Category</h3>
+      <h3>
+        <i class="bi bi-tags"></i>
+        By Category
+      </h3>
       <div *ngIf="byCategory.length > 0; else noCategory">
         <div *ngFor="let row of byCategory">
-          <div><strong>{{ row.label }}</strong></div>
-          <div class="muted">R{{ row.total.toLocaleString() }}</div>
+          <div>
+            <strong>
+              <i class="bi bi-folder" style="color: #0ea5e9;"></i>
+              {{ row.label }}
+            </strong>
+            <span class="muted">R{{ row.total.toLocaleString() }}</span>
+          </div>
         </div>
       </div>
       <ng-template #noCategory>
-        <p class="muted">No spend by category yet.</p>
+        <p class="muted">
+          <i class="bi bi-inbox"></i>
+          No spend by category yet.
+        </p>
       </ng-template>
     </div>
+
+    <!-- By Supplier Card -->
     <div class="card">
-      <h3>By Supplier</h3>
+      <h3>
+        <i class="bi bi-building"></i>
+        By Supplier
+      </h3>
       <div *ngIf="bySupplier.length > 0; else noSupplier">
         <div *ngFor="let row of bySupplier">
-          <div><strong>{{ row.label }}</strong></div>
-          <div class="muted">R{{ row.total.toLocaleString() }}</div>
+          <div>
+            <strong>
+              <i class="bi bi-person-badge" style="color: #10b981;"></i>
+              {{ row.label }}
+            </strong>
+            <span class="muted">R{{ row.total.toLocaleString() }}</span>
+          </div>
         </div>
       </div>
       <ng-template #noSupplier>
-        <p class="muted">No supplier spend recorded yet.</p>
+        <p class="muted">
+          <i class="bi bi-inbox"></i>
+          No supplier spend recorded yet.
+        </p>
       </ng-template>
     </div>
+
+    <!-- By Time Period Card -->
     <div class="card">
-      <h3>By Time Period</h3>
+      <h3>
+        <i class="bi bi-calendar-check"></i>
+        By Time Period
+      </h3>
       <div *ngIf="byPeriod.length > 0; else noPeriod">
         <div *ngFor="let row of byPeriod">
-          <div><strong>{{ row.label }}</strong></div>
-          <div class="muted">R{{ row.total.toLocaleString() }}</div>
+          <div>
+            <strong>
+              <i class="bi bi-clock-history" style="color: #8b5cf6;"></i>
+              {{ row.label }}
+            </strong>
+            <span class="muted">R{{ row.total.toLocaleString() }}</span>
+          </div>
         </div>
       </div>
       <ng-template #noPeriod>
-        <p class="muted">No paid-out periods yet.</p>
+        <p class="muted">
+          <i class="bi bi-inbox"></i>
+          No paid-out periods yet.
+        </p>
       </ng-template>
     </div>
   </div>

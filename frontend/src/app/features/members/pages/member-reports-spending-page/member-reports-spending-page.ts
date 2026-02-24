@@ -22,18 +22,24 @@ export class MemberReportsSpendingPage {
   bySupplier: SpendingRow[] = [];
   byPeriod: SpendingRow[] = [];
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
   constructor() {
+    this.loadData();
+  }
+
+  private loadData() {
+    // Load jobs
     this.api.listJobs().subscribe((jobs: Job[]) => {
       this.jobs = jobs;
       this.refresh();
     });
+
+    // Load all bids
     this.api.listAllBids().subscribe((bids: Bid[]) => {
       this.bids = bids;
       this.refresh();
     });
+
+    // Load activities
     this.api.listActivities().subscribe((acts: Activity[]) => {
       this.activities = acts;
       this.refresh();
@@ -41,40 +47,92 @@ export class MemberReportsSpendingPage {
   }
 
   private refresh() {
+    // Get completed jobs (released escrow)
     const completed = this.jobs.filter((j) => j.escrow && j.escrow.status === 'released');
-    this.totalNet = completed.reduce((s, j) => s + j.escrow!.net, 0);
+    
+    // Calculate total net spend
+    this.totalNet = completed.reduce((s, j) => s + (j.escrow?.net || 0), 0);
 
+    // By Category
+    this.calculateByCategory(completed);
+    
+    // By Supplier
+    this.calculateBySupplier(completed);
+    
+    // By Time Period
+    this.calculateByPeriod();
+  }
+
+  private calculateByCategory(completed: Job[]) {
     const categoryTotals = new Map<string, number>();
+    
     for (const job of completed) {
       const key = job.category || 'Uncategorised';
       const prev = categoryTotals.get(key) || 0;
-      categoryTotals.set(key, prev + job.escrow!.net);
+      categoryTotals.set(key, prev + (job.escrow?.net || 0));
     }
+    
     this.byCategory = Array.from(categoryTotals.entries())
       .map(([label, total]) => ({ label, total }))
       .sort((a, b) => b.total - a.total);
+  }
 
+  private calculateBySupplier(completed: Job[]) {
     const supplierTotals = new Map<string, number>();
+    
     for (const job of completed) {
-      const winningBid = job.escrow ? this.bids.find((b) => b.id === job.escrow!.bidId) : undefined;
+      if (!job.escrow) continue;
+      
+      // Find the winning bid for this job
+      const winningBid = this.bids.find((b) => b.id === job.escrow?.bidId);
       const name = winningBid?.supplierName || 'Unknown Supplier';
+      
       const prev = supplierTotals.get(name) || 0;
-      supplierTotals.set(name, prev + job.escrow!.net);
+      supplierTotals.set(name, prev + (job.escrow?.net || 0));
     }
+    
     this.bySupplier = Array.from(supplierTotals.entries())
       .map(([label, total]) => ({ label, total }))
       .sort((a, b) => b.total - a.total);
+  }
 
+  private calculateByPeriod() {
     const periodTotals = new Map<string, number>();
-    const releases = this.activities.filter((a) => a.type === 'escrow_released' && typeof a.amount === 'number');
+    
+    // Filter for escrow released activities with amounts
+    const releases = this.activities.filter(
+      (a) => a.type === 'escrow_released' && typeof a.amount === 'number'
+    );
+    
     for (const act of releases) {
       const d = new Date(act.timestamp);
+      // Format as YYYY-MM for grouping by month
       const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
-      const prev = periodTotals.get(key) || 0;
-      periodTotals.set(key, prev + (act.amount || 0));
+      
+      // Format label as "Month YYYY" (e.g., "February 2024")
+      const monthNames = ['January', 'February', 'March', 'April', 'May', 'June',
+        'July', 'August', 'September', 'October', 'November', 'December'];
+      const label = `${monthNames[d.getMonth()]} ${d.getFullYear()}`;
+      
+      const prev = periodTotals.get(label) || 0;
+      periodTotals.set(label, prev + (act.amount || 0));
     }
+    
     this.byPeriod = Array.from(periodTotals.entries())
       .map(([label, total]) => ({ label, total }))
-      .sort((a, b) => (a.label < b.label ? -1 : 1));
+      .sort((a, b) => {
+        // Sort by date descending (newest first)
+        const dateA = new Date(a.label);
+        const dateB = new Date(b.label);
+        return dateB.getTime() - dateA.getTime();
+      });
+  }
+
+  // Helper method to format currency
+  formatCurrency(amount: number): string {
+    return `R${amount.toLocaleString(undefined, {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    })}`;
   }
 }
