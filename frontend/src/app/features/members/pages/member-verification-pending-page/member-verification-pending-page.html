@@ -3,53 +3,81 @@
 <div class="orb orb-2"></div>
 
 <div class="verification-pending-container">
-  <div class="verification-pending-card">
+  <div class="verification-pending-card" [class.rejected]="status.toLowerCase() === 'rejected'">
+    
+    <!-- Header based on status -->
     <div class="card-header">
       <ng-container *ngIf="status.toLowerCase() === 'rejected'; else pendingHeader">
-        <h2>Verification Rejected</h2>
+        <h2>
+          <i class="bi bi-exclamation-triangle-fill"></i>
+          Verification Rejected
+        </h2>
         <p>Your submission did not meet the verification requirements.</p>
       </ng-container>
+      
       <ng-template #pendingHeader>
-        <h2>Verification Pending</h2>
-        <p>Your account is currently under review.</p>
+        <h2>
+          <i class="bi bi-clock-history"></i>
+          Verification Pending
+        </h2>
+        <p>Your account is currently under review by our compliance team.</p>
       </ng-template>
     </div>
 
+    <!-- Status Badge (only for pending) -->
     <div class="status-badge pending" *ngIf="status.toLowerCase() !== 'rejected'">
       <i class="bi bi-hourglass-split"></i>
       <span>Pending Approval</span>
     </div>
 
+    <!-- Rejection Reason Toast -->
     <div *ngIf="rejectionReason" class="toast error">
-      <strong>Previous submission was rejected:</strong>
+      <strong>
+        <i class="bi bi-exclamation-triangle-fill"></i>
+        Previous submission was rejected:
+      </strong>
       <div>{{ rejectionReason }}</div>
     </div>
 
+    <!-- Uploaded Documents -->
     <div class="documents-list">
-      <h3>Uploaded Documents:</h3>
+      <h3>
+        <i class="bi bi-file-earmark-check"></i>
+        Uploaded Documents:
+      </h3>
       <ul>
         <li *ngFor="let doc of documentsUploaded">
-          <i class="bi bi-file-earmark-check"></i> {{ doc }}
+          <i class="bi bi-check-circle-fill"></i>
+          {{ doc }}
         </li>
       </ul>
     </div>
 
+    <!-- Message based on status -->
     <div class="message">
-      <p *ngIf="status.toLowerCase() === 'rejected'; else pendingMsg">
-        Your account is not approved. You cannot use the member portal until a new submission is
-        reviewed and approved.
-      </p>
+      <ng-container *ngIf="status.toLowerCase() === 'rejected'; else pendingMsg">
+        <p>
+          <i class="bi bi-info-circle-fill"></i>
+          Your account is not approved. You cannot use the member portal until a new submission is
+          reviewed and approved. Please contact support for assistance or resubmit your documents.
+        </p>
+      </ng-container>
+      
       <ng-template #pendingMsg>
         <p>
-          You may browse the platform but cannot submit requests until approved.
+          <i class="bi bi-info-circle-fill"></i>
+          You may browse the platform but cannot submit new requests until your account is approved.
+          This typically takes 1-2 business days.
         </p>
       </ng-template>
     </div>
 
+    <!-- Action Button -->
     <div class="actions">
-      <button class="btn btn-secondary" routerLink="/home">
+      <a class="btn btn-secondary" routerLink="/home">
+        <i class="bi bi-compass"></i>
         Browse Platform
-      </button>
+      </a>
     </div>
   </div>
 </div>
